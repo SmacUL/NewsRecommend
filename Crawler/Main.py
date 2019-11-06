@@ -12,7 +12,6 @@ def connect_database(path, encoding='utf-8'):
     :param encoding: 数据库配置文件编码
     :return:
     """
-    print(path)
     dp = open(path, encoding=encoding)
     dp = json.load(dp)
     data_base = dop.MysqlOP(dp["db_name"], dp['user'], dp['password'])
@@ -83,7 +82,7 @@ def set_cus_pass(password):
 
 if __name__ == "__main__":
     data_base = connect_database("database-properties.json")
-    tiny_news = get_source_tiny_articles(1)
+    tiny_news = get_source_tiny_articles(100)
 
     for news_item in tiny_news:
         for item in news_item:
