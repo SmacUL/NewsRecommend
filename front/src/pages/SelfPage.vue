@@ -1,0 +1,29 @@
+<template>
+    <div>
+        <header><top-bar></top-bar></header>
+        <section><achievement-panel></achievement-panel></section>
+        <!-- 页面主体 左右 布局 -->
+        <main>
+            <article><tiny-article></tiny-article></article>
+            <aside><show-panel></show-panel></aside>
+        </main>
+    </div>
+</template>
+
+<script>
+// self
+import AchievementPanel from '@/components/self/AchievementPanel'
+import ShowPanel from '@/components/self/ShowPanel'
+// common
+import TinyArticle from '@/components/common/TinyArticle'
+import TopBar from '@/components/common/TopBar'
+
+export default {
+    name: 'SelfPage',
+    components: { AchievementPanel, ShowPanel, TinyArticle, TopBar }
+}
+</script>
+
+<style>
+
+</style>
