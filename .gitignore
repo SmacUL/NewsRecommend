@@ -1,8 +1,8 @@
 
-Crawler/.idea/*
-Crawler/__pycache__/*
-Crawler/database-properties.json
+crawler/.idea/*
+crawler/__pycache__/*
+crawler/database-properties.json
 */.DS_Store
 .DS_Store
 
-/Back/lib/*.jar
+/back/lib/*.jar
