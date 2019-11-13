@@ -19,6 +19,8 @@ import HotArticle from '@/components/common/HotArticle'
 import LeftNavigater from '@/components/common/LeftNavigater'
 import TinyArticle from '@/components/common/TinyArticle'
 import TopBar from '@/components/common/TopBar'
+// CSS
+import '@/assets/css/Common.css'
 
 export default {
     name: 'SearchPage',

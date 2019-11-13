@@ -17,6 +17,8 @@ import ShowPanel from '@/components/self/ShowPanel'
 // common
 import TinyArticle from '@/components/common/TinyArticle'
 import TopBar from '@/components/common/TopBar'
+// CSS
+import '@/assets/css/Common.css'
 
 export default {
     name: 'SelfPage',
@@ -25,5 +27,8 @@ export default {
 </script>
 
 <style>
-
+article {
+    float: left;
+    width: 720px;
+}
 </style>

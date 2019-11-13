@@ -10,6 +10,8 @@
 import LoginPanel from '@/components/port/LoginPanel'
 import RegisterPanel from '@/components/port/RegisterPanel'
 // common
+// CSS
+import '@/assets/css/Common.css'
 
 export default {
     name: 'PortPage',

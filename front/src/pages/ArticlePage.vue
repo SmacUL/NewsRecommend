@@ -1,7 +1,5 @@
 <template>
     <div>
-        <!-- This is article page.
-        <article-main></article-main> -->
         <header><top-bar></top-bar></header>
         <!-- 页面主体 左右 布局 -->
         <main>
@@ -30,6 +28,8 @@ import EditorBrief from '@/components/article/EditorBrief'
 import EditEntrance from '@/components/common/EditEntrance'
 import HotArticle from '@/components/common/HotArticle'
 import TopBar from '@/components/common/TopBar'
+// CSS
+import '@/assets/css/Common.css'
 
 export default {
     name: 'ArticlePage',
@@ -40,5 +40,8 @@ export default {
 </script>
 
 <style>
-
+article {
+    float: left;
+    width: 720px;
+}
 </style>

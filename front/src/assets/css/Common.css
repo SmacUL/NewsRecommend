@@ -1,0 +1,45 @@
+body {
+    margin: 0 auto;
+}
+
+header {
+    height: 60px;
+}
+
+main {
+    margin: 0 auto;
+    width: 1020px;
+}
+
+section {
+    margin: 0 auto;
+    width: 1020px;
+    height: 300px;
+}
+
+nav {
+    float: left;
+    width: 150px;
+}
+
+article {
+    float: left;
+    width: 570px;
+}
+
+aside {
+    float: left;
+    width: 300px;
+}
+
+.clear-float:after {
+    content: '.';
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+.clear-float {
+    zoom: 1;
+}
