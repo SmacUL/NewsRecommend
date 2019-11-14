@@ -4,7 +4,7 @@
         <!-- 页面主体 左中右 布局 -->
         <main>
             <nav><left-navigater></left-navigater></nav>
-            <article class="artcle-a"><tiny-article></tiny-article></article>
+            <article class="article-a"><tiny-article></tiny-article></article>
             <aside>
                 <hot-article></hot-article>
             </aside>

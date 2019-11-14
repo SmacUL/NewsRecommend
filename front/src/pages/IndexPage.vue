@@ -4,14 +4,14 @@
         <!-- 页面主体 左中右 布局 -->
         <main class="clear-float">
             <nav><left-navigater :class="{'left-navigater': true}" :tags="tags"></left-navigater></nav>
-            <article class="artcle-a">
+            <article class="article-a">
                 <div  v-for="(news, i) in newsList" :key="i">
                     <tiny-article class="tiny-article" :news="news"></tiny-article>
                 </div>
             </article>
             <aside>
                 <edit-entrance class="edit-entrance"></edit-entrance>
-                <hot-article class="hot-article" :hotNewsList='hotNewsList'></hot-article>
+                <hot-article class="hot-article" :hotArticles='hotArticles'></hot-article>
             </aside>
         </main>
     </div>
@@ -44,7 +44,7 @@ export default {
                 {title:'asdfasdfasdfasdfasdfasdfasdf', abstract:'askldjfaskdjfklasjdfkajsdlfjsaddjfklasjdfklasjdfasdfd', author:'asdfd', date:'2019-09-09'},
             ],
             tags: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'],
-            hotNewsList: [
+            hotArticles: [
                 {title: 'asdfjasjdfkljakldjlfkasjlkdfjlakjflkajflkasjklfjkasldfj'},
                 {title: 'asdfjasjdfkljakldjlfkasjlkdfjlakjflkajflkasjklfjkasldfj'},
                 {title: 'asdfjasjdfkljakldjlfkasjlkdfjlakjflkajflkasjklfjkasldfj'},

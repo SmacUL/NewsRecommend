@@ -5,9 +5,9 @@
                 <span class="hot-art">热点新闻</span>
                 <el-button class="refresh" type="text">刷新</el-button>
             </div>
-            <div class="clear-float" v-for="(hotNews, i) in hotNewsList" :key="i">
+            <div class="clear-float" v-for="(hotArticle, i) in hotArticles" :key="i">
                 <img class="image" src="@/assets/logo.png"/>
-                <span class="title">{{hotNews.title}}</span>
+                <span class="title">{{hotArticle.title}}</span>
             </div>
         </el-card>
     </div>
@@ -15,7 +15,7 @@
 
 <script>
 export default {
-    props: ['hotNewsList'],
+    props: ['hotArticles'],
     name: 'HotArticle',
     data: function() {
         return {
@@ -32,7 +32,7 @@ export default {
 }
 
 .hot-article-inner .el-card__header {
-    padding: 10px;
+    padding: 10px 10px 0px 10px;
     text-align: left;
 }
 

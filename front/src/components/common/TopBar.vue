@@ -39,7 +39,7 @@ export default {
 
 .top-bar-inner .image img {
     height: 30px;
-    width: 140px;
+    width: 130px;
 }
 
 .top-bar-inner .search {
