@@ -3,7 +3,7 @@
         <header><top-bar></top-bar></header>
         <!-- 页面主体 左右 布局 -->
         <main>
-            <article>
+            <article class="artcle-b">
                 <article-main></article-main>
                 <comment-reply-input></comment-reply-input>
                 <comment-panel></comment-panel>

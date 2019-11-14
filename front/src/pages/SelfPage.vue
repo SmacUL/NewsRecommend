@@ -4,7 +4,7 @@
         <section><achievement-panel></achievement-panel></section>
         <!-- 页面主体 左右 布局 -->
         <main>
-            <article><tiny-article></tiny-article></article>
+            <article class="artcle-b"><tiny-article></tiny-article></article>
             <aside><show-panel></show-panel></aside>
         </main>
     </div>
