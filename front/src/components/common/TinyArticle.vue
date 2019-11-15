@@ -86,6 +86,7 @@ export default {
 
 .tiny-article .info {
     text-align: left;
+    font-size: 14px;
     position: absolute;
     bottom: 0px;
     color: #888888;
@@ -93,8 +94,6 @@ export default {
 
 .tiny-article .info :first-child {
     font-weight: 400;
-    /* font-size: 14px; */
-    /* color: #299BE8 */
 }
 
 .tiny-article .info :last-child {

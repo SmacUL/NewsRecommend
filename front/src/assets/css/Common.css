@@ -62,8 +62,6 @@ aside {
     margin-left: 50%;
 }
 
-
-
 .clear-float:after {
     content: '.';
     display: block;

@@ -8,7 +8,7 @@
             <article class="article-b">
                 <article-main :article=article :editor=editor></article-main>
                 <comment-reply-input></comment-reply-input>
-                <comment-reply></comment-reply>
+                <comment-panel></comment-panel>
             </article>
             <aside>
                 <editor-brief class="editor-brief" :recentArticles=recentArticles :editor=editor></editor-brief>
@@ -22,7 +22,7 @@
 <script>
 // article
 import ArticleMain from '@/components/article/ArticleMain'
-import CommentReply from '@/components/article/CommentReply'
+import CommentPanel from '@/components/article/CommentPanel'
 import CommentReplyInput from '@/components/article/CommentReplyInput'
 // import ReplyPanel from '@/components/article/ReplyPanel'
 import EditorBrief from '@/components/article/EditorBrief'
@@ -35,7 +35,7 @@ import '@/assets/css/Common.css'
 
 export default {
     name: 'ArticlePage',
-    components: {ArticleMain, CommentReply, CommentReplyInput, EditorBrief,
+    components: {ArticleMain, CommentPanel, CommentReplyInput, EditorBrief,
                 EditEntrance, HotArticle, TopBar},
     data: function() {
         return {
