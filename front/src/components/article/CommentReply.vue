@@ -1,5 +1,5 @@
 <template>
-    <div class="comment-reply-inner">
+    <div class="comment-reply">
         <div>
             <comment-reply-item></comment-reply-item>
         </div>
@@ -17,7 +17,5 @@ export default {
 </script>
 
 <style>
-.comment-reply-inner {
 
-}
 </style>

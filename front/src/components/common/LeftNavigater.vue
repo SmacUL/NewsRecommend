@@ -1,5 +1,5 @@
 <template>
-  <div class="left-navigater-inner">
+  <div>
     <el-menu :default-active="curindex" v-for="(tag, i) in tags" :key="i" class="el-menu-vertical-demo">
         <el-menu-item :index="i.toString()" @click="changeCurIndex(i.toString())">
             <span slot="title">{{tag}}</span>
@@ -28,24 +28,24 @@ export default {
 </script>
 
 <style>
-.left-navigater-inner .el-menu-item {
+.left-navigater .el-menu-item {
     border-radius: 5px;
     margin-bottom: 5px;
     font-size: 16px;
     font-weight: 500;
 }
 
-.left-navigater-inner .el-menu {
+.left-navigater .el-menu {
     border: none;
 }
 
-.left-navigater-inner .el-menu-item.is-active {
+.left-navigater .el-menu-item.is-active {
     background-color: #409EFF;
     color: #ffffff;
     border-radius: 5px;
 }
 
-.left-navigater-inner .el-menu-item:hover {
+.left-navigater .el-menu-item:hover {
     background-color: #87C2FF;
     color: #ffffff;
     border-radius: 5px;

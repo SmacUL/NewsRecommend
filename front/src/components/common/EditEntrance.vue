@@ -1,5 +1,5 @@
 <template>
-    <div class="edit-entrance-inner">
+    <div class="edit-entrance">
         <el-card>
             <img class="image" src="@/assets/logo.png"/>
             <div class="title">
@@ -18,20 +18,26 @@ export default {
 </script>
 
 <style>
-.edit-entrance-inner .el-card {
+.edit-entrance .el-card {
     border-radius: 0px;
 }
 
-.edit-entrance-inner .el-card__body {
+.edit-entrance .el-card.is-always-shadow {
+    box-shadow: none;
+    background-color: #f4f5f6;
+}
+
+.edit-entrance .el-card__body {
     padding: 10px;
 }
 
-.edit-entrance-inner .image {
+.edit-entrance .image {
     height: 70px;
 }
 
-.edit-entrance-inner .title .el-button span {
-    font-size: 12pt;
+.edit-entrance .title .el-button span {
+    font-size: 16px;
+    font-weight: 500;
 }
 
 </style>

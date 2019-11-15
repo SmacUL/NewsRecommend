@@ -1,5 +1,5 @@
 <template>
-    <div class="hot-article-inner">
+    <div class="hot-article">
         <el-card>
             <div slot="header">
                 <span class="hot-art">热点新闻</span>
@@ -27,53 +27,61 @@ export default {
 
 <style>
 
-.hot-article-inner .el-card {
+.hot-article .el-card {
     border-radius: 0px;
 }
 
-.hot-article-inner .el-card__header {
-    padding: 10px 10px 0px 10px;
+.hot-article .el-card.is-always-shadow {
+    box-shadow: none;
+    background-color: #f4f5f6;
+}
+
+.hot-article .el-card__header {
+    padding: 15px 15px 5px 15px;
     text-align: left;
 }
 
-.hot-article-inner .hot-art {
-    font-size: 16pt;
+.hot-article .hot-art {
+    font-size: 20px;
     font-weight: 800;
     height: 30px;
     line-height: 30px;
 }
 
-.hot-article-inner .refresh {
+/* 刷新按钮 */
+.hot-article .refresh {
     height: 30px;
     padding: 0px;
     float: right;
 }
 
-.hot-article-inner .refresh span {
-    font-size: 12pt;
-    font-weight: 400;
+/* 刷新 两个字 */
+.hot-article .refresh span {
+    font-size: 16px;
+    font-weight: 500;
 }
 
-.hot-article-inner .el-card__body {
-    padding: 10px;
+.hot-article .el-card__body {
+    padding: 5px 15px;
 }
 
-.hot-article-inner .el-card__body .clear-float {
+.hot-article .el-card__body .clear-float {
     margin-bottom: 5px;
 }
 
-.hot-article-inner .image {
+.hot-article .image {
     height: 50px;
     width: 27%;
     margin-right: 3%;
     float: left;
 }
 
-.hot-article-inner .title {
+/* 新闻标题 */
+.hot-article .title {
     width: 70%;
     float: left;
     line-height: 50px;
-    font-weight: 800;
+    font-weight: 500;
     overflow: hidden;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-    <div class="comment-reply-item-inner clear-float">
+    <div class="comment-reply-item clear-float">
         <div class="avater">
             <img src="@/assets/logo.png">
         </div>
@@ -27,21 +27,21 @@ export default {
 </script>
 
 <style>
-.comment-reply-item-inner .avater {
+.comment-reply-item .avater {
     float: left;
     
 }
 
-.comment-reply-item-inner .avater img{
+.comment-reply-item .avater img{
     /* height: 50px; */
     /* width: 10%; */
 }
 
-.comment-reply-item-inner .comment {
+.comment-reply-item .comment {
     float: left;
 }
 
-.comment-reply-item-inner .name {
+.comment-reply-item .name {
     font-weight: 800;
 }
 </style>

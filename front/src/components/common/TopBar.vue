@@ -1,5 +1,5 @@
 <template>
-    <div class="clear-float top-bar-inner">
+    <div class="clear-float">
         <div class="image">
             <img src="@/assets/image/Logo.png"/>
         </div>
@@ -26,47 +26,46 @@ export default {
 </script>
 
 <style>
-.top-bar-inner {
+/* .top-bar {
     padding: 10px 0px 10px 0px;
-    margin: 0 auto;
-}
+} */
 
-.top-bar-inner .image {
+.top-bar .image {
     float: left; 
     height: 40px;
     margin-top: 5px;
 }
 
-.top-bar-inner .image img {
+.top-bar .image img {
     height: 30px;
     width: 130px;
 }
 
-.top-bar-inner .search {
+.top-bar .search {
     width: 400px; 
     float: left; 
     margin-left: 20%;
 }
 
-.top-bar-inner .search .el-input {
+.top-bar .search .el-input {
     width: 300px;
     float: left;
 }
 
-.top-bar-inner .search .el-input__inner {
+.top-bar .search .el-input__inner {
     border-radius: 5px 0px 0px 5px;
 }
 
-.top-bar-inner .search .el-button {
+.top-bar .search .el-button {
     float: left; 
     border-radius: 0px 5px 5px 0px;
 }
 
-.top-bar-inner .manage {
+.top-bar .manage {
     float: right;
 }
 
-.top-bar-inner .manage .el-button {
+.top-bar .manage .el-button {
     font-size: 18px;
 }
 

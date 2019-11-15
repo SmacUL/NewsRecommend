@@ -1,5 +1,5 @@
 <template>
-    <div class="editor-brief-inner">
+    <div class="editor-brief">
         <el-card>
             <div class="clear-float" slot="header">
                 <img class="image" :src="editor.avaterUrl"/>
@@ -23,28 +23,33 @@ export default {
 </script>
 
 <style>
-.editor-brief-inner .el-card__header {
+.editor-brief .el-card.is-always-shadow {
+    box-shadow: none;
+    background-color: #f4f5f6;
+}
+
+.editor-brief .el-card__header {
     padding: 10px;
 }
 
-.editor-brief-inner .image {
+.editor-brief .image {
     height: 50px;
     float: left;
     margin-right: 10px
 }
 
-.editor-brief-inner .editor-follow {
+.editor-brief .editor-follow {
     height: 50px;
     float: left;
 }
 
-.editor-brief-inner .editor {
+.editor-brief .editor {
     display: block;
     text-align: left;
     font-size: 12pt;
 }
 
-.editor-brief-inner .el-button {
+.editor-brief .el-button {
     height: 20px;
     width: 60px;
     padding: 0px;
@@ -52,15 +57,15 @@ export default {
     border-radius: 1px;
 }
 
-.editor-brief-inner .el-card__body {
+.editor-brief .el-card__body {
     padding: 10px;
 }
 
-.editor-brief-inner .titles {
+.editor-brief .titles {
     overflow: hidden;
 }
 
-.editor-brief-inner .title {
+.editor-brief .title {
     line-height: 30px;
 }
 

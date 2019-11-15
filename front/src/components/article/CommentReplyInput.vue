@@ -1,5 +1,5 @@
 <template>
-    <div class="comment-reply-input-inner">
+    <div class="comment-reply-input">
         <div>
             <div ref="toolbar" class="toolbar"></div>
             <div ref="textplace" class="textplace"></div>
@@ -42,7 +42,7 @@ export default {
 </script>
 
 <style>
-.comment-reply-input-inner .toolbar {
+.comment-reply-input .toolbar {
     height: 25px;
     border: 1px;
     border-style: solid; 
@@ -50,7 +50,7 @@ export default {
     background-color:#f1f1f1
 }
 
-.comment-reply-input-inner .textplace {
+.comment-reply-input .textplace {
     height: 80px;
     border: 1px;
     border-style: solid; 

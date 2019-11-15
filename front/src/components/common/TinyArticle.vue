@@ -1,7 +1,6 @@
 <template>
-    <div class="tiny-article-inner">
+    <div class="tiny-article">
         <el-card>
-            <!-- el-card__body -->
             <div class="image">
                 <img src="@/assets/logo.png">
             </div>
@@ -14,6 +13,7 @@
                 </div>
             </div>
         </el-card>
+
     </div>
 </template>
 
@@ -33,32 +33,40 @@ export default {
 </script>
 
 <style>
-.tiny-article-inner .el-card {
+.tiny-article .el-card {
     padding: 10px;
     border: 0px;
     border-radius: 0px;
 }
 
-/* el-card__body */
-.tiny-article-inner .image img {
+.tiny-article .el-card.is-always-shadow {
+    border-bottom: solid 1px rgba(0,0,0,.1);
+    box-shadow: none;
+}
+
+.tiny-article .el-card.is-always-shadow:hover {
+    box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+}
+
+.tiny-article .image img {
     float: left;
     width: 27%;
     height: 120px;
     margin-right: 3%;
 }
 
-.tiny-article-inner .el-card__body {
+.tiny-article .el-card__body {
     padding: 0px;
 }
 
-.tiny-article-inner .tiny-art {
+.tiny-article .tiny-art {
     float: left;
     width: 70%;
     height: 120px;
     position: relative;
 }
 
-.tiny-article-inner .title {
+.tiny-article .title {
     height: 40px;
     line-height: 40px;
     font-size: 18pt;
@@ -68,7 +76,7 @@ export default {
     font-weight: 800;
 }
 
-.tiny-article-inner .description {
+.tiny-article .description {
     height: 40px;
     line-height: 20px;
     overflow: hidden;
@@ -76,20 +84,20 @@ export default {
     color: #888888;
 }
 
-.tiny-article-inner .info {
+.tiny-article .info {
     text-align: left;
     position: absolute;
     bottom: 0px;
     color: #888888;
 }
 
-.tiny-article-inner .info :first-child {
+.tiny-article .info :first-child {
     font-weight: 400;
     /* font-size: 14px; */
     /* color: #299BE8 */
 }
 
-.tiny-article-inner .info :last-child {
+.tiny-article .info :last-child {
     font-weight: 100;
 }
 

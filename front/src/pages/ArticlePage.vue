@@ -1,6 +1,8 @@
 <template>
     <div>
-        <header><top-bar class="top-bar clear-float"></top-bar></header>
+        <header>
+            <top-bar class="top-bar"></top-bar>
+        </header>
         <!-- 页面主体 左右 布局 -->
         <main>
             <article class="article-b">
@@ -73,10 +75,12 @@ export default {
 </script>
 
 <style>
-.top-bar {
+/* .top-bar {
     width: 1180px; 
-    margin: 0 auto;
-}
+    position: fixed;
+    left: -590px;
+    margin-left: 50%;
+} */
 
 .editor-brief {
     margin-bottom: 10px;

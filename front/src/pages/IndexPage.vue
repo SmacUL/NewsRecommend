@@ -1,8 +1,8 @@
 <template>
     <div>
-        <header><top-bar class="top-bar clear-float"></top-bar></header>
+        <header><top-bar class="top-bar"></top-bar></header>
         <!-- 页面主体 左中右 布局 -->
-        <main class="clear-float">
+        <main>
             <nav><left-navigater :class="{'left-navigater': true}" :tags="tags"></left-navigater></nav>
             <article class="article-a">
                 <div  v-for="(news, i) in newsList" :key="i">
@@ -59,10 +59,12 @@ export default {
 
 <style>
 
-.top-bar {
+/* .top-bar {
     width: 1180px; 
-    margin: 0 auto;
-}
+    position: fixed;
+    left: -590px;
+    margin-left: 50%;
+} */
 
 .left-navigater {
     background-color: blueviolet;
