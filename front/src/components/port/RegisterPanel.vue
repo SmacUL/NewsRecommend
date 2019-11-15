@@ -1,6 +1,6 @@
 <template>
     <div>
-        this is register panel.
+        <!-- this is register panel. -->
     </div>
 </template>
 

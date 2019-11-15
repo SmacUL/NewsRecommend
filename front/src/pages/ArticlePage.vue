@@ -6,7 +6,7 @@
             <article class="article-b">
                 <article-main :article=article :editor=editor></article-main>
                 <comment-reply-input></comment-reply-input>
-                <comment-panel></comment-panel>
+                <comment-reply></comment-reply>
             </article>
             <aside>
                 <editor-brief class="editor-brief" :recentArticles=recentArticles :editor=editor></editor-brief>
@@ -20,9 +20,9 @@
 <script>
 // article
 import ArticleMain from '@/components/article/ArticleMain'
-import CommentPanel from '@/components/article/CommentPanel'
+import CommentReply from '@/components/article/CommentReply'
 import CommentReplyInput from '@/components/article/CommentReplyInput'
-import ReplyPanel from '@/components/article/ReplyPanel'
+// import ReplyPanel from '@/components/article/ReplyPanel'
 import EditorBrief from '@/components/article/EditorBrief'
 // common
 import EditEntrance from '@/components/common/EditEntrance'
@@ -33,7 +33,7 @@ import '@/assets/css/Common.css'
 
 export default {
     name: 'ArticlePage',
-    components: {ArticleMain, CommentPanel, CommentReplyInput, ReplyPanel, EditorBrief,
+    components: {ArticleMain, CommentReply, CommentReplyInput, EditorBrief,
                 EditEntrance, HotArticle, TopBar},
     data: function() {
         return {
@@ -85,5 +85,6 @@ export default {
 .edit-entrance {
     margin-bottom: 10px;
 }
+
 
 </style>

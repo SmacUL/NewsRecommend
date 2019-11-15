@@ -1,6 +1,6 @@
 <template>
     <div>
-        this is Login Panel.
+        <!-- this is Login Panel. -->
     </div>
 </template>
 
