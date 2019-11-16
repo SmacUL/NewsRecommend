@@ -5,11 +5,11 @@
                 <img src="@/assets/logo.png">
             </div>
             <div class="tiny-art">
-                <div class="title">{{news.title}}</div>
-                <div class="description">{{news.abstract}}</div>
+                <div class="title">{{item.title}}</div>
+                <div class="description">{{item.abstract}}</div>
                 <div class="info">
-                    <span>{{news.author}}</span>
-                    <span>{{news.date}}</span>
+                    <span>{{item.author}}</span>
+                    <span>{{item.date}}</span>
                 </div>
             </div>
         </el-card>
@@ -19,7 +19,7 @@
 
 <script>
 export default {
-    props: ['news' ],
+    props: ['item' ],
     name: 'TinyArticle',
     data: function() {
         return {

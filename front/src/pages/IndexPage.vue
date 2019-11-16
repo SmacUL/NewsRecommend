@@ -5,8 +5,8 @@
         <main>
             <nav><left-navigater :class="{'left-navigater': true}" :tags="tags"></left-navigater></nav>
             <article class="article-a">
-                <div  v-for="(news, i) in newsList" :key="i">
-                    <tiny-article class="tiny-article" :news="news"></tiny-article>
+                <div  v-for="(item, i) in articles" :key="i">
+                    <tiny-article class="tiny-article" :item="item"></tiny-article>
                 </div>
             </article>
             <aside>
@@ -33,7 +33,7 @@ export default {
     components: { EditEntrance, HotArticle, LeftNavigater, TinyArticle, TopBar },
     data: function() {
         return {
-            newsList: [
+            articles: [
                 {title:'asdfasdfasdfasdfasdfasdfasdf', abstract:'askldjfaskdjfklasjdfkajsdlfjsaddjfklasjdfklasjdfasdfd', author:'asdfd', date:'2019-09-09'},
                 {title:'asdfasdfasdfasdfasdfasdfasdf', abstract:'askldjfaskdjfklasjdfkajsdlfjsaddjfklasjdfklasjdfasdfd', author:'asdfd', date:'2019-09-09'},
                 {title:'asdfasdfasdfasdfasdfasdfasdf', abstract:'askldjfaskdjfklasjdfkajsdlfjsaddjfklasjdfklasjdfasdfd', author:'asdfd', date:'2019-09-09'},
@@ -59,20 +59,8 @@ export default {
 
 <style>
 
-/* .top-bar {
-    width: 1180px; 
-    position: fixed;
-    left: -590px;
-    margin-left: 50%;
-} */
-
-.left-navigater {
-    background-color: blueviolet;
-}
-
 .tiny-article {
-    /* background-color: #283272; */
-    margin-bottom: 5px;
+    margin-bottom: 10px;
 }
 
 .edit-entrance {

@@ -7,8 +7,8 @@
                 <left-navigater :class="{'left-navigater': true}" :tags="tags"></left-navigater>
             </nav>
             <article class="article-a">
-                <div  v-for="(news, i) in newsList" :key="i">
-                    <tiny-article class="tiny-article" :news="news"></tiny-article>
+                <div  v-for="(item, i) in articles" :key="i">
+                    <tiny-article class="tiny-article" :item="item"></tiny-article>
                 </div>
             </article>
             <aside>
@@ -42,7 +42,7 @@ export default {
                 {title: 'asdfjasjdfkljakldjlfkasjlkdfjlakjflkajflkasjklfjkasldfj'},
                 {title: 'asdfjasjdfkljakldjlfkasjlkdfjlakjflkajflkasjklfjkasldfj'},
             ],
-            newsList: [
+            articles: [
                 {title:'asdfasdfasdfasdfasdfasdfasdf', abstract:'askldjfaskdjfklasjdfkajsdlfjsaddjfklasjdfklasjdfasdfd', author:'asdfd', date:'2019-09-09'},
                 {title:'asdfasdfasdfasdfasdfasdfasdf', abstract:'askldjfaskdjfklasjdfkajsdlfjsaddjfklasjdfklasjdfasdfd', author:'asdfd', date:'2019-09-09'},
                 {title:'asdfasdfasdfasdfasdfasdfasdf', abstract:'askldjfaskdjfklasjdfkajsdlfjsaddjfklasjdfklasjdfasdfd', author:'asdfd', date:'2019-09-09'},

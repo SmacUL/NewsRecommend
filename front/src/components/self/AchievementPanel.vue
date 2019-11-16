@@ -1,6 +1,6 @@
 <template>
-    <div>
-        This is Achievement panel.
+    <div class="achievement-panel" style="height: 200px; background-color: #409EFF">
+
     </div>
 </template>
 
