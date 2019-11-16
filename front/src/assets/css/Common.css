@@ -13,7 +13,7 @@ header {
     position: fixed;
     top: 0px;
     background-color: #fff;
-    z-index: 10000;
+    z-index: 10;
 }
 
 main {
@@ -21,6 +21,8 @@ main {
     width: 1180px;
     margin-bottom: 10px;
     margin-top: 70px;
+    position: relative;
+    z-index: 1;
 }
 
 section {
@@ -32,7 +34,6 @@ section {
 
 nav {
     width: 130px;
-
     position: fixed;
 }
 

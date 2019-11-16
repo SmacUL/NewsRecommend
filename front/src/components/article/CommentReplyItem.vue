@@ -18,8 +18,8 @@
                     <span v-show="!showResult">评论</span>
                 </el-button>
             </div>
-            <comment-reply-input v-if="showResult"></comment-reply-input>
         </div>
+        <comment-reply-input v-if="showResult"></comment-reply-input>
     </div>
 </template>
 
@@ -39,7 +39,7 @@ export default {
     computed: {
         showResult: function() {
             return (this.readyId == this.id && this.replyId == this.readyType)
-        }
+        },
     },
     methods: {
         replyMessage() {

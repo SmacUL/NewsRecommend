@@ -45,6 +45,7 @@ export default {
             replypageSize: 4,
             replyCurPage: 1,
 
+            // readyType : 指明了回复的对象是 评论(-2) 回复(>=0) 或者 空对象(-1)
             readyType: -3,
             readyId: -3,
 
