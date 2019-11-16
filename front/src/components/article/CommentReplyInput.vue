@@ -21,20 +21,14 @@ import WangEditor from  'wangeditor'
 
 export default {
     name: 'CommentReplyInput',
-
+    // heightKey 用于标明当前能否修改输入框的高度, true 时可以;
+    props: ['heightKey'],
     computed: {
-        // classSwitcher: function() {
-        //     alert(this.readyType);
-        //     if (this.readyType == -2) {
-        //         return true;
-        //     } else if (this.readyType != -3) {
-        //         return false;
-        //     }
-        // }
     },
     data: function() {
         return {
             height: '70px',
+            
             DEFAULT_HEIGHT: '70px',
             EDIT_HEIGHT: '210px',
 
@@ -58,12 +52,20 @@ export default {
         showMessage() {
             alert(this.message);
         },
-        changeHight(height) {
-            this.height = this.EDIT_HEIGHT;
+        changeHight() {
+            if (this.heightKey) {
+                this.height = this.EDIT_HEIGHT;
+            }
         },
-        cancle(height) {
-            this.height = this.DEFAULT_HEIGHT;
-            this.editor.txt.clear()
+        cancle() {
+            if (this.heightKey) {
+                this.height = this.DEFAULT_HEIGHT;
+                this.editor.txt.clear();
+            } else {
+                this.editor.txt.clear();
+                this.$emit('readycancel');
+            }
+
         }
     }
 }

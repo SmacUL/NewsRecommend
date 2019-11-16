@@ -19,7 +19,8 @@
                 </el-button>
             </div>
         </div>
-        <comment-reply-input v-if="showResult"></comment-reply-input>
+        <comment-reply-input @readycancel="cancelMessage" v-if="showResult" :heightKey=false :style="styleSwitch">
+        </comment-reply-input>
     </div>
 </template>
 
@@ -40,6 +41,13 @@ export default {
         showResult: function() {
             return (this.readyId == this.id && this.replyId == this.readyType)
         },
+        styleSwitch: function() {
+            if (this.readyType == -2) {
+                return "width: 90%; margin-left: 10%;";
+            } else {
+                return "width: 100%;";
+            }
+        }
     },
     methods: {
         replyMessage() {
@@ -52,6 +60,12 @@ export default {
             }
 
             this.$emit('ready', this.replyId, this.id);
+        }, 
+        cancelMessage() {
+            if (this.showResult) {
+                this.showTip= '取消';
+            }
+            this.$emit('ready', -3, -3);
         }
     }
 }

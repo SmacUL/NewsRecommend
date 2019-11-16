@@ -7,7 +7,7 @@
         <main>
             <article class="article-b">
                 <article-main :article=article :editor=editor></article-main>
-                <comment-reply-input style='width: 100%'></comment-reply-input>
+                <comment-reply-input :heightKey=true style='width: 100%'></comment-reply-input>
                 <comment-panel></comment-panel>
             </article>
             <aside>
