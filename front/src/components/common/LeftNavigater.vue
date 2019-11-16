@@ -3,7 +3,7 @@
     <el-menu :default-active="curindex" v-for="(tag, i) in tags" :key="i" class="el-menu-vertical-demo">
         <el-menu-item :index="i.toString()" @click="changeCurIndex(i.toString())">
             <span slot="title">{{tag}}</span>
-            <span>{{i}}</span>
+<!--            <span>{{i}}</span>-->
         </el-menu-item>
     </el-menu>
   </div>
