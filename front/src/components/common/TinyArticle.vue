@@ -46,6 +46,8 @@ export default {
 
 .tiny-article .el-card.is-always-shadow:hover {
     box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+    background-color: #f4f5f6;
+    border-bottom: none;
 }
 
 .tiny-article .image img {
