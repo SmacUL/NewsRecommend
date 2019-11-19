@@ -18,12 +18,28 @@ class Crawl():
         self.js = execjs.compile(JsCode)
 
     def request(self, page):
+        """
+
+        2019-11-19
+            此处的 url 不知道什么原因, 无法使用原先从 js.call 返回的 as 和 cp 数据
+
+        :param page:
+        :return:
+        """
         if page == 1:
             self.time = 0
-        as_, cp_ = self.js.call("getHoney")  # r返回结果   as
-        url2 = "https://www.toutiao.com/api/pc/feed/?min_behot_time=0&category=__all__&utm_source=toutiao&widen=1&tadrequire=true&as={0}&cp={1}".format(
-            as_, cp_)
-        resp = requests.get(url2, headers=self.headers, cookies=self.cookie)
+        res = self.js.call("getHoney")  # r返回结果   as
+
+        # url = "https://www.toutiao.com/api/pc/feed/" \
+        #        "?min_behot_time=0&category=__all__&utm_source=toutiao&widen=1&tadrequire=true" \
+        #        "&as={0}&cp={1}".format(res['as'], res['cp'])
+
+        url = "https://www.toutiao.com/api/pc/feed/" \
+               "?min_behot_time=0&category=__all__&utm_source=toutiao&widen=1&tadrequire=true" \
+               "&as=A1D51D9D135B383&cp=5DD30BC368634E1&_signature=Jb9CtgAgEB6pqs9T-0dUTCW.QqAAHh0"
+
+        print(url)
+        resp = requests.get(url, headers=self.headers, cookies=self.cookie)
         self.cookie = resp.cookies
         result = resp.json()
         self.time = result['next']['max_behot_time']

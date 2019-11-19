@@ -1,7 +1,7 @@
 <template>
     <div>
         <header><top-bar class="top-bar" style="width: 1020px;margin-left: 50%;left: -510px;"></top-bar></header>
-        <section style="background-color: #910383; width: 1020px;"><show-panel></show-panel></section>
+        <section style="width: 1020px;"><show-panel></show-panel></section>
         <!-- 页面主体 左右 布局 -->
         <main class="clear-float" style="width: 1020px;margin-top: 20px;">
             <article class="article-b" style="width: 710px;">

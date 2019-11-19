@@ -1,13 +1,12 @@
 <template>
     <div style="margin-top: 30px">
-        <el-input v-model="input" style="width: 200px"></el-input>
-        <el-button type="primary" @click="response()">+</el-button>
-        <el-button type="primary">2</el-button>
-
-        <el-table :data="tableData" style="width: 600px; margin: 0 auto;">
-            <el-table-column prop="date" label="日期" width="180"></el-table-column>
-            <el-table-column prop="name" label="姓名" width="180"></el-table-column>
-            <el-table-column prop="address" label="地址"></el-table-column>
+<!--        <el-input style="width: 200px"></el-input>-->
+<!--        <el-button type="primary">+</el-button>-->
+        <el-button type="primary" @click="change()">2</el-button>
+        <el-table :data="showData" style="width: 600px; margin: 0 auto;">
+            <div  v-for="(tag, i) in curTags" :key="i">
+                <el-table-column :prop="tag" :label="tag" width="180"></el-table-column>
+            </div>
         </el-table>
 
     </div>
@@ -15,68 +14,71 @@
 
 <script>
 export default {
-    data() {
+
+    mounted: function() {
+
+        this.show();
+    },
+    computed: {
+
+    },
+    data: function() {
         return {
-            input:'',
-            // 行
-            rowCounter: 0,
-            // 列
-            colCounter: 0,
-            // 属性
-            // menu: ['date', 'name', 'address'],
-            tableData: [],
-            oriData: [{
-                date: '2016-05-02',
-                name: '王小虎',
-                address: '上海市普陀sdsf区金沙江路 1518 弄'
-            }, {
-                date: '2016-054444-04',
-                name: '王虎',
-                address: '上海市江路 1517 弄'
-            }, {
-                date: '2034446-05-01',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1519 弄'
-            }, {
-                date: '22222222226-05-03',
-                name: '王sdf虎',
-                address: '上海市普陀区金沙江路 12883883 弄'
-            }]
+            curTags: [],
+            showData: [],
+            // 最初的数据
+            obItem: [
+                [
+                    {itemName: '姓名', content: 'aaaaa'},
+                    {itemName: '性别', content: '男'},
+                    {itemName: '年龄', content: '26'},
+                    {itemName: '缴费确认', content: 'yes'},
+                ], [
+                    {itemName: '姓名', content: 'bbbbb'},
+                    {itemName: '性别', content: '女'},
+                    {itemName: '年龄', content: '27'},
+                    {itemName: '缴费确认', content: 'no'},
+                ]
+            ],
+            // 点击 按钮 2 之后, change 方法响应, 用 obItem 替换 obItem
+            obItem2: [
+                [
+                    {itemName: '姓名', content: 'aaaaa'},
+                    {itemName: 'hh', content: 'uee'},
+                    {itemName: '年龄', content: '26'},
+                    {itemName: 'sjs', content: 'cjjd'},
+                ], [
+                    {itemName: '姓名', content: 'bbbbb'},
+                    {itemName: 'hh', content: 'hsd'},
+                    {itemName: '年龄', content: '27'},
+                    {itemName: 'sjs', content: 'ucxi'},
+                ]
+            ],
         }
     },
     methods: {
-        response: function() {
-            // 获得老数据
-            // 放入新数组中
-            //      每到 2 的时候添加一行
-            //      每次对象为空时 添加新的对象
-            // this.rowCounter = 0; 行
-            // this.colCounter = 0; 列
+        change: function () {
+            this.obItem = this.obItem2;
+            this.show();
 
-            var oldObj = this.oriData[this.rowCounter];
-            var oldAtt = Object.keys(oldObj)[this.colCounter];
-            var oldVal = oldObj[oldAtt];
-
-            console.log(oldObj);
-
-            var newObj = this.tableData[this.rowCounter];
-            if (this.colCounter == 0) {
-                newObj = {};
-                newObj[oldAtt] = oldVal;
-                this.tableData.push(newObj);
-            } else {
-                newObj[oldAtt] = oldVal;
-                // this.$set(this.tableData[this.rowCounter], oldAtt, oldVal);
-                this.tableData.pop();
-                this.tableData.push(newObj);
+        },
+        show: function () {
+            var user = this.obItem[0];
+            // 获取 obItem 中的标签列表, 方便表格渲染
+            for (var i = 0; i < user.length; i++) {
+                this.$set(this.curTags, i, user[i].itemName);
             }
-
-            if (this.colCounter == 2) {
-                this.rowCounter ++;
-                this.colCounter = 0;
-            } else {
-                this.colCounter ++;
+            // 整理数据方便表格渲染
+            var newUser = new Object();
+            for (var j = 0; j < this.obItem.length; j++) {
+                user = this.obItem[j];
+                for (i = 0; i < this.curTags.length; i++) {
+                    newUser[this.curTags[i]] = user[i].content;
+                }
+                this.$set(this.showData, j, newUser);
+                newUser = new Object();
             }
+            // console.log(this.showData);
         }
     },
 
