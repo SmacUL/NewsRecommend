@@ -2,8 +2,11 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 import hashlib
 import json
+import os
+
 import DatabaseOP as dop
-import Crawl as cra
+import RequestOP as rop
+import AnalyseOP as aop
 
 
 def connect_database(path, encoding='utf-8'):
@@ -20,56 +23,26 @@ def connect_database(path, encoding='utf-8'):
     return data_base
 
 
+def get_source_tiny_articles(path, encoding='utf-8'):
+    """ 获取文章缩略图的信息
+
+    :param path: json 格式的数据库配置文件地址
+    :param encoding:
+    :return:
+    """
+    rq = open(path, encoding=encoding)
+    rq = json.load(rq)
+    return rop.RequestOP(rq['page'], rq['url'], rq['headers'], rq['cookie']).info()
+
+
 def get_chrome_driver():
     """ 获得模拟浏览器 Chrome
 
     :return:
     """
-    chrome_options=Options()
+    chrome_options = Options()
     chrome_options.add_argument('--headless')
     return webdriver.Chrome(chrome_options=chrome_options)
-
-
-def get_source_tiny_articles(page_number):
-    """ 获得指定页数的文章缩略信息
-
-    :param page_number: 页数, 一页 10 条
-    :return:
-    """
-    return cra.Crawl(page_number).info()
-
-
-def get_art_title(json_data):
-    return json_data['title']
-
-
-def get_cus_name(json_data):
-    return json_data['source']
-
-
-def get_art_abstract(json_data):
-    return json_data['abstract']
-
-
-def get_art_url(json_data):
-    return json_data['url']
-
-
-def get_art_tag(driver):
-    tag_element = driver.find_element_by_class_name('chinese-tag')
-    a_element = tag_element.find_elements_by_tag_name('a')
-    return a_element[1].text
-
-
-def get_cus_avater_url(driver):
-    avater_element = driver.find_element_by_class_name('user-card-avatar')
-    img_element = avater_element.find_element_by_tag_name('img')
-    return img_element.get_attribute('src')
-
-
-def get_art_content(driver):
-    article_element = driver.find_element_by_class_name("article-content")
-    return article_element.get_attribute('innerHTML')
 
 
 def set_cus_pass(password):
@@ -84,30 +57,27 @@ def set_cus_pass(password):
 
 
 if __name__ == "__main__":
-    data_base = connect_database("database-properties.json")
-    tiny_news = get_source_tiny_articles(100)
+    data_base = connect_database(os.path.join('properties', 'database-properties.json'))
+    tiny_news = get_source_tiny_articles(os.path.join('properties', 'request-properties.json'))
     print(tiny_news.__len__())
+    analyser = aop.AnalyseOP()
     for i, news_item in enumerate(tiny_news):
         for j, item in enumerate(news_item):
             print(item)
             driver = get_chrome_driver()
             try:
-                # 文章标题
-                art_title = get_art_title(item)
-                # 用户名
-                cus_name = get_cus_name(item)
-                # 文章简介
-                art_abstract = get_art_abstract(item)
-                # 文章 url
-                art_url = get_art_url(item)
+                analyser.setItem(item)
+                # 获得 art_title, cus_name, art_abstract, art_url
+                art_title, cus_name, art_abstract, art_url = analyser.get_basic_info()
                 # 访问文章具体内容
                 driver.get(art_url)
+                analyser.setDriver(driver)
                 # 标签
-                art_tag = get_art_tag(driver)
+                art_tag = analyser.get_art_tag()
                 # 用户头像
-                cus_avater_url = get_cus_avater_url(driver)
+                cus_avater_url = analyser.get_cus_avater_url()
                 # 文章主体内容
-                art_content = get_art_content(driver)
+                art_content = analyser.get_art_content()
                 # 插入用户
                 cus_pass = set_cus_pass("123456")
                 data_base.insert_customer(cus_name, cus_pass, cus_avater_url)
@@ -119,5 +89,5 @@ if __name__ == "__main__":
             finally:
                 # 关闭浏览器
                 print("========= page %d, item %d, total pages %d complete ==========="
-                      % (i+1, j+1, tiny_news.__len__()))
+                      % (i + 1, j + 1, tiny_news.__len__()))
                 driver.close()
