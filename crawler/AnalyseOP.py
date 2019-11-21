@@ -5,10 +5,10 @@ class AnalyseOP():
         self.driver = None
         self.item = None
 
-    def setDriver(self, dirver):
+    def set_driver(self, dirver):
         self.driver = dirver
 
-    def setItem(self, item):
+    def set_item(self, item):
         self.item = item
 
     def get_basic_info(self):

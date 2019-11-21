@@ -66,12 +66,12 @@ if __name__ == "__main__":
             print(item)
             driver = get_chrome_driver()
             try:
-                analyser.setItem(item)
+                analyser.set_item(item)
                 # 获得 art_title, cus_name, art_abstract, art_url
                 art_title, cus_name, art_abstract, art_url = analyser.get_basic_info()
                 # 访问文章具体内容
                 driver.get(art_url)
-                analyser.setDriver(driver)
+                analyser.set_driver(driver)
                 # 标签
                 art_tag = analyser.get_art_tag()
                 # 用户头像
