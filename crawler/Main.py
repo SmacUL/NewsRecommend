@@ -32,6 +32,7 @@ def get_source_tiny_articles(path, encoding='utf-8'):
     """
     rq = open(path, encoding=encoding)
     rq = json.load(rq)
+    print('当前访问 ' + rq['url'])
     return rop.RequestOP(rq['page'], rq['url'], rq['headers'], rq['cookie']).info()
 
 
@@ -75,14 +76,18 @@ if __name__ == "__main__":
                 # 标签
                 art_tag = analyser.get_art_tag()
                 # 用户头像
-                cus_avater_url = analyser.get_cus_avater_url()
+                cus_avatar_url = analyser.get_cus_avatar_url()
                 # 文章主体内容
                 art_content = analyser.get_art_content()
+                # 文章缩略图
+                art_image = analyser.get_art_image()
+                # print(art_image)
+
                 # 插入用户
                 cus_pass = set_cus_pass("123456")
-                data_base.insert_customer(cus_name, cus_pass, cus_avater_url)
+                data_base.insert_customer(cus_name, cus_pass, cus_avatar_url)
                 # 插入文章
-                data_base.insert_article(art_url, cus_name, art_title, art_abstract, art_content, art_tag)
+                data_base.insert_article(art_url, cus_name, art_title, art_abstract, art_content, art_tag, art_image)
             except:
                 print("曾经发生过错误")
                 continue

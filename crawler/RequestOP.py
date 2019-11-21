@@ -12,7 +12,6 @@ class RequestOP():
     def request(self, page):
         if page == 1:
             self.time = 0
-        print(self.url)
         resp = requests.get(self.url, headers=self.headers, cookies=self.cookie)
         self.cookie = resp.cookies
         result = resp.json()

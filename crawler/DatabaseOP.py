@@ -44,28 +44,28 @@ class MysqlOP():
         except:
             print("sql fetchall has some errors.")
 
-    def insert_customer(self, cus_name, cus_pass, cus_avater_url):
+    def insert_customer(self, cus_name, cus_pass, cus_avatar_url):
         """ 将爬下的信息插入到 Customer 表中
 
         1. 先检查用户是否存在(检查用户名)
         2. 若用户不存在, 则插入
 
-        :param source:
-        :param cus_pass_encode:
-        :param img_src:
+        :param cus_name:
+        :param cus_pass:
+        :param cus_avatar_url:
         :return:
         """
         customer_check_sql = "select count(*) from Customers where cus_name = '%s'" % cus_name
         self.execute_sql(customer_check_sql)
         result = self.get_result()
         if result[0][0] == 0:
-            customer_insert_sql = "insert into Customers(cus_name, cus_pass, cus_avater_url, cus_type)" \
+            customer_insert_sql = "insert into Customers(cus_name, cus_pass, cus_avatar_url, cus_type)" \
                                   " values ('%s', '%s', '%s', 0)" % \
-                                  (cus_name, cus_pass, cus_avater_url)
+                                  (cus_name, cus_pass, cus_avatar_url)
             self.execute_sql(customer_insert_sql)
             self.commit_transactions()
 
-    def insert_article(self, art_url, cus_name, art_title, art_abstract, art_content, art_tag):
+    def insert_article(self, art_url, cus_name, art_title, art_abstract, art_content, art_tag, art_image):
         article_check_sql = "select count(*) from Articles where art_url = '%s'" % art_url
         self.execute_sql(article_check_sql)
         result = self.get_result()
@@ -73,9 +73,9 @@ class MysqlOP():
             customer_search_sql = "select cus_id from Customers where cus_name = '%s'" % cus_name
             self.execute_sql(customer_search_sql)
             art_customer_id = self.get_result()[0][0]
-            article_insert_sql = "insert into Articles(art_title, art_abstract, art_content, art_url, art_customer_id, art_tag)" \
-                                 " values ('%s', '%s', '%s', '%s', '%s', '%s')" % \
-                                 (art_title, art_abstract, art_content, art_url, art_customer_id, art_tag)
+            article_insert_sql = "insert into Articles(art_title, art_abstract, art_content, art_url, art_customer_id, art_tag, art_image)" \
+                                 " values ('%s', '%s', '%s', '%s', '%s', '%s', '%s')" % \
+                                 (art_title, art_abstract, art_content, art_url, art_customer_id, art_tag, art_image)
             self.execute_sql(article_insert_sql)
             self.commit_transactions()
 
