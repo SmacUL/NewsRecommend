@@ -1,9 +1,9 @@
 {
-    "page": 0,
+    "page": 1,
     "headers": {
-        "Host": "",
-        "User-Agent": ""
+        "Host": "www.toutiao.com",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36"
     },
     "cookie": {},
-    "url": ""
+    "url": "https://www.toutiao.com/api/pc/feed/?min_behot_time=0&category=__all__&utm_source=toutiao&widen=1&tadrequire=true&as=A1D51D9D135B383&cp=5DD30BC368634E1&_signature=Jb9CtgAgEB6pqs9T-0dUTCW.QqAAHh0"
 }
