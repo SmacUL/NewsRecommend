@@ -31,6 +31,19 @@ import '@/assets/css/Common.css'
 export default {
     name: 'IndexPage',
     components: { EditEntrance, HotArticle, LeftNavigater, TinyArticle, TopBar },
+    created: function () {
+        this.$axios.get('/api/test/').then(
+            (response) => {
+                var newsList = response.data.data;
+                console.log(newsList);
+            }
+        ).catch(
+            (response) => {
+                console.log(response);
+            }
+        )
+    },
+
     data: function() {
         return {
             articles: [
@@ -53,7 +66,8 @@ export default {
                 {title: 'asdfjasjdfkljakldjlfkasjlkdfjlakjflkajflkasjklfjkasldfj'},
             ]
         }
-    }
+    },
+
 }
 </script>
 

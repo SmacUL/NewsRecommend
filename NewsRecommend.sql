@@ -5,7 +5,7 @@ CREATE DATABASE IF NOT EXISTS NewsRecommend CHARACTER SET utf8;
 -- cus 用户
 -- cus_type 为 1 时是普通用户, 为 0 时是可编辑用户
 -- cus_gender 为 0 时性别未知, 为 1 时为男, 为 -1 时为女
-DROP TABLE IF EXISTS Customers;
+DROP TABLE IF EXISTS NewsRecommend.Customers;
 CREATE TABLE NewsRecommend.Customers (
     cus_id INT UNSIGNED NOT NULL auto_increment,
     cus_name VARCHAR(64),
@@ -25,7 +25,7 @@ CREATE TABLE NewsRecommend.Customers (
 
 
 -- art 新闻
-DROP TABLE IF EXISTS Articles;
+DROP TABLE IF EXISTS NewsRecommend.Articles;
 CREATE TABLE NewsRecommend.Articles (
     art_id INT UNSIGNED NOT NULL auto_increment,
     art_title VARCHAR(255),
@@ -46,7 +46,7 @@ CREATE TABLE NewsRecommend.Articles (
 
 
 -- com 评论 
-DROP TABLE IF EXISTS Comments;
+DROP TABLE IF EXISTS NewsRecommend.Comments;
 CREATE TABLE NewsRecommend.Comments (
     com_id INT UNSIGNED NOT NULL auto_increment,
     com_content TEXT,
@@ -63,11 +63,11 @@ CREATE TABLE NewsRecommend.Comments (
 
 
 -- rep 回复
-DROP TABLE IF EXISTS Replys;
+DROP TABLE IF EXISTS NewsRecommend.Replys;
 CREATE TABLE NewsRecommend.Replys (
     rep_id INT UNSIGNED NOT NULL auto_increment,
     rep_content TEXT,
-    rep__time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    rep_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     rep_like_num INT UNSIGNED default 0,
 	rep_legal tinyint default 1,
     
@@ -82,7 +82,7 @@ CREATE TABLE NewsRecommend.Replys (
 
 
 -- adm 管理员
-DROP TABLE IF EXISTS Administrators;
+DROP TABLE IF EXISTS NewsRecommend.Administrators;
 CREATE TABLE NewsRecommend.Administrators (
     adm_id INT UNSIGNED NOT NULL auto_increment,
     adm_name VARCHAR(64),
@@ -100,9 +100,9 @@ CREATE TABLE NewsRecommend.Administrators (
 
 
 -- ccf 用户的新闻点赞记录
--- follower -> follower
-DROP TABLE IF EXISTS CustomerCustomerFollow;
-CREATE TABLE NewsRecommend.ArticleCustomLike (
+-- follower -> followee
+DROP TABLE IF EXISTS NewsRecommend.CustomerCustomerFollow;
+CREATE TABLE NewsRecommend.CustomerCustomerFollow (
     ccf_id INT UNSIGNED NOT NULL,
     ccf_follower_id INT UNSIGNED,
     ccf_followee_id INT UNSIGNED,
@@ -116,45 +116,49 @@ CREATE TABLE NewsRecommend.ArticleCustomLike (
 
 
 -- acp 用户的新闻点赞记录
--- acp_perference 0 表示中立; -1 表示讨厌; 1 表示喜欢
-DROP TABLE IF EXISTS ArticleCustomPerference;
-CREATE TABLE NewsRecommend.ArticleCustomPerference (
+-- acp_preference 0 表示中立; -1 表示讨厌; 1 表示喜欢
+DROP TABLE IF EXISTS NewsRecommend.ArticleCustomerPreference;
+CREATE TABLE NewsRecommend.ArticleCustomerPreference (
     acp_id INT UNSIGNED NOT NULL,
 	acp_article_id INT UNSIGNED,
-    acp_custom_id INT UNSIGNED,
-    acp_perference TINYINT default 0,
+    acp_customer_id INT UNSIGNED,
+    acp_preference TINYINT default 0,
     acp_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     
 	primary key(acp_id),
     foreign key(acp_article_id) references Articles(art_id),
-    foreign key(acp_custom_id) references Customers(cus_id)
+    foreign key(acp_customer_id) references Customers(cus_id)
 );
 
 
--- ccl 用户的评论点赞记录
-DROP TABLE IF EXISTS CommentCustomLike;
-CREATE TABLE NewsRecommend.CommentCustomDislike (
-    ccl_id INT UNSIGNED NOT NULL,
-	ccl_comment_id INT UNSIGNED,
-    ccl_custom_id INT UNSIGNED,
-    ccl_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+-- ccp 用户的评论点赞记录
+-- ccp_preference 0 表示中立; -1 表示讨厌; 1 表示喜欢
+DROP TABLE IF EXISTS NewsRecommend.CommentCustomerPreference;
+CREATE TABLE NewsRecommend.CommentCustomerPreference (
+    ccp_id INT UNSIGNED NOT NULL,
+	ccp_comment_id INT UNSIGNED,
+    ccp_customer_id INT UNSIGNED,
+    ccp_preference TINYINT default 0,
+    ccp_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     
-	primary key(ccl_id),
-    foreign key(ccl_comment_id) references Comments(com_id),
-    foreign key(ccl_custom_id) references Customers(cus_id)
+	primary key(ccp_id),
+    foreign key(ccp_comment_id) references Comments(com_id),
+    foreign key(ccp_customer_id) references Customers(cus_id)
 );
 
 
--- rcl 用户的回复点赞记录
-DROP TABLE IF EXISTS ReplyCustomLike;
-CREATE TABLE NewsRecommend.ReplyCustomDislike (
-    rcl_id INT UNSIGNED NOT NULL,
-	rcl_replay_id INT UNSIGNED,
-    rcl_custom_id INT UNSIGNED,
-    rcl_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+-- rcp 用户的回复点赞记录
+-- rcp_preference 0 表示中立; -1 表示讨厌; 1 表示喜欢
+DROP TABLE IF EXISTS NewsRecommend.ReplyCustomerPreference;
+CREATE TABLE NewsRecommend.ReplyCustomerPreference (
+    rcp_id INT UNSIGNED NOT NULL,
+	rcp_reply_id INT UNSIGNED,
+    rcp_customer_id INT UNSIGNED,
+    rcp_preference TINYINT default 0,
+    rcp_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     
-	primary key(rcl_id),
-    foreign key(rcl_replay_id) references Replys(rep_id),
-    foreign key(rcl_custom_id) references Customers(cus_id)
+	primary key(rcp_id),
+    foreign key(rcp_reply_id) references Replys(rep_id),
+    foreign key(rcp_customer_id) references Customers(cus_id)
 );
 
