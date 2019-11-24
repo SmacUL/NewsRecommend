@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/index")
 public class IndexController {
@@ -21,6 +23,8 @@ public class IndexController {
         return true;
     }
 
-
+//    public List<String> getArticleTags() {
+//
+//    }
 
 }

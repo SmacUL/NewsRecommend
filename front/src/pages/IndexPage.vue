@@ -32,7 +32,7 @@ export default {
     name: 'IndexPage',
     components: { EditEntrance, HotArticle, LeftNavigater, TinyArticle, TopBar },
     created: function () {
-        this.$axios.get('/api/test/').then(
+        this.$axios.get('/api/index/test').then(
             (response) => {
                 var newsList = response.data.data;
                 console.log(newsList);

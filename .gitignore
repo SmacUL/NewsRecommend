@@ -8,3 +8,4 @@ crawler/database-properties.json
 /back/lib/*.jar
 crawler/properties/database-properties.json
 crawler/properties/request-properties.json
+back/src/main/resources/application.properties
