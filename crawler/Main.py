@@ -7,6 +7,12 @@ import os
 import DatabaseOP as dop
 import RequestOP as rop
 import AnalyseOP as aop
+import FilterOP as fop
+
+
+def json_loader(path, encoding='utf-8'):
+    js = open(path, encoding=encoding)
+    return json.load(js)
 
 
 def connect_database(path, encoding='utf-8'):
@@ -16,8 +22,7 @@ def connect_database(path, encoding='utf-8'):
     :param encoding: 数据库配置文件编码
     :return:
     """
-    dp = open(path, encoding=encoding)
-    dp = json.load(dp)
+    dp = json_loader(path, encoding)
     data_base = dop.MysqlOP(dp["db_name"], dp['user'], dp['password'])
     data_base.create_connection()
     return data_base
@@ -30,10 +35,20 @@ def get_source_tiny_articles(path, encoding='utf-8'):
     :param encoding:
     :return:
     """
-    rq = open(path, encoding=encoding)
-    rq = json.load(rq)
+    rq = json_loader(path, encoding)
     print('当前访问 ' + rq['url'])
     return rop.RequestOP(rq['page'], rq['url'], rq['headers'], rq['cookie']).info()
+
+
+def get_tag_maps(path, encoding='utf-8'):
+    """
+
+    :param path:
+    :param encoding:
+    :return:
+    """
+    ft = json_loader(path, encoding)
+    return ft['tag_maps']
 
 
 def get_chrome_driver():
@@ -58,10 +73,12 @@ def set_cus_pass(password):
 
 
 if __name__ == "__main__":
-    data_base = connect_database(os.path.join('properties', 'database-properties.json'))
-    tiny_news = get_source_tiny_articles(os.path.join('properties', 'request-properties.json'))
+    data_base = connect_database(os.path.join('properties', 'database-properties.json.template'))
+    tiny_news = get_source_tiny_articles(os.path.join('properties', 'request-properties.json.template'))
+    tag_maps = get_tag_maps(os.path.join('properties', 'filter-properties.json.template'))
     print(tiny_news.__len__())
     analyser = aop.AnalyseOP()
+    tag_filter = fop.FilterOP()
     for i, news_item in enumerate(tiny_news):
         for j, item in enumerate(news_item):
             print(item)
@@ -75,13 +92,13 @@ if __name__ == "__main__":
                 analyser.set_driver(driver)
                 # 标签
                 art_tag = analyser.get_art_tag()
+                art_tag = tag_filter.major_filter(art_tag, tag_maps)
                 # 用户头像
                 cus_avatar_url = analyser.get_cus_avatar_url()
                 # 文章主体内容
                 art_content = analyser.get_art_content()
                 # 文章缩略图
                 art_image = analyser.get_art_image()
-                # print(art_image)
 
                 # 插入用户
                 cus_pass = set_cus_pass("123456")

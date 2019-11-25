@@ -23,8 +23,13 @@ public class IndexController {
         return true;
     }
 
-//    public List<String> getArticleTags() {
-//
-//    }
+    /**
+     * 用于获取首页导航栏左侧的标签数据
+     * @return
+     */
+    @RequestMapping("/tags")
+    public List<String> getArticleTags() {
+        return indexService.getLeftNavTags();
+    }
 
 }

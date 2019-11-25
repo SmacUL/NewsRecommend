@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Service
 public class IndexServiceImpl implements IndexService {
@@ -16,4 +17,9 @@ public class IndexServiceImpl implements IndexService {
     @Autowired
     HttpSession session;
 
+    @Override
+    public List<String> getLeftNavTags() {
+        List<String> result = indexMapper.getLeftNavTags();
+        return result;
+    }
 }

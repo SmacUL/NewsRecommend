@@ -36,6 +36,7 @@ section {
 nav {
     width: 130px;
     position: fixed;
+    z-index: 100;
 }
 
 .article-a {
