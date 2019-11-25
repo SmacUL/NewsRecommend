@@ -24,7 +24,6 @@
 import ArticleMain from '@/components/article/ArticleMain'
 import CommentPanel from '@/components/article/CommentPanel'
 import CommentReplyInput from '@/components/article/CommentReplyInput'
-// import ReplyPanel from '@/components/article/ReplyPanel'
 import EditorBrief from '@/components/article/EditorBrief'
 // common
 import EditEntrance from '@/components/common/EditEntrance'

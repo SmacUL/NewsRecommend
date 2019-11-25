@@ -32,7 +32,7 @@ export default {
     name: 'SelfPage',
     components: { AchievementPanel, ShowPanel, TinyArticle, TopBar },
     mounted: function() {
-        window.addEventListener('scroll', this.scrollHandler, true);
+        window.addEventListener('scroll', this.scrollHandler, false);
     },
     data: function () {
         return {
@@ -51,7 +51,7 @@ export default {
     },
     methods: {
         scrollHandler: function () {
-            var scrollDis = document.documentElement.scrollTop || document.body.scrollTop || window.pageYOffset || 0;
+            let scrollDis = document.documentElement.scrollTop || document.body.scrollTop || window.pageYOffset || 0;
             if (scrollDis > 320) {
                 this.asideStyle = 'margin-top: 10px';
             } else {

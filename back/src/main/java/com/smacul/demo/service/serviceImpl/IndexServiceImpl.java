@@ -1,7 +1,9 @@
 package com.smacul.demo.service.serviceImpl;
 
 import com.smacul.demo.dao.IndexMapper;
+import com.smacul.demo.model.TinyArticle;
 import com.smacul.demo.service.IndexService;
+import com.sun.tools.javadoc.Start;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +21,12 @@ public class IndexServiceImpl implements IndexService {
 
     @Override
     public List<String> getLeftNavTags() {
-        List<String> result = indexMapper.getLeftNavTags();
-        return result;
+        return indexMapper.getLeftNavTags();
+    }
+
+    @Override
+    public List<TinyArticle> getTinyArticles(String tag, Integer page, Integer pageSize) {
+        Integer start = page * pageSize + 1;
+        return indexMapper.getTinyArticles(tag, start, pageSize);
     }
 }

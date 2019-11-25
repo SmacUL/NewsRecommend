@@ -1,11 +1,11 @@
 package com.smacul.demo.controller;
 
 
+import com.smacul.demo.model.TinyArticle;
 import com.smacul.demo.service.IndexService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -28,8 +28,14 @@ public class IndexController {
      * @return
      */
     @RequestMapping("/tags")
-    public List<String> getArticleTags() {
+    public List<String> getLeftNavTags() {
         return indexService.getLeftNavTags();
+    }
+
+    @RequestMapping("/tiny")
+    public List<TinyArticle> getTinyArticles(@RequestParam String tag,
+                                             @RequestParam Integer page, @RequestParam Integer pageSize) {
+        return indexService.getTinyArticles(tag, page, pageSize);
     }
 
 }

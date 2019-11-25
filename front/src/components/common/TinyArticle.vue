@@ -1,15 +1,16 @@
 <template>
     <div class="tiny-article">
         <el-card>
-            <div class="image">
-                <img src="@/assets/logo.png">
+            <div class="image" v-if="image !== ''">
+                <img :src="image" >
             </div>
-            <div class="tiny-art">
-                <div class="title">{{item.title}}</div>
-                <div class="description">{{item.abstract}}</div>
+            <div :class="[wideSwitch ? tinyArt : tinyArtWide]">
+                <div class="title">{{ title }}</div>
+                <div class="description">{{ abstract }}</div>
                 <div class="info">
-                    <span>{{item.author}}</span>
-                    <span>{{item.date}}</span>
+                    <!-- TODO 点击 author, 可以直接到 author 的主页-->
+                    <span style="margin-right: 5px; color: #409EFF;">{{ author }}</span>
+                    <span>{{ date }}</span>
                 </div>
             </div>
         </el-card>
@@ -19,16 +20,22 @@
 
 <script>
 export default {
-    props: ['item' ],
+    props: ['title', 'abstract', 'image', 'author', 'date'],
     name: 'TinyArticle',
-    data: function() {
-        return {
-
+    computed: {
+        wideSwitch: function () {
+            return this.image !== '';
         }
     },
     methods: {
 
-    }
+    },
+    data: function() {
+        return {
+            tinyArt: 'tiny-art',
+            tinyArtWide: 'tiny-art-wide',
+        }
+    },
 }
 </script>
 
@@ -68,9 +75,16 @@ export default {
     position: relative;
 }
 
+.tiny-article .tiny-art-wide {
+    float: left;
+    width: 100%;
+    height: 120px;
+    position: relative;
+}
+
 .tiny-article .title {
-    height: 40px;
-    line-height: 40px;
+    height: 60px;
+    line-height: 30px;
     font-size: 18pt;
     overflow: hidden;
     text-align: left;
@@ -79,7 +93,7 @@ export default {
 }
 
 .tiny-article .description {
-    height: 40px;
+    height: 20px;
     line-height: 20px;
     overflow: hidden;
     text-align: left;
@@ -98,8 +112,8 @@ export default {
     font-weight: 400;
 }
 
-.tiny-article .info :last-child {
-    font-weight: 100;
-}
+/*.tiny-article .info :last-child {*/
+/*    font-weight: 100;*/
+/*}*/
 
 </style>

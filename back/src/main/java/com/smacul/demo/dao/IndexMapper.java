@@ -1,5 +1,8 @@
 package com.smacul.demo.dao;
 
+import com.smacul.demo.bean.Articles;
+import com.smacul.demo.model.TinyArticle;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
@@ -10,4 +13,10 @@ public interface IndexMapper {
 
     @Select("select art_tag from Articles group by art_tag order by count(art_tag) desc")
     List<String> getLeftNavTags();
+
+    @Select("select art_id, art_title, art_abstract, art_time, art_image, cus_name\n" +
+            "from Articles left join Customers on Articles.art_customer_id = Customers.cus_id\n" +
+            "where art_tag = #{tag} limit #{start}, #{pageSize}")
+    List<TinyArticle> getTinyArticles(@Param("tag") String tag, @Param("start") Integer start,
+                                      @Param("pageSize") Integer pageSize);
 }
