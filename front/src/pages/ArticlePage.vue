@@ -6,10 +6,11 @@
         <!-- 页面主体 左右 布局 -->
         <main>
             <article class="article-b">
-                <article-main :title="article.artTitle" :content="article.artContent" :tag="article.artTag"
-                              :author="article.cusName" :date="article.artTime" :artId="article.artId"
-                              :likeNum="article.artLikeNum" :dislikeNum="article.artDislikeNum">
-                </article-main>
+                <!--<article-main :title="article.artTitle" :content="article.artContent" :tag="article.artTag"-->
+                <!--              :author="article.cusName" :date="article.artTime" :artId="article.artId"-->
+                <!--              :likeNum="article.artLikeNum" :dislikeNum="article.artDislikeNum">-->
+                <!--</article-main>-->
+                <article-main :articleMain="articleMain"></article-main>
                 <comment-reply-input :heightKey=true style='width: 100%'></comment-reply-input>
                 <comment-panel></comment-panel>
             </article>
@@ -47,8 +48,8 @@ export default {
             // alert(this.$route.params.artid);
             this.$axios.get('/api/article/main', {params: {id: this.$route.params.artid}}).then(
                 (response) => {
-                    console.log(response.data);
-                    this.article = response.data;
+                    this.articleMain = response.data;
+                    // console.log(response.data);
                 }
             ).catch(
                 (response) => {
@@ -78,7 +79,7 @@ export default {
                 {title: 'asdfjasjdfkljakldjlfkasjlkdfjlakjflkajflkasjklfjkasldfj'},
                 {title: 'asdfjasjdfkljakldjlfkasjlkdfjlakjflkajflkasjklfjkasldfj'},
             ],
-            article: {
+            articleMain: {
                 artId: 4,
                 artTitle: "上海公安机关：外媒报道的所谓“中国特工”王立强系涉案在逃人员",
                 artContent: "<p>新华社上海11月23日电 记者从上海市公安局静安分局获悉，澳大利亚《悉尼先驱晨报》报道的所谓“…护照和香港永久居民身份证均系伪造证件。</p><p>目前，公安机关对此案正在进一步调查中。</p>",

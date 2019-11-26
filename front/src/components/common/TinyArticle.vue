@@ -1,38 +1,37 @@
 <template>
     <div class="tiny-article">
         <el-card>
-            <div class="image" v-if="image !== ''">
-                <img :src="image" >
+            <div class="image" v-if="tinyArticle.artImage !== ''">
+                <img :src="tinyArticle.artImage" >
             </div>
             <div :class="[wideSwitch ? tinyArt : tinyArtWide]">
-                <div class="title" @click="dumpToArticle()">{{ title }}</div>
-                <div class="description">{{ abstract }}</div>
+                <div class="title" @click="dumpToArticle()">{{ tinyArticle.artTitle }}</div>
+                <div class="description">{{ tinyArticle.artAbstract }}</div>
                 <div class="info">
                     <!-- TODO 点击 author, 可以直接到 author 的主页-->
-                    <span style="margin-right: 5px; color: #409EFF;">{{ author }}</span>
+                    <span style="margin-right: 5px; color: #409EFF;">{{ tinyArticle.cusName }}</span>
                     <span>{{ dataTransfer }}</span>
                 </div>
             </div>
         </el-card>
-
     </div>
 </template>
 
 <script>
 export default {
-    props: ['title', 'abstract', 'image', 'author', 'date', 'artId'],
+    props: ['tinyArticle'],
     name: 'TinyArticle',
     computed: {
         wideSwitch: function () {
-            return this.image !== '';
+            return this.tinyArticle.artImage !== '';
         },
         dataTransfer: function () {
-            return new Date(Date.parse(this.date)).toLocaleString();
+            return new Date(Date.parse(this.tinyArticle.artTime)).toLocaleString();
         }
     },
     methods: {
         dumpToArticle: function () {
-            this.$router.push({ name: 'ArticlePage', params: {'artid': this.artId} });
+            this.$router.push({ name: 'ArticlePage', params: {'artid': this.tinyArticle.artId.toString()} });
         }
     },
     data: function() {

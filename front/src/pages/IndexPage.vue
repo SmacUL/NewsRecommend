@@ -11,10 +11,8 @@
                 </left-navigater>
             </nav>
             <article class="article-a">
-                <div  v-for="(item, i) in articles" :key="i">
-                    <tiny-article class="tiny-article"
-                                  :title="item.artTitle" :abstract="item.artAbstract" :image="item.artImage"
-                                  :author="item.cusName" :date="item.artTime" :artId="item.artId">
+                <div  v-for="(tinyArticle, i) in tinyArticles" :key="i">
+                    <tiny-article class="tiny-article" :tinyArticle="tinyArticle">
                     </tiny-article>
                 </div>
             </article>
@@ -59,7 +57,7 @@ export default {
                     this.secondaryTags = response.data.slice(border);
                     // 在初始化标签的之后, 异步加载文章;
                     this.getTinyArticles(this.curIndex, this.type);
-                    console.log(response.data)
+                    // console.log(response.data)
                 }
             ).catch(
                 (response) => {
@@ -104,18 +102,12 @@ export default {
             this.$axios.get('/api/index/tiny?', {params: {tag: this.curTag, page: this.page, pageSize: this.pageSize}}).then(
                 (response) => {
                     console.log(response.data);
-                    let articles = response.data;
-                    // articles.forEach(
-                    //     (item, index, array) => {
-                    //         let time = item['artTime'];
-                    //         item['artTime'] = new Date(Date.parse(time)).toLocaleDateString();
-                    //     }
-                    // );
+                    let tinyArticles = response.data;
                     // 文章加载
                     if (this.page === 0) {
-                        this.articles = articles;
+                        this.tinyArticles = tinyArticles;
                     } else {
-                        this.articles = this.articles.concat(articles);
+                        this.tinyArticles = this.tinyArticles.concat(tinyArticles);
                     }
                     this.page += 1;
                 }
@@ -164,7 +156,7 @@ export default {
             // curTag: 当前标签名称, 使用 this.getTinyArticles 前需要正确赋值;
             curTag: '综合',
 
-            articles: [
+            tinyArticles: [
                 {   artId: 1, artTitle: "即将开启降温模式",
                     artAbstract:"降温降雨天气预报预计今晚到明天我州东北部地区阴天普遍有小雨，高山有雨夹雪和大雾，日平均气温下降4～6℃；州西南部晴转多云，局地间有阴天和零星小雨，气温下降2～4℃。请注意相关防御措施。未来24小时内，各县最低气温1℃～10℃，最高气温10～22℃。",
                     artTime:"2019-11-25T08:35:55.000+0000", cusName:"光明网",
