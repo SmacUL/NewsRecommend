@@ -5,11 +5,13 @@
         <main>
             <nav>
                 <left-navigater :class="{'left-navigater': true}"
-                                :tags="tags" :secondaryTags="secondaryTags" :showLast="true"></left-navigater>
+                                :tags="tags" :secondaryTags="secondaryTags" :showLast="true"
+                                :curIndex="curIndex.toString()"
+                                @changecurindex="getCurTinyArticles">
+                </left-navigater>
             </nav>
             <article class="article-a">
                 <div  v-for="(item, i) in articles" :key="i">
-                    <!-- 'title', 'abstract', 'image', 'author', 'date' -->
                     <tiny-article class="tiny-article"
                                   :title="item.artTitle" :abstract="item.artAbstract" :image="item.artImage"
                                   :author="item.cusName" :date="item.artTime">
@@ -40,7 +42,6 @@ export default {
     components: { EditEntrance, HotArticle, LeftNavigater, TinyArticle, TopBar },
     created: function() {
         this.getLeftNavTags();
-        this.getTinyArticles();
     },
     mounted: function() {
         window.addEventListener('scroll', this.scrollHandler, false);
@@ -56,6 +57,8 @@ export default {
                     this.tags = response.data.slice(0, border);
                     this.tags.push('更多');
                     this.secondaryTags = response.data.slice(border);
+                    // 在初始化标签的之后, 异步加载文章;
+                    this.getTinyArticles(this.curIndex, this.type);
                     console.log(response.data)
                 }
             ).catch(
@@ -66,10 +69,47 @@ export default {
         },
 
         /**
+         * 标签切换时, 对必要数据进行修改
+         * @Param curIndex 子组件传回的标签索引
+         * @Param type 子组件传回的标签类别
+         */
+        getCurTinyArticles: function(curIndex, type) {
+
+            // alert(curIndex);
+            // alert
+
+            if (type === 0) {
+                this.curTag = this.tags[curIndex];
+            } else if (type === 1) {
+                // alert('dddd');
+                let firTag = this.tags[this.tags.length - 2];
+                let secTag = this.secondaryTags[curIndex];
+
+                this.$set(this.tags, this.tags.splice(this.tags.length - 2, 1, secTag));
+                this.$set(this.secondaryTags, this.secondaryTags.splice(curIndex, 1, firTag));
+
+                // this.tags = this.tags.splice(this.tags.length - 1, 1, secTag);
+                // this.secondaryTags = this.secondaryTags.splice(curIndex, 1, firTag);
+
+                curIndex = this.tags.length - 2;
+                type = 0;
+                this.curTag = this.tags[curIndex];
+            } else {
+                this.curTag = '综合';
+            }
+
+            this.page = 0;
+            this.curIndex = curIndex;
+            this.type = type;
+            this.getTinyArticles()
+        },
+
+        /**
          * 获取一次 tiny article 的数据
+         * 只要 this.curTag 不发生变化, 就可以直接使用此方法
          */
         getTinyArticles: function() {
-            this.$axios.get('/api/index/tiny?', {params: {tag: '综合', page: this.page, pageSize: this.pageSize}}).then(
+            this.$axios.get('/api/index/tiny?', {params: {tag: this.curTag, page: this.page, pageSize: this.pageSize}}).then(
                 (response) => {
                     let articles = response.data;
                     articles.forEach(
@@ -78,12 +118,13 @@ export default {
                             item['artTime'] = new Date(Date.parse(time)).toLocaleString();
                         }
                     );
-                    this.page += 1;
-                    if (this.articles.length === 0) {
+                    // 文章加载
+                    if (this.page === 0) {
                         this.articles = articles;
                     } else {
                         this.articles = this.articles.concat(articles);
                     }
+                    this.page += 1;
                 }
             ).catch(
                 (response) => {
@@ -110,10 +151,6 @@ export default {
 
             // 第一个 10 是 main 的 margin-bottom, 第二个 10 是 header 的 margin-bottom
             if (scrollHeight - 10 >= mainEHeight - (browserHeight - topEHeight - 10)) {
-                // console.log(scrollHeight);
-                // console.log(mainEHeight);
-                // console.log(browserHeight);
-                // console.log(topEHeight);
                 this.getTinyArticles();
             }
 
@@ -123,9 +160,17 @@ export default {
     },
     data: function() {
         return {
-            // page: 当前用户浏览的页数
+            // page: 当前用户浏览的页数, 使用 this.getTinyArticles 前需要正确赋值;
             page: 0,
+            // pageSize: 每次请求的文章数量, 使用 this.getTinyArticles 前需要正确赋值;
             pageSize: 10,
+            // type: 返回的菜单标签是属于 this.tags (0) 还是 this.secondaryTags (1)
+            type: 0,
+            // curIndex: 返回的菜单标签下标
+            curIndex: 0,
+            // curTag: 当前标签名称, 使用 this.getTinyArticles 前需要正确赋值;
+            curTag: '综合',
+
             articles: [
                 // {title:'asdfasdfasdfasdfasdfasdfasdf', abstract:'askldjfaskdjfklasjdfkajsdlfjsaddjfklasjdfklasjdfasdfd', author:'asdfd', date:'2019-09-09'},
                 // {title:'asdfasdfasdfasdfasdfasdfasdf', abstract:'askldjfaskdjfklasjdfkajsdlfjsaddjfklasjdfklasjdfasdfd', author:'asdfd', date:'2019-09-09'},

@@ -35,6 +35,7 @@ public class IndexController {
     @RequestMapping("/tiny")
     public List<TinyArticle> getTinyArticles(@RequestParam String tag,
                                              @RequestParam Integer page, @RequestParam Integer pageSize) {
+        System.out.println(tag);
         return indexService.getTinyArticles(tag, page, pageSize);
     }
 

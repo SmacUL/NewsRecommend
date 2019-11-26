@@ -73,9 +73,9 @@ def set_cus_pass(password):
 
 
 if __name__ == "__main__":
-    data_base = connect_database(os.path.join('properties', 'database-properties.json.template'))
-    tiny_news = get_source_tiny_articles(os.path.join('properties', 'request-properties.json.template'))
-    tag_maps = get_tag_maps(os.path.join('properties', 'filter-properties.json.template'))
+    data_base = connect_database(os.path.join('properties', 'database-properties.json'))
+    tiny_news = get_source_tiny_articles(os.path.join('properties', 'request-properties.json'))
+    tag_maps = get_tag_maps(os.path.join('properties', 'filter-properties.json'))
     print(tiny_news.__len__())
     analyser = aop.AnalyseOP()
     tag_filter = fop.FilterOP()
