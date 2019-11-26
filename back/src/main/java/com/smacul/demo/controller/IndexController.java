@@ -1,7 +1,7 @@
 package com.smacul.demo.controller;
 
 
-import com.smacul.demo.model.TinyArticle;
+import com.smacul.demo.model.TinyArticleModel;
 import com.smacul.demo.service.IndexService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,9 +33,8 @@ public class IndexController {
     }
 
     @RequestMapping("/tiny")
-    public List<TinyArticle> getTinyArticles(@RequestParam String tag,
-                                             @RequestParam Integer page, @RequestParam Integer pageSize) {
-        System.out.println(tag);
+    public List<TinyArticleModel> getTinyArticles(@RequestParam String tag,
+                                                  @RequestParam Integer page, @RequestParam Integer pageSize) {
         return indexService.getTinyArticles(tag, page, pageSize);
     }
 

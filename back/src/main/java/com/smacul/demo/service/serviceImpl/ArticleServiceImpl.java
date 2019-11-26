@@ -1,6 +1,7 @@
 package com.smacul.demo.service.serviceImpl;
 
 import com.smacul.demo.dao.ArticleMapper;
+import com.smacul.demo.model.ArticleModel;
 import com.smacul.demo.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,4 +17,9 @@ public class ArticleServiceImpl implements ArticleService {
     @Autowired
     HttpSession session;
 
+
+    @Override
+    public ArticleModel getArticleMain(Integer id) {
+        return articleMapper.getArticleMain(id);
+    }
 }

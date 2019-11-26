@@ -6,7 +6,10 @@
         <!-- 页面主体 左右 布局 -->
         <main>
             <article class="article-b">
-                <article-main :article=article :editor=editor></article-main>
+                <article-main :title="article.artTitle" :content="article.artContent" :tag="article.artTag"
+                              :author="article.cusName" :date="article.artTime" :artId="article.artId"
+                              :likeNum="article.artLikeNum" :dislikeNum="article.artDislikeNum">
+                </article-main>
                 <comment-reply-input :heightKey=true style='width: 100%'></comment-reply-input>
                 <comment-panel></comment-panel>
             </article>
@@ -36,6 +39,24 @@ export default {
     name: 'ArticlePage',
     components: {ArticleMain, CommentPanel, CommentReplyInput, EditorBrief,
                 EditEntrance, HotArticle, TopBar},
+    created: function() {
+        this.getArticleMain();
+    },
+    methods: {
+        getArticleMain: function() {
+            // alert(this.$route.params.artid);
+            this.$axios.get('/api/article/main', {params: {id: this.$route.params.artid}}).then(
+                (response) => {
+                    console.log(response.data);
+                    this.article = response.data;
+                }
+            ).catch(
+                (response) => {
+                    console.log(response.data);
+                }
+            )
+        },
+    },
     data: function() {
         return {
             hotArticles: [
@@ -58,15 +79,16 @@ export default {
                 {title: 'asdfjasjdfkljakldjlfkasjlkdfjlakjflkajflkasjklfjkasldfj'},
             ],
             article: {
-                id: 0, 
-                title: '各国美食云集第二届进博会', 
-                abstract: '11月6日，参观者在第二届进博会上品尝各国美食。在国家会展中心(上海)举行的第二届中国国际进口博览会，吸引了来自150多个国家和地区的3000多家企业签约参展。其中，各国美食云集的食品馆深受参观者青睐。巨型金枪鱼吸引参观者。参观者在第二届进博会上品尝各国美食。',
-                content: '<img src="http://p3.pstatp.com/large/pgc-image/Rh1h9Oy4vRcB6U" img_width="550" img_height="366" alt="各国美食云集第二届进博会" inline="0"><p>11月6日，参观者在第二届进博会上品尝各国美食。在国家会展中心(上海)举行的第二届中国国际进口博览会，吸引了来自150多个国家和地区的3000多家企业签约参展。其中，各国美食云集的食品馆深受参观者青睐。</p><img src="http://p3.pstatp.com/large/pgc-image/Rh1h9PB6EFaAo7" img_width="550" img_height="366" alt="各国美食云集第二届进博会" inline="0"><p>巨型金枪鱼吸引参观者。</p><img src="http://p1.pstatp.com/large/pgc-image/Rh1h9PMEzPme1T" img_width="550" img_height="366" alt="各国美食云集第二届进博会" inline="0"><p>参观者在第二届进博会上品尝各国美食。</p><img src="http://p9.pstatp.com/large/pgc-image/Rh1h9PX4tbjTOO" img_width="550" img_height="343" alt="各国美食云集第二届进博会" inline="0"><p>产自俄罗斯的帝王蟹吸引参观者。</p><img src="http://p1.pstatp.com/large/pgc-image/Rh1h9Ph4Uvtkb" img_width="550" img_height="366" alt="各国美食云集第二届进博会" inline="0"><p>参观者在第二届进博会上选购各国美食。（中新社记者 汤彦俊 摄）</p>',
-                tag: '国际',
-                likeNum: 0,
-                dislikeNum: 0,
-                time: '2019-11-06 15:24:40',
+                artId: 4,
+                artTitle: "上海公安机关：外媒报道的所谓“中国特工”王立强系涉案在逃人员",
+                artContent: "<p>新华社上海11月23日电 记者从上海市公安局静安分局获悉，澳大利亚《悉尼先驱晨报》报道的所谓“…护照和香港永久居民身份证均系伪造证件。</p><p>目前，公安机关对此案正在进一步调查中。</p>",
+                artTag: "综合",
+                artLikeNum: 0,
+                artDislikeNum: 0,
+                artTime: '2019-11-25T10:05:44.000+0000',
+                cusName: '国际在线'
             }
+
         }
     }
     

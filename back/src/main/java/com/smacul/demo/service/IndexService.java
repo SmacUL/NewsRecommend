@@ -1,11 +1,11 @@
 package com.smacul.demo.service;
 
-import com.smacul.demo.model.TinyArticle;
+import com.smacul.demo.model.TinyArticleModel;
 
 import java.util.List;
 
 public interface IndexService {
     List<String> getLeftNavTags();
 
-    List<TinyArticle> getTinyArticles(String tag, Integer page, Integer pageSize);
+    List<TinyArticleModel> getTinyArticles(String tag, Integer page, Integer pageSize);
 }

@@ -1,22 +1,27 @@
 <template>
     <div class="article-main">
-        <div class="title">{{article.title}}</div>
+        <div class="title">{{title}}</div>
         <div class="article-info">
-            <span>{{editor.name}}</span>
-            <span>{{article.time}}</span>
+            <span>{{author}}</span>
+            <span>{{ dataTransfer }}</span>
         </div>
-        <div class="content" v-html="article.content"></div>
+        <div class="content" v-html="content"></div>
         <div class="up-down clear-float">
-            <div class="up"><i class="el-icon-success"></i>{{ article.likeNum }}</div>
-            <div class="down"><i class="el-icon-error"></i>{{ article.dislikeNum }}</div>
+            <div class="up"><i class="el-icon-success"></i>{{ likeNum }}</div>
+            <div class="down"><i class="el-icon-error"></i>{{ dislikeNum }}</div>
         </div>
     </div>
 </template>
 
 <script>
 export default {
-    props: ['article', 'editor'],
+    props: ['title', 'content', 'tag', 'author', 'date', 'artId', 'likeNum', 'dislikeNum'],
     name: 'ArticleMain',
+    computed: {
+        dataTransfer: function () {
+            return new Date(Date.parse(this.date)).toLocaleString();
+        }
+    },
     data: function() {
         return {
 

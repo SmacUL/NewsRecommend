@@ -14,7 +14,7 @@
                 <div  v-for="(item, i) in articles" :key="i">
                     <tiny-article class="tiny-article"
                                   :title="item.artTitle" :abstract="item.artAbstract" :image="item.artImage"
-                                  :author="item.cusName" :date="item.artTime">
+                                  :author="item.cusName" :date="item.artTime" :artId="item.artId">
                     </tiny-article>
                 </div>
             </article>
@@ -74,22 +74,14 @@ export default {
          * @Param type 子组件传回的标签类别
          */
         getCurTinyArticles: function(curIndex, type) {
-
-            // alert(curIndex);
-            // alert
-
             if (type === 0) {
                 this.curTag = this.tags[curIndex];
             } else if (type === 1) {
-                // alert('dddd');
                 let firTag = this.tags[this.tags.length - 2];
                 let secTag = this.secondaryTags[curIndex];
 
                 this.$set(this.tags, this.tags.splice(this.tags.length - 2, 1, secTag));
                 this.$set(this.secondaryTags, this.secondaryTags.splice(curIndex, 1, firTag));
-
-                // this.tags = this.tags.splice(this.tags.length - 1, 1, secTag);
-                // this.secondaryTags = this.secondaryTags.splice(curIndex, 1, firTag);
 
                 curIndex = this.tags.length - 2;
                 type = 0;
@@ -111,13 +103,14 @@ export default {
         getTinyArticles: function() {
             this.$axios.get('/api/index/tiny?', {params: {tag: this.curTag, page: this.page, pageSize: this.pageSize}}).then(
                 (response) => {
+                    console.log(response.data);
                     let articles = response.data;
-                    articles.forEach(
-                        (item, index, array) => {
-                            let time = item['artTime'];
-                            item['artTime'] = new Date(Date.parse(time)).toLocaleString();
-                        }
-                    );
+                    // articles.forEach(
+                    //     (item, index, array) => {
+                    //         let time = item['artTime'];
+                    //         item['artTime'] = new Date(Date.parse(time)).toLocaleDateString();
+                    //     }
+                    // );
                     // 文章加载
                     if (this.page === 0) {
                         this.articles = articles;
@@ -172,15 +165,13 @@ export default {
             curTag: '综合',
 
             articles: [
-                // {title:'asdfasdfasdfasdfasdfasdfasdf', abstract:'askldjfaskdjfklasjdfkajsdlfjsaddjfklasjdfklasjdfasdfd', author:'asdfd', date:'2019-09-09'},
-                // {title:'asdfasdfasdfasdfasdfasdfasdf', abstract:'askldjfaskdjfklasjdfkajsdlfjsaddjfklasjdfklasjdfasdfd', author:'asdfd', date:'2019-09-09'},
-                // {title:'asdfasdfasdfasdfasdfasdfasdf', abstract:'askldjfaskdjfklasjdfkajsdlfjsaddjfklasjdfklasjdfasdfd', author:'asdfd', date:'2019-09-09'},
-                // {title:'asdfasdfasdfasdfasdfasdfasdf', abstract:'askldjfaskdjfklasjdfkajsdlfjsaddjfklasjdfklasjdfasdfd', author:'asdfd', date:'2019-09-09'},
-                // {title:'asdfasdfasdfasdfasdfasdfasdf', abstract:'askldjfaskdjfklasjdfkajsdlfjsaddjfklasjdfklasjdfasdfd', author:'asdfd', date:'2019-09-09'},
-                // {title:'asdfasdfasdfasdfasdfasdfasdf', abstract:'askldjfaskdjfklasjdfkajsdlfjsaddjfklasjdfklasjdfasdfd', author:'asdfd', date:'2019-09-09'},
-                // {title:'asdfasdfasdfasdfasdfasdfasdf', abstract:'askldjfaskdjfklasjdfkajsdlfjsaddjfklasjdfklasjdfasdfd', author:'asdfd', date:'2019-09-09'},
-                // {title:'asdfasdfasdfasdfasdfasdfasdf', abstract:'askldjfaskdjfklasjdfkajsdlfjsaddjfklasjdfklasjdfasdfd', author:'asdfd', date:'2019-09-09'},
+                {   artId: 1, artTitle: "即将开启降温模式",
+                    artAbstract:"降温降雨天气预报预计今晚到明天我州东北部地区阴天普遍有小雨，高山有雨夹雪和大雾，日平均气温下降4～6℃；州西南部晴转多云，局地间有阴天和零星小雨，气温下降2～4℃。请注意相关防御措施。未来24小时内，各县最低气温1℃～10℃，最高气温10～22℃。",
+                    artTime:"2019-11-25T08:35:55.000+0000", cusName:"光明网",
+                    artImage:"http://p1.pstatp.com/large/pgc-image/Reyxsbp6He2NU3"
+                },
             ],
+
             tags: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'],
             secondaryTags: ['a', 'jj', 'ee', 'eek', 'e', 'kko','sd'],
             hotArticles: [

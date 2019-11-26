@@ -23,7 +23,7 @@ export default new Router({
             component: IndexPage,
         },
         {
-            path: '/article',
+            path: '/article/:artid',
             name: 'ArticlePage', 
             component: ArticlePage,
         },

@@ -5,12 +5,12 @@
                 <img :src="image" >
             </div>
             <div :class="[wideSwitch ? tinyArt : tinyArtWide]">
-                <div class="title">{{ title }}</div>
+                <div class="title" @click="dumpToArticle()">{{ title }}</div>
                 <div class="description">{{ abstract }}</div>
                 <div class="info">
                     <!-- TODO 点击 author, 可以直接到 author 的主页-->
                     <span style="margin-right: 5px; color: #409EFF;">{{ author }}</span>
-                    <span>{{ date }}</span>
+                    <span>{{ dataTransfer }}</span>
                 </div>
             </div>
         </el-card>
@@ -20,15 +20,20 @@
 
 <script>
 export default {
-    props: ['title', 'abstract', 'image', 'author', 'date'],
+    props: ['title', 'abstract', 'image', 'author', 'date', 'artId'],
     name: 'TinyArticle',
     computed: {
         wideSwitch: function () {
             return this.image !== '';
+        },
+        dataTransfer: function () {
+            return new Date(Date.parse(this.date)).toLocaleString();
         }
     },
     methods: {
-
+        dumpToArticle: function () {
+            this.$router.push({ name: 'ArticlePage', params: {'artid': this.artId} });
+        }
     },
     data: function() {
         return {
@@ -90,6 +95,11 @@ export default {
     text-align: left;
     margin-bottom: 5px;
     font-weight: 800;
+}
+
+.tiny-article .title:hover {
+    color: #409EFF;
+    cursor: pointer;
 }
 
 .tiny-article .description {

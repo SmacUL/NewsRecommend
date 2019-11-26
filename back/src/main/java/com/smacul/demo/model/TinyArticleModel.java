@@ -2,7 +2,7 @@ package com.smacul.demo.model;
 
 import java.sql.Timestamp;
 
-public class TinyArticle {
+public class TinyArticleModel {
 
     private Integer artId;
     private String artTitle;
