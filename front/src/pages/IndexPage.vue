@@ -12,13 +12,15 @@
             </nav>
             <article class="article-a">
                 <div  v-for="(tinyArticle, i) in tinyArticles" :key="i">
-                    <tiny-article class="tiny-article" :tinyArticle="tinyArticle">
+                    <tiny-article class="tiny-article" :tinyArticle="tinyArticle" @jump="dumpToArticle">
                     </tiny-article>
                 </div>
             </article>
             <aside>
                 <edit-entrance class="edit-entrance"></edit-entrance>
-                <hot-article class="hot-article" :hotArticles='hotArticles'></hot-article>
+                <hot-article class="hot-article" :hotArticles='hotArticles'
+                             @refresh="getHotArticles" @jump="dumpToArticle">
+                </hot-article>
             </aside>
         </main>
     </div>
@@ -120,6 +122,9 @@ export default {
             )
         },
 
+        /**
+         * 提供右侧的热点文章
+         */
         getHotArticles: function() {
             this.$axios.get('/api/index/hot?', {params: {page: this.hotPage, pageSize: this.hotPageSize}}).then(
                 (response) => {
@@ -132,6 +137,20 @@ export default {
                     console.log(response)
                 }
             )
+        },
+
+        /**
+         * 跳转到指定 id 的文章页面
+         *
+         * @Param: artId
+         */
+        dumpToArticle: function(artId) {
+            let routeData = this.$router.resolve({ name: 'ArticlePage', params: {'artid': artId.toString()} });
+            window.open(routeData.href, '_blank');
+        },
+
+        refreshArticles: function() {
+
         },
 
         /**
@@ -154,8 +173,6 @@ export default {
             if (scrollHeight - 10 >= mainEHeight - (browserHeight - topEHeight - 10)) {
                 this.getTinyArticles();
             }
-
-
         }
 
     },

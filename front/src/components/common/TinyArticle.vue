@@ -5,7 +5,7 @@
                 <img :src="tinyArticle.artImage" >
             </div>
             <div :class="[wideSwitch ? tinyArt : tinyArtWide]">
-                <div class="title" @click="dumpToArticle()">{{ tinyArticle.artTitle }}</div>
+                <div class="title" @click="dumpToArticle(tinyArticle.artId)">{{ tinyArticle.artTitle }}</div>
                 <div class="description">{{ tinyArticle.artAbstract }}</div>
                 <div class="info">
                     <!-- TODO 点击 author, 可以直接到 author 的主页-->
@@ -30,12 +30,8 @@ export default {
         }
     },
     methods: {
-        dumpToArticle: function () {
-            // this.$router.push({ name: 'ArticlePage', params: {'artid': this.tinyArticle.artId.toString()} });
-
-            let routeData = this.$router.resolve({ name: 'ArticlePage', params: {'artid': this.tinyArticle.artId.toString()} });
-            window.open(routeData.href, '_blank');
-
+        dumpToArticle: function (artId) {
+            this.$emit('jump', artId);
         }
     },
     data: function() {

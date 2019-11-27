@@ -16,7 +16,7 @@ public interface IndexMapper {
 
     @Select("select art_id, art_title, art_abstract, art_time, art_image, cus_name\n" +
             "from Articles left join Customers on Articles.art_customer_id = Customers.cus_id\n" +
-            "where art_tag = #{tag} limit #{start}, #{pageSize}")
+            "where art_tag = #{tag} order by art_time desc limit #{start}, #{pageSize}")
     List<TinyArticleModel> getTinyArticles(@Param("tag") String tag, @Param("start") Integer start,
                                            @Param("pageSize") Integer pageSize);
 
