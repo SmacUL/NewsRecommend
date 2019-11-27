@@ -1,5 +1,6 @@
 package com.smacul.demo.dao;
 
+import com.smacul.demo.model.HotArticleModel;
 import com.smacul.demo.model.TinyArticleModel;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -18,4 +19,8 @@ public interface IndexMapper {
             "where art_tag = #{tag} limit #{start}, #{pageSize}")
     List<TinyArticleModel> getTinyArticles(@Param("tag") String tag, @Param("start") Integer start,
                                            @Param("pageSize") Integer pageSize);
+
+    @Select("select art_id, art_title, art_image from Articles " +
+            "where art_tag = '综合' order by art_time desc limit #{start}, #{pageSize}")
+    List<HotArticleModel> getHotArticles(@Param("start")Integer start, @Param("pageSize")Integer pageSize);
 }

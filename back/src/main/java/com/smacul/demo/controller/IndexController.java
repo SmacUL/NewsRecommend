@@ -1,6 +1,7 @@
 package com.smacul.demo.controller;
 
 
+import com.smacul.demo.model.HotArticleModel;
 import com.smacul.demo.model.TinyArticleModel;
 import com.smacul.demo.service.IndexService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ public class IndexController {
 
     /**
      * 用于获取首页导航栏左侧的标签数据
+     *
      * @return
      */
     @RequestMapping("/tags")
@@ -32,10 +34,24 @@ public class IndexController {
         return indexService.getLeftNavTags();
     }
 
+    /**
+     * 依据导航标签, 获取首页文章的缩略信息列表
+     *
+     * @param tag
+     * @param page
+     * @param pageSize
+     * @return
+     */
     @RequestMapping("/tiny")
     public List<TinyArticleModel> getTinyArticles(@RequestParam String tag,
                                                   @RequestParam Integer page, @RequestParam Integer pageSize) {
         return indexService.getTinyArticles(tag, page, pageSize);
     }
+
+    @RequestMapping("/hot")
+    public List<HotArticleModel> getHotArticles(@RequestParam Integer page, @RequestParam Integer pageSize) {
+        return indexService.getHotArticles(page, pageSize);
+    }
+
 
 }

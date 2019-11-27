@@ -31,7 +31,11 @@ export default {
     },
     methods: {
         dumpToArticle: function () {
-            this.$router.push({ name: 'ArticlePage', params: {'artid': this.tinyArticle.artId.toString()} });
+            // this.$router.push({ name: 'ArticlePage', params: {'artid': this.tinyArticle.artId.toString()} });
+
+            let routeData = this.$router.resolve({ name: 'ArticlePage', params: {'artid': this.tinyArticle.artId.toString()} });
+            window.open(routeData.href, '_blank');
+
         }
     },
     data: function() {

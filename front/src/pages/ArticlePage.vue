@@ -6,10 +6,6 @@
         <!-- 页面主体 左右 布局 -->
         <main>
             <article class="article-b">
-                <!--<article-main :title="article.artTitle" :content="article.artContent" :tag="article.artTag"-->
-                <!--              :author="article.cusName" :date="article.artTime" :artId="article.artId"-->
-                <!--              :likeNum="article.artLikeNum" :dislikeNum="article.artDislikeNum">-->
-                <!--</article-main>-->
                 <article-main :articleMain="articleMain"></article-main>
                 <comment-reply-input :heightKey=true style='width: 100%'></comment-reply-input>
                 <comment-panel></comment-panel>
@@ -49,6 +45,7 @@ export default {
             this.$axios.get('/api/article/main', {params: {id: this.$route.params.artid}}).then(
                 (response) => {
                     this.articleMain = response.data;
+                    window.scrollTo(0, 0);
                     // console.log(response.data);
                 }
             ).catch(

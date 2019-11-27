@@ -48,7 +48,7 @@ def get_tag_maps(path, encoding='utf-8'):
     :return:
     """
     ft = json_loader(path, encoding)
-    return ft['tag_maps']
+    return eval(ft['tag_maps'])
 
 
 def get_chrome_driver():

@@ -6,8 +6,9 @@
                 <el-button class="refresh" type="text">刷新</el-button>
             </div>
             <div class="clear-float" v-for="(hotArticle, i) in hotArticles" :key="i">
-                <img class="image" src="@/assets/logo.png"/>
-                <span class="title">{{hotArticle.title}}</span>
+                <!--<img class="image" src="@/assets/logo.png"/>-->
+                <img class="image" v-if="hotArticle.artImage !== ''" :src="hotArticle.artImage"/>
+                <span :class="[hotArticle.artImage !== '' ? title : wideTitle]" >{{hotArticle.artTitle}}</span>
             </div>
         </el-card>
     </div>
@@ -17,8 +18,13 @@
 export default {
     props: ['hotArticles'],
     name: 'HotArticle',
+    computed: {
+    },
     data: function() {
         return {
+            image: '',
+            title: 'title',
+            wideTitle: 'wide-title'
 
         }
     }
@@ -83,5 +89,17 @@ export default {
     line-height: 50px;
     font-weight: 500;
     overflow: hidden;
+    height: 50px;
+    text-align: left;
+}
+
+.hot-article .wide-title {
+    width: 100%;
+    float: left;
+    line-height: 50px;
+    font-weight: 500;
+    overflow: hidden;
+    height: 50px;
+    text-align: left;
 }
 </style>

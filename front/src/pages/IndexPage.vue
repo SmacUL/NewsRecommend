@@ -40,6 +40,7 @@ export default {
     components: { EditEntrance, HotArticle, LeftNavigater, TinyArticle, TopBar },
     created: function() {
         this.getLeftNavTags();
+        this.getHotArticles();
     },
     mounted: function() {
         window.addEventListener('scroll', this.scrollHandler, false);
@@ -91,7 +92,8 @@ export default {
             this.page = 0;
             this.curIndex = curIndex;
             this.type = type;
-            this.getTinyArticles()
+            this.getTinyArticles();
+            window.scrollTo(0, 0);
         },
 
         /**
@@ -101,7 +103,7 @@ export default {
         getTinyArticles: function() {
             this.$axios.get('/api/index/tiny?', {params: {tag: this.curTag, page: this.page, pageSize: this.pageSize}}).then(
                 (response) => {
-                    console.log(response.data);
+                    // console.log(response.data);
                     let tinyArticles = response.data;
                     // 文章加载
                     if (this.page === 0) {
@@ -110,6 +112,20 @@ export default {
                         this.tinyArticles = this.tinyArticles.concat(tinyArticles);
                     }
                     this.page += 1;
+                }
+            ).catch(
+                (response) => {
+                    console.log(response)
+                }
+            )
+        },
+
+        getHotArticles: function() {
+            this.$axios.get('/api/index/hot?', {params: {page: this.hotPage, pageSize: this.hotPageSize}}).then(
+                (response) => {
+                    console.log(response.data);
+                    this.hotArticles =  response.data;
+                    this.hotPage += 1;
                 }
             ).catch(
                 (response) => {
@@ -149,6 +165,10 @@ export default {
             page: 0,
             // pageSize: 每次请求的文章数量, 使用 this.getTinyArticles 前需要正确赋值;
             pageSize: 10,
+
+            hotPage: 0,
+            hotPageSize: 6,
+
             // type: 返回的菜单标签是属于 this.tags (0) 还是 this.secondaryTags (1)
             type: 0,
             // curIndex: 返回的菜单标签下标

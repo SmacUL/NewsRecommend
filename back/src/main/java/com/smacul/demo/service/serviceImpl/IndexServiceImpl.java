@@ -1,6 +1,7 @@
 package com.smacul.demo.service.serviceImpl;
 
 import com.smacul.demo.dao.IndexMapper;
+import com.smacul.demo.model.HotArticleModel;
 import com.smacul.demo.model.TinyArticleModel;
 import com.smacul.demo.service.IndexService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,5 +28,11 @@ public class IndexServiceImpl implements IndexService {
     public List<TinyArticleModel> getTinyArticles(String tag, Integer page, Integer pageSize) {
         Integer start = page * pageSize;
         return indexMapper.getTinyArticles(tag, start, pageSize);
+    }
+
+    @Override
+    public List<HotArticleModel> getHotArticles(Integer page, Integer pageSize) {
+        Integer start = page * pageSize;
+        return indexMapper.getHotArticles(start, pageSize);
     }
 }
