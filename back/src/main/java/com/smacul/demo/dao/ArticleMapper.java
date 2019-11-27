@@ -1,5 +1,6 @@
 package com.smacul.demo.dao;
 
+import com.smacul.demo.model.ArticleAuthorModel;
 import com.smacul.demo.model.ArticleModel;
 import com.smacul.demo.model.HotArticleModel;
 import org.apache.ibatis.annotations.Param;
@@ -20,4 +21,12 @@ public interface ArticleMapper {
             "where art_tag = #{tag} order by art_time desc limit #{start}, #{pageSize}")
     List<HotArticleModel> getHotArticles(@Param("tag") String tag,
                                          @Param("start") Integer start, @Param("pageSize") Integer pageSize);
+
+    @Select("select cus_id, cus_name, cus_avatar_url from Customers " +
+            "where cus_id = (select art_customer_id from Articles where art_id = #{artId});")
+    ArticleAuthorModel getArticleAuthorByArtId(@Param("artId") Integer artId);
+
+    @Select("select art_id, art_title, art_image from Articles " +
+            "where art_customer_id = #{cusId} order by art_time desc limit #{pageSize}")
+    List<HotArticleModel> getRelativeArticles(@Param("cusId") Integer cusId, @Param("pageSize") Integer pageSize);
 }

@@ -1,5 +1,6 @@
 package com.smacul.demo.controller;
 
+import com.smacul.demo.model.ArticleAuthorModel;
 import com.smacul.demo.model.ArticleModel;
 import com.smacul.demo.model.HotArticleModel;
 import com.smacul.demo.service.ArticleService;
@@ -42,5 +43,9 @@ public class ArticleController {
         return articleService.getHotArticles(tag, page, pageSize);
     }
 
+    @RequestMapping("/author")
+    public ArticleAuthorModel getArticleAuthorByArtId(@RequestParam Integer artId, @RequestParam Integer pageSize) {
+        return articleService.getArticleAuthorByArtId(artId, pageSize);
+    }
 
 }

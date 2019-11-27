@@ -1,6 +1,7 @@
 package com.smacul.demo.service.serviceImpl;
 
 import com.smacul.demo.dao.ArticleMapper;
+import com.smacul.demo.model.ArticleAuthorModel;
 import com.smacul.demo.model.ArticleModel;
 import com.smacul.demo.model.HotArticleModel;
 import com.smacul.demo.service.ArticleService;
@@ -29,5 +30,13 @@ public class ArticleServiceImpl implements ArticleService {
     public List<HotArticleModel> getHotArticles(String tag, Integer page, Integer pageSize) {
         Integer start = page * pageSize;
         return articleMapper.getHotArticles(tag, start, pageSize);
+    }
+
+    @Override
+    public ArticleAuthorModel getArticleAuthorByArtId(Integer artId, Integer pageSize) {
+        ArticleAuthorModel articleAuthor = articleMapper.getArticleAuthorByArtId(artId);
+        List<HotArticleModel> hotArticles = articleMapper.getRelativeArticles(articleAuthor.getCusId(), pageSize);
+        articleAuthor.setHotArticles(hotArticles);
+        return articleAuthor;
     }
 }

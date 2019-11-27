@@ -8,7 +8,7 @@ CREATE DATABASE IF NOT EXISTS NewsRecommend CHARACTER SET utf8;
 DROP TABLE IF EXISTS NewsRecommend.Customers;
 CREATE TABLE NewsRecommend.Customers (
     cus_id INT UNSIGNED NOT NULL auto_increment,
-    cus_name VARCHAR(64),
+    cus_name VARCHAR(64) unique,
     cus_pass VARCHAR(255),
     cus_email VARCHAR(64),
     cus_phone VARCHAR(64),

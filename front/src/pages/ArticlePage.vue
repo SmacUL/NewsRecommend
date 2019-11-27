@@ -11,7 +11,7 @@
                 <comment-panel></comment-panel>
             </article>
             <aside>
-                <editor-brief class="editor-brief" :recentArticles=recentArticles :editor=editor></editor-brief>
+                <editor-brief class="editor-brief" :articleAuthor='articleAuthor' @jump="dumpToArticle"></editor-brief>
                 <edit-entrance class="edit-entrance"></edit-entrance>
                 <hot-article class="hot-article" :hotArticles='hotArticles' :title="'相关阅读'"
                              @refresh="getHotArticles" @jump="dumpToArticle">
@@ -54,6 +54,23 @@ export default {
                     window.scrollTo(0, 0);
                     // console.log(response.data);
                     this.getHotArticles();
+                    this.getAuthorInfo();
+                }
+            ).catch(
+                (response) => {
+                    console.log(response.data);
+                }
+            )
+        },
+
+        /**
+         * 获取文章作者信息以及相关文章内容
+         */
+        getAuthorInfo: function() {
+            this.$axios.get('/api/article/author', {params: {artId: this.$route.params.artid, pageSize: '4'}}).then(
+                (response) => {
+                    this.articleAuthor = response.data;
+                    // console.log(response.data);
                 }
             ).catch(
                 (response) => {
@@ -104,17 +121,23 @@ export default {
                 {title: 'asdfjasjdfkljakldjlfkasjlkdfjlakjflkajflkasjklfjkasldfj'},
                 {title: 'asdfjasjdfkljakldjlfkasjlkdfjlakjflkajflkasjklfjkasldfj'},
             ],
-            editor: {
-                id: 6,
-                name: '中国新闻网', 
-                avaterUrl: 'https://p3.pstatp.com/large/97d001bf3f3cba72913',
+            articleAuthor: {
+                cusId: 6,
+                cusName: '中国新闻网',
+                cusAvatarUrl: 'https://p3.pstatp.com/large/97d001bf3f3cba72913',
+                hotArticles: [
+                    {title: 'asdfjasjdfkljakldjlfkasjlkdfjlakjflkajflkasjklfjkasldfj'},
+                    {title: 'asdfjasjdfkljakldjlfkasjlkdfjlakjflkajflkasjklfjkasldfj'},
+                    {title: 'asdfjasjdfkljakldjlfkasjlkdfjlakjflkajflkasjklfjkasldfj'},
+                    {title: 'asdfjasjdfkljakldjlfkasjlkdfjlakjflkajflkasjklfjkasldfj'},
+                ]
             },
-            recentArticles: [
-                {title: 'asdfjasjdfkljakldjlfkasjlkdfjlakjflkajflkasjklfjkasldfj'},
-                {title: 'asdfjasjdfkljakldjlfkasjlkdfjlakjflkajflkasjklfjkasldfj'},
-                {title: 'asdfjasjdfkljakldjlfkasjlkdfjlakjflkajflkasjklfjkasldfj'},
-                {title: 'asdfjasjdfkljakldjlfkasjlkdfjlakjflkajflkasjklfjkasldfj'},
-            ],
+            // recentArticles: [
+            //     {title: 'asdfjasjdfkljakldjlfkasjlkdfjlakjflkajflkasjklfjkasldfj'},
+            //     {title: 'asdfjasjdfkljakldjlfkasjlkdfjlakjflkajflkasjklfjkasldfj'},
+            //     {title: 'asdfjasjdfkljakldjlfkasjlkdfjlakjflkajflkasjklfjkasldfj'},
+            //     {title: 'asdfjasjdfkljakldjlfkasjlkdfjlakjflkajflkasjklfjkasldfj'},
+            // ],
             articleMain: {
                 artId: 4,
                 artTitle: "上海公安机关：外媒报道的所谓“中国特工”王立强系涉案在逃人员",

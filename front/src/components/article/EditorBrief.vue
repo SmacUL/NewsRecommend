@@ -2,14 +2,17 @@
     <div class="editor-brief">
         <el-card>
             <div class="clear-float" slot="header">
-                <img class="image" :src="editor.avaterUrl"/>
+                <img class="image" :src="articleAuthor.cusAvatarUrl"/>
                 <div class="editor-follow">
-                    <span class="editor"> {{editor.name}}</span>
+                    <span class="editor"> {{articleAuthor.cusName}}</span>
                     <el-button class="follow" type="primary">+关注</el-button>
                 </div>
             </div>
-            <div class="titles" v-for="(recentArticle, i) in recentArticles" :key="i">
-                <span class="title">+&nbsp;{{recentArticle.title}}</span>
+            <div>
+                <span class="title" v-for="(hotArticle, i) in articleAuthor.hotArticles" :key="i"
+                      @click="jumpToArticle(hotArticle.artId)">
+                    +&nbsp;{{hotArticle.artTitle}}
+                </span>
             </div>
         </el-card>
     </div>
@@ -17,8 +20,18 @@
 
 <script>
 export default {
-    props: ['recentArticles', 'editor'],
-    name: 'EditorBrief'
+    props: ['articleAuthor'],
+    name: 'EditorBrief',
+    methods: {
+        jumpToArticle: function (artId) {
+            this.$emit('jump', artId);
+        }
+    },
+    data: function () {
+        return {
+
+        }
+    }
 }
 </script>
 
@@ -61,12 +74,17 @@ export default {
     padding: 10px;
 }
 
-.editor-brief .titles {
+.editor-brief .title {
     overflow: hidden;
+    height: 30px;
+    text-align: left;
+    line-height: 30px;
+    display: block;
 }
 
-.editor-brief .title {
-    line-height: 30px;
+.editor-brief .title:hover {
+    color: #409EFF;
+    cursor: pointer;
 }
 
 </style>
