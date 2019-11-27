@@ -48,6 +48,13 @@ public class IndexController {
         return indexService.getTinyArticles(tag, page, pageSize);
     }
 
+    /**
+     * 获取热点文章的列表
+     *
+     * @param page
+     * @param pageSize
+     * @return
+     */
     @RequestMapping("/hot")
     public List<HotArticleModel> getHotArticles(@RequestParam Integer page, @RequestParam Integer pageSize) {
         return indexService.getHotArticles(page, pageSize);

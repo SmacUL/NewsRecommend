@@ -18,7 +18,7 @@
             </article>
             <aside>
                 <edit-entrance class="edit-entrance"></edit-entrance>
-                <hot-article class="hot-article" :hotArticles='hotArticles'
+                <hot-article class="hot-article" :hotArticles='hotArticles' :title="'热点新闻'"
                              @refresh="getHotArticles" @jump="dumpToArticle">
                 </hot-article>
             </aside>
@@ -42,7 +42,6 @@ export default {
     components: { EditEntrance, HotArticle, LeftNavigater, TinyArticle, TopBar },
     created: function() {
         this.getLeftNavTags();
-        this.getHotArticles();
     },
     mounted: function() {
         window.addEventListener('scroll', this.scrollHandler, false);
@@ -60,6 +59,7 @@ export default {
                     this.secondaryTags = response.data.slice(border);
                     // 在初始化标签的之后, 异步加载文章;
                     this.getTinyArticles(this.curIndex, this.type);
+                    this.getHotArticles();
                     // console.log(response.data)
                 }
             ).catch(
@@ -147,10 +147,6 @@ export default {
         dumpToArticle: function(artId) {
             let routeData = this.$router.resolve({ name: 'ArticlePage', params: {'artid': artId.toString()} });
             window.open(routeData.href, '_blank');
-        },
-
-        refreshArticles: function() {
-
         },
 
         /**

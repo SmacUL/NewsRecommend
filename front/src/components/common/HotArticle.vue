@@ -2,7 +2,7 @@
     <div class="hot-article">
         <el-card>
             <div slot="header">
-                <span class="hot-art">热点新闻</span>
+                <span class="hot-art">{{ title }}</span>
                 <el-button class="refresh" type="text" @click="refreshArticles">刷新</el-button>
             </div>
             <div class="clear-float" v-for="(hotArticle, i) in hotArticles" :key="i">
@@ -18,7 +18,7 @@
 
 <script>
 export default {
-    props: ['hotArticles'],
+    props: ['title', 'hotArticles'],
     name: 'HotArticle',
     computed: {
     },

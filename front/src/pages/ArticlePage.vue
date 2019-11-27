@@ -13,7 +13,9 @@
             <aside>
                 <editor-brief class="editor-brief" :recentArticles=recentArticles :editor=editor></editor-brief>
                 <edit-entrance class="edit-entrance"></edit-entrance>
-                <hot-article class="hot-article" :hotArticles='hotArticles'></hot-article>
+                <hot-article class="hot-article" :hotArticles='hotArticles' :title="'相关阅读'"
+                             @refresh="getHotArticles" @jump="dumpToArticle">
+                </hot-article>
             </aside>
         </main>
     </div>
@@ -40,6 +42,10 @@ export default {
         this.getArticleMain();
     },
     methods: {
+
+        /**
+         * 获取文章的主体内容
+         */
         getArticleMain: function() {
             // alert(this.$route.params.artid);
             this.$axios.get('/api/article/main', {params: {id: this.$route.params.artid}}).then(
@@ -47,6 +53,7 @@ export default {
                     this.articleMain = response.data;
                     window.scrollTo(0, 0);
                     // console.log(response.data);
+                    this.getHotArticles();
                 }
             ).catch(
                 (response) => {
@@ -54,9 +61,41 @@ export default {
                 }
             )
         },
+
+        /**
+         * 跳转到指定 id 的文章页面
+         *
+         * @Param: artId
+         */
+        dumpToArticle: function(artId) {
+            let routeData = this.$router.resolve({ name: 'ArticlePage', params: {'artid': artId.toString()} });
+            window.open(routeData.href, '_blank');
+        },
+
+        /**
+         * 提供右侧的热点文章
+         */
+        getHotArticles: function() {
+            this.$axios.get('/api/article/hot?',
+                {params: {tag: this.articleMain.artTag, page: this.hotPage, pageSize: this.hotPageSize}}).then(
+                (response) => {
+                    console.log(response.data);
+                    this.hotArticles =  response.data;
+                    this.hotPage += 1;
+                }
+            ).catch(
+                (response) => {
+                    console.log(response)
+                }
+            )
+        },
     },
     data: function() {
         return {
+
+            hotPage: 0,
+            hotPageSize: 6,
+
             hotArticles: [
                 {title: 'asdfjasjdfkljakldjlfkasjlkdfjlakjflkajflkasjklfjkasldfj'},
                 {title: 'asdfjasjdfkljakldjlfkasjlkdfjlakjflkajflkasjklfjkasldfj'},
