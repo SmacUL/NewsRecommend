@@ -33,7 +33,7 @@ export default new Router({
             component: PortPage,
         },
         {
-            path: '/search',
+            path: '/search/:input',
             name: 'SearchPage', 
             component: SearchPage,
         },

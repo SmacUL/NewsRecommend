@@ -1,6 +1,6 @@
 <template>
     <div>
-        <header><top-bar class="top-bar"></top-bar></header>
+        <header><top-bar class="top-bar" @search="searchArticles"></top-bar></header>
         <!-- 页面主体 左中右 布局 -->
         <main>
             <nav>
@@ -169,6 +169,11 @@ export default {
             if (scrollHeight - 10 >= mainEHeight - (browserHeight - topEHeight - 10)) {
                 this.getTinyArticles();
             }
+        },
+
+        searchArticles: function(message) {
+            let routeData = this.$router.resolve({ name: 'SearchPage', params: {'input': message} });
+            window.open(routeData.href, '_blank');
         }
 
     },

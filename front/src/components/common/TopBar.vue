@@ -4,8 +4,8 @@
             <img src="@/assets/image/Logo.png"/>
         </div>
         <div class="search">
-            <el-input v-model="input" placeholder="请输入内容"></el-input>
-            <el-button type="primary">搜索</el-button>
+            <el-input v-model="message" placeholder="请输入内容"></el-input>
+            <el-button type="primary" @click="searchArticles()">搜索</el-button>
         </div>
         <div class="manage">
             <el-button type="text">登录</el-button>
@@ -17,9 +17,14 @@
 <script>
 export default {
     name: 'TopBar',
+    methods: {
+        searchArticles: function () {
+            this.$emit('search', this.message);
+        }
+    },
     data: function() {
         return {
-            input: ''
+            message: ''
         }
     }
 }
@@ -54,6 +59,7 @@ export default {
 
 .top-bar .search .el-input__inner {
     border-radius: 5px 0px 0px 5px;
+    line-height: unset;
 }
 
 .top-bar .search .el-button {
