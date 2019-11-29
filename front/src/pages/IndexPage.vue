@@ -57,8 +57,8 @@ export default {
                     this.tags = response.data.slice(0, border);
                     this.tags.push('更多');
                     this.secondaryTags = response.data.slice(border);
-                    // 在初始化标签的之后, 异步加载文章;
-                    this.getTinyArticles(this.curIndex, this.type);
+                    // 在初始化标签的之后, 异步加载文章 getCurTinyArticles;
+                    this.getCurTinyArticles(this.curIndex, this.type);
                     this.getHotArticles();
                     // console.log(response.data)
                 }
@@ -105,7 +105,7 @@ export default {
         getTinyArticles: function() {
             this.$axios.get('/api/index/tiny?', {params: {tag: this.curTag, page: this.page, pageSize: this.pageSize}}).then(
                 (response) => {
-                    // console.log(response.data);
+                    console.log(response.data);
                     let tinyArticles = response.data;
                     // 文章加载
                     if (this.page === 0) {

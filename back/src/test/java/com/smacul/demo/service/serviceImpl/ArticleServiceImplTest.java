@@ -1,6 +1,7 @@
 package com.smacul.demo.service.serviceImpl;
 
-import com.smacul.demo.dao.ArticleMapper;
+import com.smacul.demo.dao.ArticlesMapper;
+import com.smacul.demo.dao.CustomersMapper;
 import com.smacul.demo.model.ArticleAuthorModel;
 import com.smacul.demo.model.HotArticleModel;
 import org.junit.jupiter.api.Test;
@@ -11,20 +12,20 @@ import javax.servlet.http.HttpSession;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
 class ArticleServiceImplTest {
 
     @Autowired
-    ArticleMapper articleMapper;
+    ArticlesMapper articlesMapper;
+    @Autowired
+    CustomersMapper customersMapper;
 
     @Autowired
     HttpSession session;
 
     @Test
     void getArticleMain() {
-        System.out.println(articleMapper.getArticleMain(1));
+        System.out.println(articlesMapper.getArticleMain(1));
     }
 
     @Test
@@ -33,11 +34,11 @@ class ArticleServiceImplTest {
 
     @Test
     void getArticleAuthorByArtId() {
-        ArticleAuthorModel articleAuthor = articleMapper.getArticleAuthorByArtId(239);
+        ArticleAuthorModel articleAuthor = customersMapper.getArticleAuthorByArtId(239);
         System.out.println(articleAuthor.getCusAvatarUrl());
         Integer pageSize = 6;
 
-        List<HotArticleModel> hotArticles = articleMapper.getRelativeArticles(articleAuthor.getCusId(), pageSize);
+        List<HotArticleModel> hotArticles = articlesMapper.getRelativeArticles(articleAuthor.getCusId(), pageSize);
         articleAuthor.setHotArticles(hotArticles);
         System.out.println(articleAuthor);
     }

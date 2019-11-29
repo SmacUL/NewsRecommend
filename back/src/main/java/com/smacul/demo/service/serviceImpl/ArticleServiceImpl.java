@@ -1,6 +1,7 @@
 package com.smacul.demo.service.serviceImpl;
 
-import com.smacul.demo.dao.ArticleMapper;
+import com.smacul.demo.dao.ArticlesMapper;
+import com.smacul.demo.dao.CustomersMapper;
 import com.smacul.demo.model.ArticleAuthorModel;
 import com.smacul.demo.model.ArticleModel;
 import com.smacul.demo.model.HotArticleModel;
@@ -15,7 +16,9 @@ import java.util.List;
 public class ArticleServiceImpl implements ArticleService {
 
     @Autowired
-    ArticleMapper articleMapper;
+    ArticlesMapper articlesMapper;
+    @Autowired
+    CustomersMapper customersMapper;
 
     @Autowired
     HttpSession session;
@@ -23,19 +26,19 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public ArticleModel getArticleMain(Integer id) {
-        return articleMapper.getArticleMain(id);
+        return articlesMapper.getArticleMain(id);
     }
 
     @Override
     public List<HotArticleModel> getHotArticles(String tag, Integer page, Integer pageSize) {
         Integer start = page * pageSize;
-        return articleMapper.getHotArticles(tag, start, pageSize);
+        return articlesMapper.getHotArticlesByTag(tag, start, pageSize);
     }
 
     @Override
     public ArticleAuthorModel getArticleAuthorByArtId(Integer artId, Integer pageSize) {
-        ArticleAuthorModel articleAuthor = articleMapper.getArticleAuthorByArtId(artId);
-        List<HotArticleModel> hotArticles = articleMapper.getRelativeArticles(articleAuthor.getCusId(), pageSize);
+        ArticleAuthorModel articleAuthor = customersMapper.getArticleAuthorByArtId(artId);
+        List<HotArticleModel> hotArticles = articlesMapper.getRelativeArticles(articleAuthor.getCusId(), pageSize);
         articleAuthor.setHotArticles(hotArticles);
         return articleAuthor;
     }

@@ -1,6 +1,6 @@
 package com.smacul.demo.service.serviceImpl;
 
-import com.smacul.demo.dao.IndexMapper;
+import com.smacul.demo.dao.ArticlesMapper;
 import com.smacul.demo.model.HotArticleModel;
 import com.smacul.demo.model.TinyArticleModel;
 import com.smacul.demo.service.IndexService;
@@ -13,26 +13,27 @@ import java.util.List;
 @Service
 public class IndexServiceImpl implements IndexService {
 
+
     @Autowired
-    IndexMapper indexMapper;
+    ArticlesMapper articlesMapper;
 
     @Autowired
     HttpSession session;
 
     @Override
     public List<String> getLeftNavTags() {
-        return indexMapper.getLeftNavTags();
+        return articlesMapper.getLeftNavTags();
     }
 
     @Override
     public List<TinyArticleModel> getTinyArticles(String tag, Integer page, Integer pageSize) {
         Integer start = page * pageSize;
-        return indexMapper.getTinyArticles(tag, start, pageSize);
+        return articlesMapper.getTinyArticles(tag, start, pageSize);
     }
 
     @Override
     public List<HotArticleModel> getHotArticles(Integer page, Integer pageSize) {
         Integer start = page * pageSize;
-        return indexMapper.getHotArticles(start, pageSize);
+        return articlesMapper.getHotArticles(start, pageSize);
     }
 }

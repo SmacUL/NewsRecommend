@@ -1,6 +1,6 @@
 package com.smacul.demo.service.serviceImpl;
 
-import com.smacul.demo.dao.IndexMapper;
+import com.smacul.demo.dao.ArticlesMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,20 +13,20 @@ import java.util.List;
 class IndexServiceImplTest {
 
     @Autowired
-    IndexMapper indexMapper;
+    ArticlesMapper articlesMapper;
 
     @Autowired
     HttpSession session;
 
     @Test
     void getLeftNavTags() {
-        List<String> result = indexMapper.getLeftNavTags();
+        List<String> result = articlesMapper.getLeftNavTags();
     }
 
     @Test
     void getTinyArticles() {
 //        List<TinyArticleModel> result = indexMapper.getTinyArticles();
 //        TinyArticleModel result = indexMapper.getTinyArticles();
-        System.out.println(indexMapper.getTinyArticles("综合", 10, 10));
+        System.out.println(articlesMapper.getTinyArticles("综合", 10, 10));
     }
 }
