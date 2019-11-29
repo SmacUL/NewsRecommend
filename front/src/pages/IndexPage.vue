@@ -1,6 +1,6 @@
 <template>
     <div>
-        <header><top-bar class="top-bar" @search="searchArticles"></top-bar></header>
+        <header><top-bar class="top-bar" @search="searchArticles" :message="''"></top-bar></header>
         <!-- 页面主体 左中右 布局 -->
         <main>
             <nav>
@@ -15,6 +15,7 @@
                     <tiny-article class="tiny-article" :tinyArticle="tinyArticle" @jump="dumpToArticle">
                     </tiny-article>
                 </div>
+                <div v-if="tinyArticles.length === 0" style="font-size: 20px; padding-top: 50px;">uh 不爽吧</div>
             </article>
             <aside>
                 <edit-entrance class="edit-entrance"></edit-entrance>
@@ -172,6 +173,9 @@ export default {
         },
 
         searchArticles: function(message) {
+            if (message === '') {
+                message = '哈哈';
+            }
             let routeData = this.$router.resolve({ name: 'SearchPage', params: {'input': message} });
             window.open(routeData.href, '_blank');
         }

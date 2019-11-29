@@ -46,4 +46,33 @@ public interface ArticlesMapper {
     List<TinyArticleModel> getTinyArticles(@Param("tag") String tag, @Param("start") Integer start,
                                            @Param("pageSize") Integer pageSize);
 
+
+    @Select("select art_id, art_title, art_abstract, art_time, art_image, cus_name\n" +
+            "from Articles left join Customers on Articles.art_customer_id = Customers.cus_id\n" +
+            "where art_title like CONCAT('%', #{key}, '%') or art_abstract like CONCAT('%', #{key}, '%')" +
+            " or cus_name like CONCAT('%', #{key}, '%')" +
+            " order by art_time desc limit #{start}, #{pageSize}")
+    List<TinyArticleModel> searchTinyArticles(@Param("key") String key,
+                                              @Param("start") Integer start,
+                                              @Param("pageSize") Integer pageSize);
+
+
+    @Select("select art_id, art_title, art_abstract, art_time, art_image, cus_name\n" +
+            "from Articles left join Customers on Articles.art_customer_id = Customers.cus_id\n" +
+            "where art_title like CONCAT('%', #{key}, '%') or art_abstract like CONCAT('%', #{key}, '%')" +
+            " order by art_time desc limit #{start}, #{pageSize}")
+    List<TinyArticleModel> searchTinyArticlesByArticle(@Param("key") String key,
+                                                       @Param("start") Integer start,
+                                                       @Param("pageSize") Integer pageSize);
+
+
+    @Select("select art_id, art_title, art_abstract, art_time, art_image, cus_name\n" +
+            "from Articles left join Customers on Articles.art_customer_id = Customers.cus_id\n" +
+            "where cus_name like CONCAT('%', #{key}, '%')" +
+            " order by art_time desc limit #{start}, #{pageSize}")
+    List<TinyArticleModel> searchTinyArticlesByCustomer(@Param("key") String key,
+                                                        @Param("start") Integer start,
+                                                        @Param("pageSize") Integer pageSize);
 }
+
+

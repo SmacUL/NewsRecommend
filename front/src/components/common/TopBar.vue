@@ -5,7 +5,7 @@
         </div>
         <div class="search">
             <el-input v-model="message" placeholder="请输入内容"></el-input>
-            <el-button type="primary" @click="searchArticles()">搜索</el-button>
+            <el-button type="primary" @click="searchArticles">搜索</el-button>
         </div>
         <div class="manage">
             <el-button type="text">登录</el-button>
@@ -17,6 +17,8 @@
 <script>
 export default {
     name: 'TopBar',
+    props: ['message'],
+
     methods: {
         searchArticles: function () {
             this.$emit('search', this.message);
@@ -24,7 +26,7 @@ export default {
     },
     data: function() {
         return {
-            message: ''
+            // message: ''
         }
     }
 }
