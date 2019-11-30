@@ -1,6 +1,10 @@
 <template>
     <div>
-        <header><top-bar class="top-bar" style="width: 1020px;margin-left: 50%;left: -510px;"></top-bar></header>
+        <header>
+            <top-bar class="top-bar" style="width: 1020px;margin-left: 50%;left: -510px;"
+                     @search="searchArticles" :message="message">
+            </top-bar>
+        </header>
         <section style="width: 1020px;">
             <show-panel  :customer="customer"></show-panel>
         </section>
@@ -111,6 +115,15 @@ export default {
 
             this.getCustomerArticles();
             // console.log(document.documentElement.clientHeight);
+        },
+
+        searchArticles: function(message) {
+            if (message === '') {
+                message = '哈哈';
+            }
+            // let routeData = this.$router.resolve({ name: 'SearchPage', params: {'input': message} });
+            // window.open(routeData.href, '_blank');
+            this.$router.push({ name: 'SearchPage', params: {'input': message} });
         }
     },
     data: function () {
@@ -124,6 +137,8 @@ export default {
             param: '',
             // asideStyle 不要动
             asideStyle: 'position: static',
+
+            message: '',
 
             // customer
             customer: {
