@@ -13,7 +13,8 @@
             <article class="article-a">
                 <div  v-for="(tinyArticle, i) in tinyArticles" :key="i">
                     <!--<tiny-article class="tiny-article" :item="item"></tiny-article>-->
-                    <tiny-article class="tiny-article" :tinyArticle="tinyArticle" @jump="dumpToArticle">
+                    <tiny-article class="tiny-article" :tinyArticle="tinyArticle"
+                                  @jump="jumpToArticle" @editor="jumpToCustomer">
                     </tiny-article>
                 </div>
                 <div v-if="tinyArticles.length === 0" style="font-size: 20px; padding-top: 50px;">uh 不爽吧</div>
@@ -156,11 +157,20 @@ export default {
          *
          * @Param: artId
          */
-        dumpToArticle: function(artId) {
+        jumpToArticle: function(artId) {
             let routeData = this.$router.resolve({ name: 'ArticlePage', params: {'artid': artId.toString()} });
             window.open(routeData.href, '_blank');
         },
 
+        /**
+         * 跳转到指定 文章 的用户中心
+         *
+         * @Param: artId
+         */
+        jumpToCustomer: function(artId) {
+            let routeData = this.$router.resolve({ name: 'SelfPage', params: {'type':'art', 'id': artId.toString()} });
+            window.open(routeData.href, '_blank');
+        },
 
         searchArticles: function(message) {
             if (message === '') {
