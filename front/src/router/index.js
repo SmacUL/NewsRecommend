@@ -37,8 +37,9 @@ export default new Router({
             name: 'SearchPage', 
             component: SearchPage,
         },
+
         {
-            path: '/self',
+            path: '/self/:type/:id',
             name: 'SelfPage', 
             component: SelfPage,
         },

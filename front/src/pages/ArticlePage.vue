@@ -11,7 +11,8 @@
                 <comment-panel></comment-panel>
             </article>
             <aside>
-                <editor-brief class="editor-brief" :articleAuthor='articleAuthor' @jump="dumpToArticle"></editor-brief>
+                <editor-brief class="editor-brief" :articleAuthor='articleAuthor' @editor="jumpToCustomer" @jump="jumpToArticle">
+                </editor-brief>
                 <edit-entrance class="edit-entrance"></edit-entrance>
                 <hot-article class="hot-article" :hotArticles='hotArticles' :title="'相关阅读'"
                              @refresh="getHotArticles" @jump="dumpToArticle">
@@ -84,8 +85,13 @@ export default {
          *
          * @Param: artId
          */
-        dumpToArticle: function(artId) {
+        jumpToArticle: function(artId) {
             let routeData = this.$router.resolve({ name: 'ArticlePage', params: {'artid': artId.toString()} });
+            window.open(routeData.href, '_blank');
+        },
+
+        jumpToCustomer: function(cusId) {
+            let routeData = this.$router.resolve({ name: 'SelfPage', params: {'type': 'cus', 'id': cusId.toString()} });
             window.open(routeData.href, '_blank');
         },
 

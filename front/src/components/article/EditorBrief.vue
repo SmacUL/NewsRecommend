@@ -4,10 +4,11 @@
             <div class="clear-float" slot="header">
                 <img class="image" :src="articleAuthor.cusAvatarUrl"/>
                 <div class="editor-follow">
-                    <span class="editor"> {{articleAuthor.cusName}}</span>
+                    <span class="editor" @click="jumpToCustomer(articleAuthor.cusId)"> {{articleAuthor.cusName}}</span>
                     <el-button class="follow" type="primary">+关注</el-button>
                 </div>
             </div>
+            <!-- 作者的相关新闻 -->
             <div>
                 <span class="title" v-for="(hotArticle, i) in articleAuthor.hotArticles" :key="i"
                       @click="jumpToArticle(hotArticle.artId)">
@@ -25,6 +26,9 @@ export default {
     methods: {
         jumpToArticle: function (artId) {
             this.$emit('jump', artId);
+        },
+        jumpToCustomer: function (cusId) {
+            this.$emit('editor', cusId);
         }
     },
     data: function () {
@@ -60,6 +64,11 @@ export default {
     display: block;
     text-align: left;
     font-size: 12pt;
+}
+
+.editor-brief .editor:hover {
+    color: #409EFF;
+    cursor: pointer;
 }
 
 .editor-brief .el-button {
