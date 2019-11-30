@@ -73,6 +73,15 @@ public interface ArticlesMapper {
     List<TinyArticleModel> searchTinyArticlesByCustomer(@Param("key") String key,
                                                         @Param("start") Integer start,
                                                         @Param("pageSize") Integer pageSize);
+
+
+    @Select("select art_id, art_title, art_abstract, art_time, art_image, cus_name\n" +
+            "from Articles left join Customers on Articles.art_customer_id = Customers.cus_id\n" +
+            "where cus_id = #{cusId}" +
+            " order by art_time desc limit #{start}, #{pageSize}")
+    List<TinyArticleModel> getTinyArticlesByCusId(@Param("cusId")Integer cusId,
+                                                  @Param("start") Integer start,
+                                                  @Param("pageSize") Integer pageSize);
 }
 
 
