@@ -1,7 +1,7 @@
 <template>
     <div>
         <header>
-            <top-bar class="top-bar"></top-bar>
+            <top-bar class="top-bar" @search="searchArticles" :message="''"></top-bar>
         </header>
         <!-- 页面主体 左右 布局 -->
         <main>
@@ -112,6 +112,14 @@ export default {
                 }
             )
         },
+
+        searchArticles: function(message) {
+            if (message === '') {
+                message = '哈哈';
+            }
+            let routeData = this.$router.resolve({ name: 'SearchPage', params: {'input': message} });
+            window.open(routeData.href, '_blank');
+        }
     },
     data: function() {
         return {
