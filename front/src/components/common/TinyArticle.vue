@@ -46,50 +46,52 @@ export default {
 }
 </script>
 
-<style>
-    .tiny-article .el-card {
+<style scoped>
+    .el-card {
         padding: 10px;
         border: 0px;
         border-radius: 0px;
     }
 
-    .tiny-article .el-card.is-always-shadow {
+    .el-card.is-always-shadow {
         border-bottom: solid 1px rgba(0,0,0,.1);
         box-shadow: none;
     }
 
-    .tiny-article .el-card.is-always-shadow:hover {
+    .el-card.is-always-shadow:hover {
         box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
         background-color: #f4f5f6;
         border-bottom: none;
     }
 
-    .tiny-article .image img {
+    .image img {
         float: left;
         width: 27%;
         height: 120px;
         margin-right: 3%;
     }
 
-    .tiny-article .el-card__body {
+    .el-card >>> .el-card__body {
         padding: 0px;
+        overflow: hidden;
+
     }
 
-    .tiny-article .tiny-art {
+    .tiny-art {
         float: left;
         width: 70%;
         height: 120px;
         position: relative;
     }
 
-    .tiny-article .tiny-art-wide {
+    .tiny-art-wide {
         float: left;
         width: 100%;
         height: 120px;
         position: relative;
     }
 
-    .tiny-article .title {
+    .title {
         height: 60px;
         line-height: 30px;
         font-size: 18pt;
@@ -99,12 +101,12 @@ export default {
         font-weight: 800;
     }
 
-    .tiny-article .title:hover {
+    .title:hover {
         color: #409EFF;
         cursor: pointer;
     }
 
-    .tiny-article .description {
+    .description {
         height: 20px;
         line-height: 20px;
         overflow: hidden;
@@ -112,7 +114,7 @@ export default {
         color: #888888;
     }
 
-    .tiny-article .info {
+    .info {
         text-align: left;
         font-size: 14px;
         position: absolute;
@@ -120,16 +122,16 @@ export default {
         color: #888888;
     }
 
-    .tiny-article .info :first-child {
+    .info :first-child {
         font-weight: 400;
     }
 
-    .tiny-article .customer {
+    .customer {
         margin-right: 5px;
 
     }
 
-    .tiny-article .customer:hover {
+    .customer:hover {
         color: #409EFF;
         cursor: pointer;
     }
