@@ -32,48 +32,45 @@ export default {
 }
 </script>
 
-<style>
-/* .top-bar {
-    padding: 10px 0px 10px 0px;
-} */
+<style scoped>
 
-.top-bar .image {
+.image {
     float: left; 
     height: 40px;
     margin-top: 5px;
 }
 
-.top-bar .image img {
+.image img {
     height: 30px;
     width: 130px;
 }
 
-.top-bar .search {
+.search {
     width: 400px; 
     float: left; 
     margin-left: 20%;
 }
 
-.top-bar .search .el-input {
+.search >>> .el-input {
     width: 300px;
     float: left;
 }
 
-.top-bar .search .el-input__inner {
+.search >>> .el-input__inner {
     border-radius: 5px 0px 0px 5px;
     line-height: unset;
 }
 
-.top-bar .search .el-button {
+.search >>> .el-button {
     float: left; 
     border-radius: 0px 5px 5px 0px;
 }
 
-.top-bar .manage {
+.manage {
     float: right;
 }
 
-.top-bar .manage .el-button {
+.manage >>> .el-button {
     font-size: 18px;
 }
 
