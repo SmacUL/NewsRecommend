@@ -12,24 +12,20 @@
             <!-- 2. 鼠标可以继续在二级标签展示板中滑动, 同时滑动到的二级标签文字高亮-->
             <!-- 3. 鼠标划出入口或二级标签展示板, 二级标签展示板收回, 同时入口文字取消高亮 -->
             <!-- 4. 鼠标点击二级标签, 则此二级标签上升为一级标签, 并且和倒数第二个一级标签调换位置 -->
-            <el-menu-item class="special-button" style="position: relative; padding: 0px;" v-if="showLast">
+            <el-menu-item class="special-button" v-if="showLast">
                 <!-- 二级标签入口文字 -->
-                <span slot="title" @mouseenter="showPanel(true)" @mouseleave="showPanel(false)"
-                        style="display: inline-block; width: 130px;">
+                <span class="button-span" slot="title" @mouseenter="showPanel(true)" @mouseleave="showPanel(false)">
                     {{tags[tags.length - 1]}}
                 </span>
                 <!-- 二级标签展示板 -->
-                <div v-show="panel"
-                     style="background-color: #fff; border: solid #f4f5f6 1px; width: 520px; position: absolute;
-                            left: 130px; top: -5px; padding: 5px 5px 0px 5px"
+                <div v-show="panel" class="secondary-panel"
                      @mouseenter="showPanel(true)" @mouseleave="showPanel(false)">
                     <div v-for="(lineNum, lineIndex) in Math.ceil(secondaryTags.length / buttonNum)" :key="lineIndex">
-                        <el-button-group style="margin-bottom: 5px;">
+                        <el-button-group>
                             <el-button class="secondary-button" type="primary"
                                        v-for="(m, mIndex) in buttonNum" :key="mIndex"
                                        v-if="lineIndex * buttonNum + mIndex < secondaryTags.length"
-                                       @click="changeCurIndex(lineIndex * buttonNum + mIndex, 1)"
-                                       style="width: 130px; height: 40px;">
+                                       @click="changeCurIndex(lineIndex * buttonNum + mIndex, 1)">
                                 {{ secondaryTags[lineIndex * buttonNum + mIndex] }}
                                 <!--{{ lineIndex * buttonNum + mIndex }}-->
                             </el-button>
@@ -85,8 +81,8 @@ export default {
 };
 </script>
 
-<style>
-    .left-navigater .el-menu-item {
+<style scoped>
+    .el-menu-item {
         border-radius: 5px;
         margin-bottom: 5px;
         font-size: 16px;
@@ -96,45 +92,73 @@ export default {
         height: 40px;
     }
 
-    .left-navigater .el-menu {
+    .el-menu {
         border: none;
     }
 
-    .left-navigater .el-menu-item.is-active {
+    .el-menu-item.is-active {
         background-color: #409EFF;
         color: #ffffff;
         border-radius: 5px;
     }
 
-    .left-navigater .el-menu-item:hover {
+    .el-menu-item:hover {
         background-color: #409EFF;
         color: #ffffff;
         border-radius: 5px;
     }
 
-    .left-navigater .spacial-button .el-menu-item {
+
+    .special-button {
+        position: relative;
+        padding: 0px !important;
+    }
+
+    .special-button .button-span {
+        display: inline-block;
+        width: 130px;
+    }
+
+    .spacial-button .el-menu-item {
         border-radius: 5px;
         margin-bottom: 5px;
         font-size: 16px;
         font-weight: 500;
     }
 
+    .secondary-panel {
+        background-color: #fff;
+        border: solid #f4f5f6 1px;
+        width: 520px;
+        position: absolute;
+        left: 130px;
+        top: -5px;
+        padding: 5px 5px 0px 5px
+    }
+
+    .el-button-group {
+        margin-bottom: 5px;
+    }
+
+    .secondary-button {
+        width: 130px; height: 40px;
+    }
 
     /**
     二级标签入口
     不要修改下方三个选择器的顺序
      */
-    .left-navigater .special-button.el-menu-item:focus {
+    .special-button.el-menu-item:focus {
         background-color: #ffffff;
     }
 
-    .left-navigater .special-button.el-menu-item:hover {
+    .special-button.el-menu-item:hover {
         background-color: #409EFF;
         color: #ffffff;
         border-radius: 5px;
     }
 
-    .left-navigater .special-button.el-menu-item:active {
+    .special-button.el-menu-item:active {
         background-color: #409EFF;
         color: #ffffff;
     }
@@ -147,23 +171,23 @@ export default {
     二级标签
     不要修改下方四个选择器的顺序
      */
-    .left-navigater .secondary-button.el-button--primary {
+    .secondary-button.el-button--primary {
         background-color: #ffffff;
         border: none;
         color: black;
     }
 
-    .left-navigater .secondary-button.el-button--primary:focus {
+    .secondary-button.el-button--primary:focus {
         background-color: #ffffff;
     }
 
-    .left-navigater .secondary-button.el-button--primary:hover {
+    .secondary-button.el-button--primary:hover {
         background-color: #409EFF;
         color: #ffffff;
         border-radius: 5px;
     }
 
-    .left-navigater .secondary-button.el-button--primary:active {
+    .secondary-button.el-button--primary:active {
         background-color: #409EFF;
         color: #ffffff;
     }
