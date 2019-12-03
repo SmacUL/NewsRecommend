@@ -40,23 +40,23 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 
-    .hot-article .el-card {
+    .el-card {
         border-radius: 0px;
     }
 
-    .hot-article .el-card.is-always-shadow {
+    .el-card.is-always-shadow {
         box-shadow: none;
         background-color: #f4f5f6;
     }
 
-    .hot-article .el-card__header {
+    .el-card >>> .el-card__header {
         padding: 15px 15px 5px 15px;
         text-align: left;
     }
 
-    .hot-article .hot-art {
+    .hot-art {
         font-size: 20px;
         font-weight: 800;
         height: 30px;
@@ -64,27 +64,27 @@ export default {
     }
 
     /* 刷新按钮 */
-    .hot-article .refresh {
+    .refresh {
         height: 30px;
         padding: 0px;
         float: right;
     }
 
     /* 刷新 两个字 */
-    .hot-article .refresh span {
+    .refresh span {
         font-size: 16px;
         font-weight: 500;
     }
 
-    .hot-article .el-card__body {
+    .el-card__body {
         padding: 5px 15px;
     }
 
-    .hot-article .el-card__body .clear-float {
+    .el-card__body .clear-float {
         margin-bottom: 5px;
     }
 
-    .hot-article .image {
+    .image {
         height: 50px;
         width: 27%;
         margin-right: 3%;
@@ -92,7 +92,7 @@ export default {
     }
 
     /* 新闻标题 */
-    .hot-article .title {
+    .title {
         float: left;
         line-height: 50px;
         font-weight: 500;
@@ -101,15 +101,15 @@ export default {
         text-align: left;
     }
 
-    .hot-article .narrow-title {
+    .narrow-title {
         width: 70%;
     }
 
-    .hot-article .wide-title {
+    .wide-title {
         width: 100%;
     }
 
-    .hot-article .title:hover {
+    .title:hover {
         color: #409EFF;
         cursor: pointer;
     }
