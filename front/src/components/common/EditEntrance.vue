@@ -17,25 +17,25 @@ export default {
 }
 </script>
 
-<style>
-.edit-entrance .el-card {
+<style scoped>
+.el-card {
     border-radius: 0px;
 }
 
-.edit-entrance .el-card.is-always-shadow {
+.el-card.is-always-shadow {
     box-shadow: none;
     background-color: #f4f5f6;
 }
 
-.edit-entrance .el-card__body {
+.el-card__body {
     padding: 10px;
 }
 
-.edit-entrance .image {
+.image {
     height: 70px;
 }
 
-.edit-entrance .title .el-button span {
+.title .el-button >>> span {
     font-size: 16px;
     font-weight: 500;
 }
