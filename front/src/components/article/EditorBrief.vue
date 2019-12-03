@@ -39,39 +39,39 @@ export default {
 }
 </script>
 
-<style>
-.editor-brief .el-card.is-always-shadow {
+<style scoped>
+.el-card.is-always-shadow {
     box-shadow: none;
     background-color: #f4f5f6;
 }
 
-.editor-brief .el-card__header {
-    padding: 10px;
+.el-card >>> .el-card__header {
+    padding: 15px 15px 10px 15px;
 }
 
-.editor-brief .image {
+.image {
     height: 50px;
     float: left;
     margin-right: 10px
 }
 
-.editor-brief .editor-follow {
+.editor-follow {
     height: 50px;
     float: left;
 }
 
-.editor-brief .editor {
+.editor {
     display: block;
     text-align: left;
     font-size: 12pt;
 }
 
-.editor-brief .editor:hover {
+.editor:hover {
     color: #409EFF;
     cursor: pointer;
 }
 
-.editor-brief .el-button {
+.el-button {
     height: 20px;
     width: 60px;
     padding: 0px;
@@ -79,11 +79,11 @@ export default {
     border-radius: 1px;
 }
 
-.editor-brief .el-card__body {
-    padding: 10px;
+.el-card >>> .el-card__body {
+    padding: 15px 15px 10px 15px;
 }
 
-.editor-brief .title {
+.title {
     overflow: hidden;
     height: 30px;
     text-align: left;
@@ -91,7 +91,7 @@ export default {
     display: block;
 }
 
-.editor-brief .title:hover {
+.title:hover {
     color: #409EFF;
     cursor: pointer;
 }
