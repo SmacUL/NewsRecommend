@@ -30,49 +30,49 @@ export default {
 }
 </script>
 
-<style>
-.article-main .title {
+<style scoped>
+.title {
     font-size: 40px;
     font-weight: 800;
     text-align: left;
     line-height: 70px;
 }
 
-.article-main .article-info {
+.article-info {
     text-align: left;
     margin-top: 10px;
     margin-bottom: 20px;
     color: #777777;
 }
 
-.article-main .content p {
+.content >>> p {
     text-align: left;
     font-size: 18px;
 }
 
-.article-main .content img {
+.content >>> img {
     text-align: center;
 }
 
-.article-main .up-down {
+.up-down {
     width: 120px;
     margin: 0 auto;
     padding: 30px 0px
 }
 
-.article-main .up {
+.up {
     float: left;
 }
 
-.article-main .el-icon-success {
+.el-icon-success {
     margin-right: 10px;
 }
 
-.article-main .down {
+.down {
     float: right;
 }
 
-.article-main .el-icon-error {
+.el-icon-error {
     margin-right: 10px;
 }
 
