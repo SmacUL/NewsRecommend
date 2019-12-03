@@ -2,6 +2,7 @@
     <div class="comment-panel">
         <div class="comments" v-for="(comment, i) in comments" :key="i"
             v-if="i < (curPage)*pageSize && i >= (curPage-1)*pageSize">
+            <!-- 包含一条评论 -->
             <comment-reply-item class="comment-reply-item" 
                 @ready="showReplyInput"
                 :id=comment.id
@@ -12,13 +13,14 @@
                 :readyType=readyType :readyId=readyId
                 >
             </comment-reply-item>
-            
+            <!-- 每条评论包含的 回复 -->
             <reply-panel @readyagain="showReplyInput"
                 :replys=comment.replys :commentId=comment.id
                 :readyType=readyType :readyId=readyId>
             </reply-panel>
 
         </div>
+        <!-- 分页索引 -->
         <el-pagination v-if="comments.length > 4"
             background
             layout="prev, pager, next"
@@ -38,6 +40,18 @@ import ReplyPanel from '@/components/article/ReplyPanel'
 export default {
     name: 'CommentPanel',
     components: {CommentReplyItem, ReplyPanel},
+    methods: {
+        commentHandleCurrentChange(val) {
+            this.curPage = val;
+            this.readyType = -3;
+            this.readyId = -3;
+        },
+        showReplyInput(type, id) {
+            this.readyType = type;
+            this.readyId = id;
+        }
+
+    },
     data: function() {
         return {
             pageSize: 4,
@@ -146,27 +160,16 @@ export default {
             ]
         }
     },
-    methods: {
-        commentHandleCurrentChange(val) {
-            this.curPage = val;
-            this.readyType = -3;
-            this.readyId = -3;
-        },
-        showReplyInput(type, id) {
-            this.readyType = type;
-            this.readyId = id;
-        }
 
-    }
 }
 </script>
 
 <style>
-.comment-panel .comments {
+.comments {
     margin-bottom: 10px;
 }
 
-.comment-panel .replys {
+.replys {
     margin-left: 10%;
     margin-bottom: 5px;
 }

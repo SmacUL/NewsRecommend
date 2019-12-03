@@ -71,57 +71,49 @@ export default {
 }
 </script>
 
-<style>
-.comment-reply-input .toolbar {
+<style scoped>
+.toolbar {
     height: 30px;
-    border: 0px;
-    border-style: solid; 
-    border-color: #f1f1f1; 
+    border: 0px solid #f1f1f1;
     background-color:#f1f1f1;
     position: relative;
 }
 
-.comment-reply-input .toolbar .el-button {
+.toolbar .el-button {
     line-height: 20px;
 }
 
-.comment-reply-input .toolbar .el-button--primary {
+.toolbar .el-button--primary {
     border: none;
     border-radius: 0px;
     margin: 0px;
 }
 
 /* 取消按钮 */
-.comment-reply-input .toolbar .el-button.cancle.el-button--primary {
+.toolbar .el-button.cancle.el-button--primary {
     padding: 5px; 
     width: 50px; 
     background-color: #888888;
 }
 
 /* 取消按钮 */
-.comment-reply-input .toolbar .el-button.cancle.el-button--primary:hover {
+.toolbar .el-button.cancle.el-button--primary:hover {
     background-color: #989797;
 }
 
-.comment-reply-input .textplace {
+.textplace {
     /* height: 80px; */
-    border: 1px;
-    border-style: solid; 
-    border-color: #f1f1f1;
+    border: 1px solid #f1f1f1;
     text-align: left;
     margin-bottom: 40px;
     /*overflow: hidden;*/
 }
 
-.comment-reply-input .w-e-text-container .w-e-panel-container {
-
-}
-
-.comment-reply-input .w-e-text {
+.w-e-text {
     padding: 5px 10px;
 }
 
-.comment-reply-input .w-e-text p {
+.w-e-text p {
     margin: 0;
     line-height: 20px;
 }

@@ -19,6 +19,7 @@
                 </el-button>
             </div>
         </div>
+        <!-- 评论回复输入框 -->
         <comment-reply-input @readycancel="cancelMessage" v-if="showResult" :heightKey=false :style="styleSwitch">
         </comment-reply-input>
     </div>
@@ -71,23 +72,23 @@ export default {
 }
 </script>
 
-<style>
-.comment-reply-item .avater {
+<style scoped>
+.avater {
     float: left;
     margin-right: 3%;
     width: 7%;
 }
 
-.comment-reply-item .avater img{
+.avater img{
     width: 100%;
 }
 
-.comment-reply-item .comment {
+.comment {
     float: left;
     width: 90%;
 }
 
-.comment-reply-item .name {
+.name {
     font-size: 20px;
     font-weight: 600;
     text-align: left;
@@ -95,18 +96,18 @@ export default {
     float: left;
 }
 
-.comment-reply-item .reply {
+.reply {
     float: left;
 }
 
-.comment-reply-item .content {
+.content {
     font-size: 16px;
     line-height: 20px;
     text-align: left;
     word-wrap: break-word;
 }
 
-.comment-reply-item .info {
+.info {
     font-size: 14px;
     color: #888888;
     text-align: left;

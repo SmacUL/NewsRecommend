@@ -2,6 +2,7 @@
     <div class="replys">
         <div  v-for="(reply, i) in replys" :key="i"
             v-if="i < (curPage)*pageSize && i >= (curPage-1)*pageSize">
+            <!-- 打印回复 -->
             <comment-reply-item class="comment-reply-item" 
                 @ready="showReplyInput"
                 :id=reply.id
@@ -13,6 +14,7 @@
             </comment-reply-item>
 
         </div>
+        <!-- 回复的分页组件 -->
         <el-pagination v-if="replys.length > pageSize"
             small
             layout="prev, pager, next"
@@ -31,13 +33,6 @@ export default {
     props: ['replys', 'commentId', 'readyType', 'readyId'],
     components: {CommentReplyItem},
     name: 'ReplyPanel',
-    data: function () {
-        return {
-            pageSize: 4,
-            curPage: 1,
-
-        }
-    },
     methods: {
         replyHandleCurrentChange(val) {
             this.curPage = val;
@@ -46,7 +41,15 @@ export default {
         showReplyInput(type, id) {
             this.$emit('readyagain', type, id);
         }
-    }
+    },
+    data: function () {
+        return {
+            pageSize: 4,
+            curPage: 1,
+
+        }
+    },
+
 }
 </script>
 
