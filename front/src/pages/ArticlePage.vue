@@ -7,11 +7,12 @@
         <main>
             <article class="article-b">
                 <article-main :articleMain="articleMain"></article-main>
-                <comment-reply-input :heightKey=true style='width: 100%'></comment-reply-input>
+                <comment-reply-input class="comment-reply-input" :heightKey=true></comment-reply-input>
                 <comment-panel></comment-panel>
             </article>
             <aside>
-                <editor-brief class="editor-brief" :articleAuthor='articleAuthor' @editor="jumpToCustomer" @jump="jumpToArticle">
+                <editor-brief class="editor-brief" :articleAuthor='articleAuthor'
+                              @editor="jumpToCustomer" @jump="jumpToArticle">
                 </editor-brief>
                 <edit-entrance class="edit-entrance"></edit-entrance>
                 <hot-article class="hot-article" :hotArticles='hotArticles' :title="'相关阅读'"
@@ -169,21 +170,19 @@ export default {
 }
 </script>
 
-<style>
-/* .top-bar {
-    width: 1180px; 
-    position: fixed;
-    left: -590px;
-    margin-left: 50%;
-} */
+<style scoped>
 
-.editor-brief {
-    margin-bottom: 10px;
-}
+    .editor-brief {
+        margin-bottom: 10px;
+    }
 
-.edit-entrance {
-    margin-bottom: 10px;
-}
+    .edit-entrance {
+        margin-bottom: 10px;
+    }
+
+    .comment-reply-input {
+        width: 100%;
+    }
 
 
 </style>

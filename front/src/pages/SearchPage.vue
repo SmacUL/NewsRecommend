@@ -17,7 +17,7 @@
                                   @jump="jumpToArticle" @editor="jumpToCustomer">
                     </tiny-article>
                 </div>
-                <div v-if="tinyArticles.length === 0" style="font-size: 20px; padding-top: 50px;">uh 不爽吧</div>
+                <div v-if="tinyArticles.length === 0">uh 不爽吧</div>
             </article>
             <aside>
                 <hot-article class="hot-article" :hotArticles='hotArticles' :title="'热点新闻'"
@@ -224,6 +224,11 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+
+    /* uh 不爽吧 那几个字 */
+    article div:nth-of-type(-1) {
+        font-size: 20px; padding-top: 50px;
+    }
 
 </style>

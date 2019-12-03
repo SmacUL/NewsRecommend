@@ -27,8 +27,8 @@ export default {
     background-color: #f4f5f6;
 }
 
-.el-card__body {
-    padding: 10px;
+.el-card >>> .el-card__body {
+    padding: 15px;
 }
 
 .image {

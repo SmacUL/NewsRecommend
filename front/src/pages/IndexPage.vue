@@ -16,7 +16,7 @@
                                   @jump="jumpToArticle" @editor="jumpToCustomer">
                     </tiny-article>
                 </div>
-                <div v-if="tinyArticles.length === 0" style="font-size: 20px; padding-top: 50px;">uh 不爽吧</div>
+                <div v-if="tinyArticles.length === 0">uh 不爽吧</div>
             </article>
             <aside>
                 <edit-entrance class="edit-entrance"></edit-entrance>
@@ -233,19 +233,25 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 
-.tiny-article {
-    margin-bottom: 10px;
-}
+    .tiny-article {
+        margin-bottom: 10px;
+    }
 
-.edit-entrance {
-    background-color: #238493;
-    margin-bottom: 10px;
-}
+    .edit-entrance {
+        background-color: #238493;
+        margin-bottom: 10px;
+    }
 
-.hot-article {
-    background-color: #910383;
-}
+    .hot-article {
+        background-color: #910383;
+    }
+
+    /* 不爽吧 那几个字 */
+    article div:nth-of-type(-1) {
+        font-size: 20px;
+        padding-top: 50px;
+    }
 
 </style>

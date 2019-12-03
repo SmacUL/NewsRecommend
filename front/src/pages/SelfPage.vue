@@ -1,23 +1,17 @@
 <template>
     <div>
-        <header>
-            <top-bar class="top-bar" style="width: 1020px;margin-left: 50%;left: -510px;"
-                     @search="searchArticles" :message="message">
-            </top-bar>
-        </header>
-        <section style="width: 1020px;">
-            <show-panel  :customer="customer"></show-panel>
-        </section>
+        <header><top-bar class="top-bar" @search="searchArticles" :message="message"></top-bar></header>
+        <section><show-panel  :customer="customer"></show-panel></section>
         <!-- 页面主体 左右 布局 -->
-        <main class="clear-float" style="width: 1020px;margin-top: 20px;">
-            <article class="article-b" style="width: 710px;">
-                <div v-for="(tinyArticle, i) in tinyArticles" :key="i" style="margin-bottom: 10px;">
+        <main class="clear-float">
+            <article class="article-b">
+                <div class="tiny-article" v-for="(tinyArticle, i) in tinyArticles" :key="i">
                     <tiny-article class="tiny-article"  :tinyArticle="tinyArticle"
                                   @jump="jumpToArticle" @editor="jumpToCustomer">
                     </tiny-article>
                 </div>
             </article>
-            <aside :style="asideStyle" style="margin-left: 740px;">
+            <aside :style="asideStyle">
                 <achievement-panel></achievement-panel>
             </aside>
         </main>
@@ -160,9 +154,37 @@ export default {
 }
 </script>
 
-<style>
-article {
-    float: left;
-    width: 720px;
-}
+<style scoped>
+    article {
+        float: left;
+        width: 720px;
+    }
+
+    .top-bar {
+        width: 1020px;
+        margin-left: 50%;
+        left: -510px;
+    }
+
+    section {
+        width: 1020px;
+    }
+
+    main {
+        width: 1020px;
+        margin-top: 20px;
+    }
+
+    article {
+        width: 710px;
+    }
+
+    .tiny-article {
+        margin-bottom: 10px;
+    }
+
+    aside {
+        margin-left: 740px;
+    }
+
 </style>
