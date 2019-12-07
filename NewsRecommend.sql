@@ -14,6 +14,7 @@ CREATE TABLE NewsRecommend.Customers (
     cus_phone VARCHAR(64),
     cus_address VARCHAR(255),
     cus_avatar_url VARCHAR(255),
+    cus_background_url VARCHAR(255),
     cus_style VARCHAR(255),
     cus_gender TINYINT DEFAULT 0,
     cus_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

@@ -57,7 +57,7 @@ def get_chrome_driver():
     :return:
     """
     chrome_options = Options()
-    chrome_options.add_argument('--headless')
+    # chrome_options.add_argument('--headless')
     return webdriver.Chrome(chrome_options=chrome_options)
 
 
@@ -90,6 +90,7 @@ if __name__ == "__main__":
                 # 访问文章具体内容
                 driver.get(art_url)
                 analyser.set_driver(driver)
+
                 # 标签
                 art_tag = analyser.get_art_tag()
                 art_tag = tag_filter.major_filter(art_tag, tag_maps)
@@ -105,11 +106,11 @@ if __name__ == "__main__":
                 data_base.insert_customer(cus_name, cus_pass, cus_avatar_url)
                 # 插入文章
                 data_base.insert_article(art_url, cus_name, art_title, art_abstract, art_content, art_tag, art_image)
-            except:
-                print("曾经发生过错误")
+            except Exception as err:
+                print(err)
                 continue
             finally:
                 # 关闭浏览器
-                print("========= page %d, item %d, total pages %d complete ==========="
+                print("========= page %d, item %d, total pages %d complete ===========\n"
                       % (i + 1, j + 1, tiny_news.__len__()))
                 driver.close()

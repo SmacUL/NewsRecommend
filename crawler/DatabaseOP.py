@@ -27,22 +27,23 @@ class MysqlOP():
         try:
             print(sql)
             self.cursor.execute(sql)
-        except:
-            print("sql execute has some errors.")
+        except Exception as err:
+            print(err)
 
     def commit_transactions(self):
         try:
             self.db_handle.commit()
-        except:
+        except Exception as err:
             self.db_handle.rollback()
+            print(err)
 
     def get_result(self):
         try:
             result = self.cursor.fetchall()
             print(result)
             return result
-        except:
-            print("sql fetchall has some errors.")
+        except Exception as err:
+            print(err)
 
     def insert_customer(self, cus_name, cus_pass, cus_avatar_url):
         """ 将爬下的信息插入到 Customer 表中
