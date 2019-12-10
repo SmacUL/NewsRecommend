@@ -10,3 +10,6 @@ crawler/properties/database-properties.json
 crawler/properties/request-properties.json
 back/src/main/resources/application.properties
 crawler/properties/filter-properties.json
+crawler/properties/database-properties.json
+crawler/properties/filter-properties.json
+crawler/properties/request-properties.json
