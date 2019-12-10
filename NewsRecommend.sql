@@ -3,23 +3,35 @@ CREATE DATABASE IF NOT EXISTS NewsRecommend CHARACTER SET utf8;
 
 
 -- cus 用户
--- cus_type 为 1 时是普通用户, 为 0 时是可编辑用户
--- cus_gender 为 0 时性别未知, 为 1 时为男, 为 -1 时为女
 DROP TABLE IF EXISTS NewsRecommend.Customers;
 CREATE TABLE NewsRecommend.Customers (
     cus_id INT UNSIGNED NOT NULL auto_increment,
-    cus_name VARCHAR(64) unique,
+    cus_name VARCHAR(64),
     cus_pass VARCHAR(255),
-    cus_email VARCHAR(64),
-    cus_phone VARCHAR(64),
-    cus_address VARCHAR(255),
+    -- 用户的 url , 爬虫中用于识别用户
+    cus_url VARCHAR(255) default '',
+    -- 用户头像的 url
     cus_avatar_url VARCHAR(255),
+    -- 用户背景墙的图片 url
     cus_background_url VARCHAR(255),
+    -- 用户的个人描述
     cus_style VARCHAR(255),
+    -- cus_gender 为 0 时性别未知, 为 1 时为男, 为 -1 时为女
     cus_gender TINYINT DEFAULT 0,
+    -- 用户的创建时间
     cus_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    -- cus_type 为 0 时是普通用户, 为 1 时是可编辑用户
     cus_type TINYINT default 0,
-    cus_legal TINYINT default 1,
+    -- 此用户的关注的用户数量
+    cus_follow_num int UNSIGNED default 0,
+    -- 此用户的粉丝
+    cus_fan_num int UNSIGNED default 0, 
+    -- 此用户的文章数量
+    cus_article_num int UNSIGNED default 0,
+    -- 用户评分
+    cus_scope int UNSIGNED default 0,
+    -- cus_legal 为 0 时待审核, 为 1 时合法, 为 -1 不合法
+    cus_legal TINYINT default 0,
 	
     primary key(cus_id)
 );
@@ -32,13 +44,21 @@ CREATE TABLE NewsRecommend.Articles (
     art_title VARCHAR(255),
     art_abstract VARCHAR(255),
     art_content TEXT,
+    -- 文章的 url , 在爬虫中分辨文章
     art_url VARCHAR(255),
     art_tag VARCHAR(64),
-    art_image VARCHAR(64) default '',
+    -- 文章缩略图的信息
+    art_image_url VARCHAR(64) default '',
+    -- 文章的点赞数量
     art_like_num INT UNSIGNED default 0,
+    -- 文章的点踩数量
     art_dislike_num INT UNSIGNED default 0,
     art_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    art_legal tinyint default 1,
+    -- 文章的评论数量
+    art_comment_num INT UNSIGNED default 0,
+    -- 文章的分数
+	art_scope int UNSIGNED default 0,
+    art_legal tinyint default 0,
     
     art_customer_id INT UNSIGNED,
     primary key(art_id),
@@ -53,7 +73,12 @@ CREATE TABLE NewsRecommend.Comments (
     com_content TEXT,
     com_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     com_like_num INT UNSIGNED default 0,
-    com_legal tinyint default 1,
+    com_dislike_num INT UNSIGNED default 0,
+	-- 评论的回复数量
+    com_reply_num INT UNSIGNED default 0,
+    -- 评论的分数
+	com_scope int UNSIGNED default 0,
+    com_legal tinyint default 0,
     
     com_customer_id INT UNSIGNED,
     com_article_id INT UNSIGNED, 
@@ -70,8 +95,13 @@ CREATE TABLE NewsRecommend.Replys (
     rep_content TEXT,
     rep_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     rep_like_num INT UNSIGNED default 0,
-	rep_legal tinyint default 1,
-    
+    rep_dislike_num INT UNSIGNED default 0,
+	-- 回复的回复数量
+    rep_reply_num INT UNSIGNED default 0,
+    -- 回复的分数
+	rep_scope int UNSIGNED default 0,
+	rep_legal tinyint default 0,
+
     rep_customer_id INT UNSIGNED,
     rep_article_id INT UNSIGNED,
     rep_reply_id INT UNSIGNED,
@@ -100,7 +130,7 @@ CREATE TABLE NewsRecommend.Administrators (
 
 
 
--- ccf 用户的新闻点赞记录
+-- ccf 用户的关注情况记录
 -- follower -> followee
 DROP TABLE IF EXISTS NewsRecommend.CustomerCustomerFollow;
 CREATE TABLE NewsRecommend.CustomerCustomerFollow (
@@ -116,14 +146,14 @@ CREATE TABLE NewsRecommend.CustomerCustomerFollow (
 
 
 
--- acp 用户的新闻点赞记录
--- acp_preference 0 表示中立; -1 表示讨厌; 1 表示喜欢
+-- acp 用户的新闻点赞点踩记录
 DROP TABLE IF EXISTS NewsRecommend.ArticleCustomerPreference;
 CREATE TABLE NewsRecommend.ArticleCustomerPreference (
     acp_id INT UNSIGNED NOT NULL,
 	acp_article_id INT UNSIGNED,
     acp_customer_id INT UNSIGNED,
-    acp_preference TINYINT default 0,
+    -- acp_prefer 0 表示中立; -1 表示讨厌; 1 表示喜欢
+    acp_prefer TINYINT default 0,
     acp_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     
 	primary key(acp_id),
@@ -132,14 +162,14 @@ CREATE TABLE NewsRecommend.ArticleCustomerPreference (
 );
 
 
--- ccp 用户的评论点赞记录
--- ccp_preference 0 表示中立; -1 表示讨厌; 1 表示喜欢
+-- ccp 用户的评论点赞点踩记录
 DROP TABLE IF EXISTS NewsRecommend.CommentCustomerPreference;
 CREATE TABLE NewsRecommend.CommentCustomerPreference (
     ccp_id INT UNSIGNED NOT NULL,
 	ccp_comment_id INT UNSIGNED,
     ccp_customer_id INT UNSIGNED,
-    ccp_preference TINYINT default 0,
+    -- ccp_prefer 0 表示中立; -1 表示讨厌; 1 表示喜欢
+    ccp_prefer TINYINT default 0,
     ccp_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     
 	primary key(ccp_id),
@@ -148,14 +178,14 @@ CREATE TABLE NewsRecommend.CommentCustomerPreference (
 );
 
 
--- rcp 用户的回复点赞记录
--- rcp_preference 0 表示中立; -1 表示讨厌; 1 表示喜欢
+-- rcp 用户的回复点赞点踩记录
 DROP TABLE IF EXISTS NewsRecommend.ReplyCustomerPreference;
 CREATE TABLE NewsRecommend.ReplyCustomerPreference (
     rcp_id INT UNSIGNED NOT NULL,
 	rcp_reply_id INT UNSIGNED,
     rcp_customer_id INT UNSIGNED,
-    rcp_preference TINYINT default 0,
+    -- rcp_prefer 0 表示中立; -1 表示讨厌; 1 表示喜欢
+    rcp_prefer TINYINT default 0,
     rcp_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     
 	primary key(rcp_id),
