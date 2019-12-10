@@ -11,11 +11,11 @@ CREATE TABLE NewsRecommend.Customers (
     -- 用户的 url , 爬虫中用于识别用户
     cus_url VARCHAR(255) default '',
     -- 用户头像的 url
-    cus_avatar_url VARCHAR(255),
+    cus_avatar_url VARCHAR(255) default '',
     -- 用户背景墙的图片 url
-    cus_background_url VARCHAR(255),
+    cus_background_url VARCHAR(255) default '',
     -- 用户的个人描述
-    cus_style VARCHAR(255),
+    cus_style VARCHAR(255) default '这个人很懒, 什么都没写',
     -- cus_gender 为 0 时性别未知, 为 1 时为男, 为 -1 时为女
     cus_gender TINYINT DEFAULT 0,
     -- 用户的创建时间
@@ -41,12 +41,15 @@ CREATE TABLE NewsRecommend.Customers (
 DROP TABLE IF EXISTS NewsRecommend.Articles;
 CREATE TABLE NewsRecommend.Articles (
     art_id INT UNSIGNED NOT NULL auto_increment,
-    art_title VARCHAR(255),
-    art_abstract VARCHAR(255),
+    art_title VARCHAR(255) default '',
+    art_abstract VARCHAR(255) default '',
     art_content TEXT,
     -- 文章的 url , 在爬虫中分辨文章
-    art_url VARCHAR(255),
-    art_tag VARCHAR(64),
+    art_url VARCHAR(255) default '',
+    -- 文章的分类
+    art_class VARCHAR(16) default '综合',
+    -- 文章的标签 应该以 & 分隔
+    art_tags VARCHAR(128) default '',
     -- 文章缩略图的信息
     art_image_url VARCHAR(64) default '',
     -- 文章的点赞数量
@@ -135,10 +138,10 @@ CREATE TABLE NewsRecommend.Administrators (
 DROP TABLE IF EXISTS NewsRecommend.CustomerCustomerFollow;
 CREATE TABLE NewsRecommend.CustomerCustomerFollow (
     ccf_id INT UNSIGNED NOT NULL,
-    ccf_follower_id INT UNSIGNED,
-    ccf_followee_id INT UNSIGNED,
     ccf_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
+    ccf_follower_id INT UNSIGNED,
+    ccf_followee_id INT UNSIGNED,
 	primary key(ccf_id),
     foreign key(ccf_follower_id) references Customers(cus_id),
     foreign key(ccf_followee_id) references Customers(cus_id)
@@ -146,16 +149,16 @@ CREATE TABLE NewsRecommend.CustomerCustomerFollow (
 
 
 
--- acp 用户的新闻点赞点踩记录
+-- acp 用户的新闻偏好程度记录
 DROP TABLE IF EXISTS NewsRecommend.ArticleCustomerPreference;
 CREATE TABLE NewsRecommend.ArticleCustomerPreference (
     acp_id INT UNSIGNED NOT NULL,
-	acp_article_id INT UNSIGNED,
-    acp_customer_id INT UNSIGNED,
-    -- acp_prefer 0 表示中立; -1 表示讨厌; 1 表示喜欢
-    acp_prefer TINYINT default 0,
+    -- acp_prefer 用户偏好 [0, 10]
+    acp_prefer INT UNSIGNED default 0,
     acp_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     
+    acp_article_id INT UNSIGNED,
+    acp_customer_id INT UNSIGNED,
 	primary key(acp_id),
     foreign key(acp_article_id) references Articles(art_id),
     foreign key(acp_customer_id) references Customers(cus_id)
@@ -163,33 +166,33 @@ CREATE TABLE NewsRecommend.ArticleCustomerPreference (
 
 
 -- ccp 用户的评论点赞点踩记录
-DROP TABLE IF EXISTS NewsRecommend.CommentCustomerPreference;
-CREATE TABLE NewsRecommend.CommentCustomerPreference (
-    ccp_id INT UNSIGNED NOT NULL,
-	ccp_comment_id INT UNSIGNED,
-    ccp_customer_id INT UNSIGNED,
-    -- ccp_prefer 0 表示中立; -1 表示讨厌; 1 表示喜欢
-    ccp_prefer TINYINT default 0,
-    ccp_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    
-	primary key(ccp_id),
-    foreign key(ccp_comment_id) references Comments(com_id),
-    foreign key(ccp_customer_id) references Customers(cus_id)
-);
+-- DROP TABLE IF EXISTS NewsRecommend.CommentCustomerPreference;
+-- CREATE TABLE NewsRecommend.CommentCustomerPreference (
+--     ccp_id INT UNSIGNED NOT NULL,
+--     -- ccp_prefer 0 表示中立; -1 表示讨厌; 1 表示喜欢
+--     ccp_prefer TINYINT default 0,
+--     ccp_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+--     ccp_comment_id INT UNSIGNED,
+--     ccp_customer_id INT UNSIGNED,
+-- 	primary key(ccp_id),
+--     foreign key(ccp_comment_id) references Comments(com_id),
+--     foreign key(ccp_customer_id) references Customers(cus_id)
+-- );
 
 
 -- rcp 用户的回复点赞点踩记录
-DROP TABLE IF EXISTS NewsRecommend.ReplyCustomerPreference;
-CREATE TABLE NewsRecommend.ReplyCustomerPreference (
-    rcp_id INT UNSIGNED NOT NULL,
-	rcp_reply_id INT UNSIGNED,
-    rcp_customer_id INT UNSIGNED,
-    -- rcp_prefer 0 表示中立; -1 表示讨厌; 1 表示喜欢
-    rcp_prefer TINYINT default 0,
-    rcp_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    
-	primary key(rcp_id),
-    foreign key(rcp_reply_id) references Replys(rep_id),
-    foreign key(rcp_customer_id) references Customers(cus_id)
-);
+-- DROP TABLE IF EXISTS NewsRecommend.ReplyCustomerPreference;
+-- CREATE TABLE NewsRecommend.ReplyCustomerPreference (
+--     rcp_id INT UNSIGNED NOT NULL,
+--     -- rcp_prefer 0 表示中立; -1 表示讨厌; 1 表示喜欢
+--     rcp_prefer TINYINT default 0,
+--     rcp_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+-- 	rcp_reply_id INT UNSIGNED,
+--     rcp_customer_id INT UNSIGNED,
+-- 	primary key(rcp_id),
+--     foreign key(rcp_reply_id) references Replys(rep_id),
+--     foreign key(rcp_customer_id) references Customers(cus_id)
+-- );
 
