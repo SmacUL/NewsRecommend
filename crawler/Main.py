@@ -75,6 +75,8 @@ def set_cus_pass(password):
 if __name__ == "__main__":
     data_base = connect_database(os.path.join('properties', 'database-properties.json'))
     tiny_news = get_source_tiny_articles(os.path.join('properties', 'request-properties.json'))
+"""
+    
     tag_maps = get_tag_maps(os.path.join('properties', 'filter-properties.json'))
     print(tiny_news.__len__())
     analyser = aop.AnalyseOP()
@@ -114,3 +116,4 @@ if __name__ == "__main__":
                 print("========= page %d, item %d, total pages %d complete ===========\n"
                       % (i + 1, j + 1, tiny_news.__len__()))
                 driver.close()
+"""

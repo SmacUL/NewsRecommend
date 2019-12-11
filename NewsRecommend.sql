@@ -95,6 +95,8 @@ DROP TABLE IF EXISTS NewsRecommend.Replys;
 CREATE TABLE NewsRecommend.Replys (
     rep_id INT UNSIGNED NOT NULL auto_increment,
     rep_content TEXT,
+    -- 回复的类型, 0 是对评论的回复, 1 是对回复的回复
+    rep_type tinyint default 0, 
     rep_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     rep_like_num INT UNSIGNED default 0,
     rep_dislike_num INT UNSIGNED default 0,
@@ -106,10 +108,12 @@ CREATE TABLE NewsRecommend.Replys (
 
     rep_customer_id INT UNSIGNED,
     rep_article_id INT UNSIGNED,
+    rep_comment_id INT UNSIGNED, 
     rep_reply_id INT UNSIGNED,
     primary key(rep_id),
     foreign key(rep_customer_id) references Customers(cus_id),
 	foreign key(rep_article_id) references Articles(art_id),
+    foreign key(rep_comment_id) references Comments(com_id),
     foreign key(rep_reply_id) references Replys(rep_id)
 );
 

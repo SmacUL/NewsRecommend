@@ -23,6 +23,8 @@ class RequestOP():
 
         for item in items:
             try:
+                print(item)
+                print("----------------")
                 yield {
                     'title': item['title'],
                     'source': item['source'],
@@ -37,6 +39,9 @@ class RequestOP():
         for page in range(1, self.page + 1):
             print("current page: %d, total %d" % (page, self.page))
             html_data = self.request(page)
+
+            print(html_data)
+
             news.append(self.parse_html(html_data))
         return news
 
