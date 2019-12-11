@@ -42,7 +42,6 @@ DROP TABLE IF EXISTS NewsRecommend.Articles;
 CREATE TABLE NewsRecommend.Articles (
     art_id INT UNSIGNED NOT NULL auto_increment,
     art_title VARCHAR(255) default '',
-    art_abstract VARCHAR(255) default '',
     art_content TEXT,
     -- 文章的 url , 在爬虫中分辨文章
     art_url VARCHAR(255) default '',
