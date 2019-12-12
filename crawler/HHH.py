@@ -2,6 +2,7 @@ import requests
 import json
 import os
 import time
+import hashlib
 
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -13,6 +14,16 @@ def json_loader(path, encoding='utf-8'):
     js = open(path, encoding=encoding)
     return json.load(js)
 
+
+def set_cus_pass(password):
+    """ 为用户密码进行 MD-5 加密
+
+    :param password: 密码明文
+    :return:
+    """
+    hl = hashlib.md5()
+    hl.update(password.encode('utf-8'))
+    return hl.hexdigest()
 
 def get_chrome_driver():
     """ 获得模拟浏览器 Chrome
@@ -80,13 +91,29 @@ if __name__ == '__main__':
             article = ART.ArticleModel()
             art_author = CUS.CustomerModel()
             # driver = get_chrome_driver()
+
             try:
-                # 文章的作者
+                """ 文章的作者
+                文章的作者存在以下情况:
+                - 存在
+                    获取用户的 id 即可
+                - 不存在
+                    尝试插入用户数据, 插入成功继续, 失败跳过本次循环. 
+                - 爬取的作者数据存在异常
+                    直接跳过本次循环. 
+                """
                 art_author.cus_id = None
                 art_author.cus_url = "https://www.toutiao.com" + data['media_url']
                 art_author.cus_avatar_url = 'https:' + data['media_avatar_url']
                 art_author.cus_name = data['source']
+                art_author.cus_background_url = None
+                art_author.cus_pass = set_cus_pass("123456")
+                art_author.cus_style = None
+            except Exception as err:
+                print("部分内容没有获取到")
 
+
+            try:
                 # 文章的内容, 访问获得
                 article.art_id = None
                 article.art_url = "https://www.toutiao.com/a{0}/".format(data['item_id'])
@@ -95,31 +122,46 @@ if __name__ == '__main__':
                 article.art_class = data['chinese_tag']
                 article.art_image_url = data['middle_image']
                 article.art_customer_id = None
-
+                # 时间处理
                 timeStamp = data['behot_time']
                 timeArray = time.localtime(timeStamp)
                 article.art_time = time.strftime("%Y-%m-%d %H:%M:%S", timeArray)
 
                 # 如果 art_url 已经被插入过了, 后面的操作就不用继续了
                 # driver.get(article.art_url)
+            except:
+                print("hhh")
 
-                # 陈呢个浏览器不注意, 搞点评论
-                comment_url = 'https://www.toutiao.com/api/pc/article/v4/tab_comments/?aid=66&app_name=toutiao-web&group_id={0}&item_id={1}&offset=0&count={2}'.format(data['group_id'], data['item_id'], 10)
-                comment_request = prepare_request(os.path.join('properties', 'test.json'))
-                comment_request.set_url(comment_url)
-                comments_data = comment_request.more()['data']
 
-                for comment_data in comments_data:
-                    com_data = comment_data['comment']
-                    comment = COM.CommentModel()
-                    com_customer = CUS.CustomerModel()
+            """ 评论数据开始
+            
+            """
+            # 陈呢个浏览器不注意, 搞点评论
+            comment_url = 'https://www.toutiao.com/api/pc/article/v4/tab_comments/?aid=66&app_name=toutiao-web&group_id={0}&item_id={1}&offset=0&count={2}'.format(data['group_id'], data['item_id'], 10)
+            comment_request = prepare_request(os.path.join('properties', 'test.json'))
+            comment_request.set_url(comment_url)
+            comments_data = comment_request.more()['data']
 
+
+            for comment_data in comments_data:
+                com_data = comment_data['comment']
+                comment = COM.CommentModel()
+                com_customer = CUS.CustomerModel()
+
+                try:
                     # 评论的作者
                     com_customer.cus_id = None
                     com_customer.cus_avatar_url = com_data['user_profile_image_url']
                     com_customer.cus_name = com_data['user_name']
                     com_customer.cus_url = "https://www.toutiao.com/c/user/" + str(com_data['user_id'])
+                    com_customer.cus_style = None
+                    com_customer.cus_pass = set_cus_pass("123456")
+                    com_customer.cus_background_url = None
+                except:
+                    print("hhhh")
 
+
+                try:
                     # 评论
                     comment.com_id = None
                     comment.com_content = com_data['text']
@@ -131,20 +173,26 @@ if __name__ == '__main__':
                     timeStamp = com_data['create_time']
                     timeArray = time.localtime(timeStamp)
                     comment.com_time = time.strftime("%Y-%m-%d %H:%M:%S", timeArray)
+                except:
+                    print("yyyy")
 
                     # print(com_customer.cus_url)
 
-                    # 想办法搞点回复
-                    reply_url = 'https://www.toutiao.com/api/pc/2/comment/v4/reply_list/?aid=24&app_name=toutiao-web&id={0}&offset=0&count={1}&repost=0'.format(com_data['id_str'], 20)
-                    reply_request = prepare_request(os.path.join('properties', 'test.json'))
-                    reply_request.set_url(reply_url)
-                    replys_data = reply_request.more()['data']['data']
 
-                    for reply_data in replys_data:
-                        reply = REP.ReplyModel()
-                        rep_customer = CUS.CustomerModel()
-                        # print(reply_data)
+                """ 获取回复数据
+                """
+                # 想办法搞点回复
+                reply_url = 'https://www.toutiao.com/api/pc/2/comment/v4/reply_list/?aid=24&app_name=toutiao-web&id={0}&offset=0&count={1}&repost=0'.format(com_data['id_str'], 20)
+                reply_request = prepare_request(os.path.join('properties', 'test.json'))
+                reply_request.set_url(reply_url)
+                replys_data = reply_request.more()['data']['data']
 
+                for reply_data in replys_data:
+                    reply = REP.ReplyModel()
+                    rep_customer = CUS.CustomerModel()
+                    # print(reply_data)
+
+                    try:
                         # reply 的 customer
                         rep_cus_data = reply_data['user']
                         rep_customer.cus_id = None
@@ -155,7 +203,11 @@ if __name__ == '__main__':
                         if rep_cus_data['description'] != '':
                             rep_customer.cus_style = rep_cus_data['description']
                         rep_customer.cus_background_url = None
+                        rep_customer.cus_pass = set_cus_pass("123456")
+                    except:
+                        print("jjjj")
 
+                    try:
                         # reply
                         reply.rep_id = None
                         reply.rep_like_num = reply_data['digg_count']
@@ -170,7 +222,12 @@ if __name__ == '__main__':
                         timeStamp = reply_data['create_time']
                         timeArray = time.localtime(timeStamp)
                         reply.rep_time = time.strftime("%Y-%m-%d %H:%M:%S", timeArray)
+                    except:
+                        print("iiid")
 
+                    try:
+                        """ 回复回复其他回复的情况
+                        """
                         # 处理一下 reply 回复 其他 reply 的情况.
                         reply_check = reply_data['reply_to_comment']
                         reply_to_comment_customer_url = "https://www.toutiao.com/c/user/" + str(reply_check['user_id'])
@@ -181,20 +238,26 @@ if __name__ == '__main__':
                         # 那么 reply.rep_type 将设置为 1, reply.rep_reply_id 将设置为相应的 reply 的 id .
 
                         # print(reply_data)
+                    except:
+                        print("uudddd")
 
                 # 文章的另一部分内容
 
-                # article.art_content = driver.find_element_by_class_name("article-content").get_attribute('innerHTML')
-                # tags_ele = driver.find_elements_by_class_name('label-link')
-                # tags = []
-                # for tag in tags_ele:
-                #     tags.append(tag.get_attribute('innerHTML'))
-                # article.art_tags = '&&'.join(tags)
-                # article.art_comment_num = None
 
 
-            except Exception as err:
-                print(err)
-            finally:
-                # driver.close()
-                pass
+            # try:
+            #     """ 文章的另一部分
+            #     """
+            #     article.art_content = driver.find_element_by_class_name("article-content").get_attribute('innerHTML')
+            #     tags_ele = driver.find_elements_by_class_name('label-link')
+            #     tags = []
+            #     for tag in tags_ele:
+            #         tags.append(tag.get_attribute('innerHTML'))
+            #     article.art_tags = '&&'.join(tags)
+            #     article.art_comment_num = None
+            # except:
+            #     print("uiudu")
+            # finally:
+            #     driver.close()
+
+
