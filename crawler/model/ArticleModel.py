@@ -10,11 +10,12 @@ class ArticleModel:
         self.art_comment_num = None
         self.art_customer_id = None
         self.art_tags = None
+        self.art_time = None
 
         self.art_legal = 1
 
     def set(self, art_id, art_title, art_content, art_url, art_class, art_image_url,
-                 art_comment_num, art_customer_id, art_tags):
+                 art_comment_num, art_customer_id, art_tags, art_time):
         self.art_id = art_id
         self.art_title = art_title
         self.art_content = art_content
@@ -24,5 +25,6 @@ class ArticleModel:
         self.art_comment_num = art_comment_num
         self.art_customer_id = art_customer_id
         self.art_tags = art_tags
+        self.art_time = art_time
 
         self.art_legal = 1

@@ -1,6 +1,8 @@
 import requests
 import json
 import os
+import time
+
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
@@ -93,9 +95,10 @@ if __name__ == '__main__':
                 article.art_class = data['chinese_tag']
                 article.art_image_url = data['middle_image']
                 article.art_customer_id = None
-                # 文章创建时间的处理
-                # behot_time
 
+                timeStamp = data['behot_time']
+                timeArray = time.localtime(timeStamp)
+                article.art_time = time.strftime("%Y-%m-%d %H:%M:%S", timeArray)
 
                 # 如果 art_url 已经被插入过了, 后面的操作就不用继续了
                 # driver.get(article.art_url)
@@ -125,6 +128,9 @@ if __name__ == '__main__':
                     comment.com_like_num = com_data['digg_count']
                     # 评论时间的处理
                     # create_time
+                    timeStamp = com_data['create_time']
+                    timeArray = time.localtime(timeStamp)
+                    comment.com_time = time.strftime("%Y-%m-%d %H:%M:%S", timeArray)
 
                     # print(com_customer.cus_url)
 
@@ -161,6 +167,9 @@ if __name__ == '__main__':
                         reply.rep_content = reply_data['text']
                         # 回复时间的处理
                         # create_time
+                        timeStamp = reply_data['create_time']
+                        timeArray = time.localtime(timeStamp)
+                        reply.rep_time = time.strftime("%Y-%m-%d %H:%M:%S", timeArray)
 
                         # 处理一下 reply 回复 其他 reply 的情况.
                         reply_check = reply_data['reply_to_comment']
