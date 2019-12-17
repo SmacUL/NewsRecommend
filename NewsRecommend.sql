@@ -50,7 +50,7 @@ CREATE TABLE NewsRecommend.Articles (
     -- 文章的标签 应该以 & 分隔
     art_tags VARCHAR(128) default '',
     -- 文章缩略图的信息
-    art_image_url VARCHAR(64) default '',
+    art_image_url VARCHAR(255) default '',
     -- 文章的点赞数量
     art_like_num INT UNSIGNED default 0,
     -- 文章的点踩数量

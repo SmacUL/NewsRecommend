@@ -4,81 +4,155 @@ import os
 import time
 import hashlib
 
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
+import selenium.webdriver as webdriver
+import selenium.webdriver.chrome.options as options
 
-from model import ArticleModel as ART, CustomerModel as CUS, CommentModel as COM, ReplyModel as REP
+import model.ArticleModel as ArtMod
+import model.CustomerModel as CusMod
+import model.CommentModel as ComMod
+import model.ReplyModel as RepMod
 
+import util.MySql as MySql
+import util.Request as Request
 
-def json_loader(path, encoding='utf-8'):
-    js = open(path, encoding=encoding)
-    return json.load(js)
+import dao.ArticleDao as ArtDao
+import dao.CustomerDao as CusDao
 
-
-def set_cus_pass(password):
-    """ 为用户密码进行 MD-5 加密
-
-    :param password: 密码明文
-    :return:
-    """
-    hl = hashlib.md5()
-    hl.update(password.encode('utf-8'))
-    return hl.hexdigest()
-
-def get_chrome_driver():
-    """ 获得模拟浏览器 Chrome
-
-    :return:
-    """
-    chrome_options = Options()
-    # chrome_options.add_argument('--headless')
-    return webdriver.Chrome(chrome_options=chrome_options)
+import process.ArticleProcess as ArtPro
+import process.CustomerProcess as CusPro
 
 
-def prepare_request(property):
-    rq = json_loader(property)
-    # print('当前访问 ' + rq['url'])
-
-    page = rq['page']
-    url = rq['url']
-    headers = rq['headers']
-    cookie = rq['cookie']
-
-    # 创建对象
-    return Request(url, headers, cookie)
+# def json_loader(path, encoding='utf-8'):
+#     js = open(path, encoding=encoding)
+#     return json.load(js)
 
 
-class Request:
-    """ 用于创建访问请求
-    """
+# def set_cus_pass(password):
+#     """ 为用户密码进行 MD-5 加密
+#
+#     :param password: 密码明文
+#     :return:
+#     """
+#     hl = hashlib.md5()
+#     hl.update(password.encode('utf-8'))
+#     return hl.hexdigest()
 
-    def __init__(self, url, headers, cookie):
-        self.__url = url
-        self.__headers = headers
-        self.__cookie = cookie
+# def get_chrome_driver():
+#     """ 获得模拟浏览器 Chrome
+#
+#     :return:
+#     """
+#     chrome_options = options.Options()
+#     # chrome_options.add_argument('--headless')
+#     return webdriver.Chrome(chrome_options=chrome_options)
 
-    def set_url(self, url):
-        self.__url = url
 
-    def set_headers(self, headers):
-        self.__headers = headers
+# def prepare_request(property):
+#     rq = json_loader(property)
+#     # print('当前访问 ' + rq['url'])
+#
+#     page = rq['page']
+#     url = rq['url']
+#     headers = rq['headers']
+#     cookie = rq['cookie']
+#
+#     # 创建对象
+#     return Request(url, headers, cookie)
+from dao.ArticleDao import ArticleDao
 
-    def set_cookie(self, cookie):
-        self.__cookie = cookie
 
-    def more(self):
-        resp = requests.get(self.__url, headers=self.__headers, cookies=self.__cookie)
-        self.__cookie = resp.cookies
-        return resp.json()
+class Major:
+
+    # __art_dao: ArticleDao
+    # __start: int
+
+    def __init__(self):
+        self.__base: MySql.MySql = None
+
+        self.__art_dao: ArtDao.ArticleDao = None
+        self.__cus_dao: CusDao.CustomerDao = None
+
+        self.__art_pro: ArtPro.ArticleProcess = None
+        self.__cus_pro: CusPro.CustomerProcess = None
+
+        self.__start: int = None
+        self.__end: int = None
+        self.__total: int = None
+
+    def init_database(self):
+        """ 初始化数据库
+
+        :return:
+        """
+        self.__base = MySql.MySql("NewsRecommend", "root", "123456")
+
+    def init_dao(self):
+        self.__art_dao = ArtDao.ArticleDao(self.__base)
+        self.__cus_dao = CusDao.CustomerDao(self.__base)
+
+    def init_process(self):
+        self.__art_pro = ArtPro.ArticleProcess(self.__art_dao)
+        self.__cus_pro = CusPro.CustomerProcess(self.__cus_dao)
+
+    def before_process(self, start: int, end: int, total: int):
+        """ [start, end]
+
+        :param start:
+        :param end:
+        :param total:
+        :return:
+        """
+        self.__start = start
+        self.__end = end
+        self.__total = total
+
+    def major_process(self):
+        art_request = Request.Request(os.path.join('properties', 'request-properties.json'))
+        for page in range(1, self.__end + 1):
+            print("current page: %d, total %d" % (page, self.__total))
+            news_data = art_request.more()['data']
+            for data in news_data:
+                # 文章作者
+                art_customer_url = self.__cus_pro.get_customer_url(data)
+                if not self.__cus_pro.is_art_customer_exist(art_customer_url):
+                    self.__cus_pro.insert_art_customer(data)
+                art_customer_id = self.__cus_pro.get_art_customer_id_by_url(art_customer_url)
+                # 文章缩略图
+                article_url = self.__art_pro.get_article_url(data)
+                if not self.__art_pro.is_article_exist(article_url):
+                    self.__art_pro.insert_tiny_article(data, article_url, art_customer_id)
+                else:
+                    continue
+                article_id = self.__art_pro.get_article_id_by_url(article_url)
 
 
 if __name__ == '__main__':
 
-    request = prepare_request(os.path.join('properties', 'request-properties.json'))
+    major = Major()
+    major.init_database()
+    major.init_dao()
+    major.init_process()
+    major.before_process(1, 1, 1)
+    major.major_process()
 
-    start = 1
-    end = 1
-    total = end
+    # request = prepare_request(os.path.join('properties', 'request-properties.json'))
+
+    # 初始化 sql
+    # base = MySql.MySql("NewsRecommend", "root", "123456")
+
+
+
+    # 创建 Dao 用于数据库操作.
+    # art_dao = ArtDao.ArticleDao(base)
+    # cus_dao = CusDao.CustomerDao(base)
+
+    # 创建 Process
+    # art_pro = ArtPro.ArticleProcess(art_dao)
+    # cus_pro = CusPro.CustomerProcess(cus_dao)
+
+    # start = 1
+    # end = 1
+    # total = end
 
     for page in range(1, end + 1):
         print("current page: %d, total %d" % (page, total))
@@ -88,49 +162,37 @@ if __name__ == '__main__':
         # 核心数据
         datas = result['data']
         for data in datas:
-            article = ART.ArticleModel()
-            art_author = CUS.CustomerModel()
+            article = ArtMod.ArticleModel()
+            art_customer = CusMod.CustomerModel()
             # driver = get_chrome_driver()
 
-            try:
-                """ 文章的作者
-                文章的作者存在以下情况:
-                - 存在
-                    获取用户的 id 即可
-                - 不存在
-                    尝试插入用户数据, 插入成功继续, 失败跳过本次循环. 
-                - 爬取的作者数据存在异常
-                    直接跳过本次循环. 
-                """
-                art_author.cus_id = None
-                art_author.cus_url = "https://www.toutiao.com" + data['media_url']
-                art_author.cus_avatar_url = 'https:' + data['media_avatar_url']
-                art_author.cus_name = data['source']
-                art_author.cus_background_url = None
-                art_author.cus_pass = set_cus_pass("123456")
-                art_author.cus_style = None
-            except Exception as err:
-                print("部分内容没有获取到")
+            # art_customer = cus_pro.check_customer(data, art_customer)
+            # if art_customer is None:
+                # art_customer = cus_pro.insert_customer(data, art_customer)
+            # if art_customer is None:
+            #     continue
 
 
-            try:
-                # 文章的内容, 访问获得
-                article.art_id = None
-                article.art_url = "https://www.toutiao.com/a{0}/".format(data['item_id'])
-                article.art_abstract = data['abstract']
-                article.art_title = data['title']
-                article.art_class = data['chinese_tag']
-                article.art_image_url = data['middle_image']
-                article.art_customer_id = None
-                # 时间处理
-                timeStamp = data['behot_time']
-                timeArray = time.localtime(timeStamp)
-                article.art_time = time.strftime("%Y-%m-%d %H:%M:%S", timeArray)
 
-                # 如果 art_url 已经被插入过了, 后面的操作就不用继续了
-                # driver.get(article.art_url)
-            except:
-                print("hhh")
+
+            # try:
+            #     # 文章的内容, 访问获得
+            #     article.art_id = None
+            #     article.art_url = "https://www.toutiao.com/a{0}/".format(data['item_id'])
+            #     article.art_abstract = data['abstract']
+            #     article.art_title = data['title']
+            #     article.art_class = data['chinese_tag']
+            #     article.art_image_url = data['middle_image']
+            #     article.art_customer_id = None
+            #     # 时间处理
+            #     timeStamp = data['behot_time']
+            #     timeArray = time.localtime(timeStamp)
+            #     article.art_time = time.strftime("%Y-%m-%d %H:%M:%S", timeArray)
+            #
+            #     # 如果 art_url 已经被插入过了, 后面的操作就不用继续了
+            #     # driver.get(article.art_url)
+            # except:
+            #     print("hhh")
 
 
             """ 评论数据开始
@@ -145,8 +207,8 @@ if __name__ == '__main__':
 
             for comment_data in comments_data:
                 com_data = comment_data['comment']
-                comment = COM.CommentModel()
-                com_customer = CUS.CustomerModel()
+                comment = ComMod.CommentModel()
+                com_customer = CusMod.CustomerModel()
 
                 try:
                     # 评论的作者
@@ -188,8 +250,8 @@ if __name__ == '__main__':
                 replys_data = reply_request.more()['data']['data']
 
                 for reply_data in replys_data:
-                    reply = REP.ReplyModel()
-                    rep_customer = CUS.CustomerModel()
+                    reply = RepMod.ReplyModel()
+                    rep_customer = CusMod.CustomerModel()
                     # print(reply_data)
 
                     try:
