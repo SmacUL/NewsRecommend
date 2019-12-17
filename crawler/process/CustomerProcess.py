@@ -8,7 +8,7 @@ class CustomerProcess:
     def __init__(self, dao: CusDao.CustomerDao):
         self.__dao = dao
 
-    def get_customer_url(self, data):
+    def get_article_customer_url(self, data):
         """ 获得 用户的 url
 
         :param data:
@@ -16,7 +16,13 @@ class CustomerProcess:
         """
         return "https://www.toutiao.com" + data['media_url']
 
-    def is_art_customer_exist(self, url):
+    def get_comment_customer_url(self, data):
+        return "https://www.toutiao.com/c/user/" + str(data['user_id'])
+
+    def get_reply_customer_url(self, data):
+        return "https://www.toutiao.com/c/user/" + str(data['user_id'])
+
+    def is_customer_exist(self, url):
         """
 
         :param url:
@@ -28,10 +34,10 @@ class CustomerProcess:
         else:
             return True
 
-    def insert_art_customer(self, data):
+    def insert_art_customer(self, data, cus_url):
         cus_mod = CusMod.CustomerModel()
 
-        cus_mod.cus_url = self.get_customer_url(data)
+        cus_mod.cus_url = cus_url
         cus_mod.cus_avatar_url = 'https:' + data['media_avatar_url']
         cus_mod.cus_name = data['source']
         cus_mod.cus_background_url = None
@@ -40,38 +46,31 @@ class CustomerProcess:
 
         self.__dao.insert_customer(cus_mod)
 
-    def get_art_customer_id_by_url(self, url):
+    def get_customer_id_by_url(self, url):
         return self.__dao.search_customer_id_by_url(url)
 
-    # def check_customer(self, data, cus_mod):
-    #     """ 获取并检查用户 url
-    #
-    #     :param data:
-    #     :param cus_mod:
-    #     :return:
-    #     """
-    #     if not isinstance(cus_mod, CusMod.CustomerModel):
-    #         return None
-    #     cus_mod.cus_url = "https://www.toutiao.com" + data['media_url']
-    #     return self.__dao.search_customer_by_url(cus_mod)
+    def insert_comment_customer(self, data, cus_url):
+        cus_mod = CusMod.CustomerModel()
 
-    # def insert_customer(self, data, cus_mod):
-    #     """ 获取并插入用户数据
-    #
-    #     :param data:
-    #     :param cus_mod:
-    #     :return:
-    #     """
-    #     if not isinstance(cus_mod, CusMod.CustomerModel):
-    #         return None
-    #     cus_mod.cus_avatar_url = 'https:' + data['media_avatar_url']
-    #     cus_mod.cus_name = data['source']
-    #     cus_mod.cus_background_url = None
-    #     cus_mod.cus_pass = self.__md5.set_cus_pass("123456")
-    #     cus_mod.cus_style = None
-    #
-    #     self.__dao.insert_customer(cus_mod)
-    #     cus_mod = self.__dao.search_customer_id_by_url(cus_mod)
-    #     return cus_mod
+        cus_mod.cus_url = cus_url
+        cus_mod.cus_avatar_url = data['user_profile_image_url']
+        cus_mod.cus_name = data['user_name']
+        cus_mod.cus_style = '这个人很懒, 什么都没写'
+        cus_mod.cus_pass = Md5.Md5.set_cus_pass("123456")
+        cus_mod.cus_background_url = None
 
+        self.__dao.insert_customer(cus_mod)
+
+    def insert_reply_customer(self, data, cus_url):
+        cus_mod = CusMod.CustomerModel()
+
+        cus_mod.cus_url = cus_url
+        cus_mod.cus_name = data['name']
+        cus_mod.cus_avatar_url = data['avatar_url']
+        if cus_mod['description'] != '':
+            cus_mod.cus_style = data['description']
+        cus_mod.cus_background_url = None
+        cus_mod.cus_pass = Md5.Md5.set_cus_pass("123456")
+
+        self.__dao.insert_customer(cus_mod)
 

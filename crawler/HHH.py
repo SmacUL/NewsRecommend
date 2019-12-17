@@ -1,11 +1,5 @@
-import requests
-import json
 import os
 import time
-import hashlib
-
-import selenium.webdriver as webdriver
-import selenium.webdriver.chrome.options as options
 
 import model.ArticleModel as ArtMod
 import model.CustomerModel as CusMod
@@ -14,51 +8,17 @@ import model.ReplyModel as RepMod
 
 import util.MySql as MySql
 import util.Request as Request
+import util.Driver as Driver
 
 import dao.ArticleDao as ArtDao
 import dao.CustomerDao as CusDao
+import dao.CommentDao as ComDao
+import dao.ReplyDao as RepDao
 
 import process.ArticleProcess as ArtPro
 import process.CustomerProcess as CusPro
-
-
-# def json_loader(path, encoding='utf-8'):
-#     js = open(path, encoding=encoding)
-#     return json.load(js)
-
-
-# def set_cus_pass(password):
-#     """ 为用户密码进行 MD-5 加密
-#
-#     :param password: 密码明文
-#     :return:
-#     """
-#     hl = hashlib.md5()
-#     hl.update(password.encode('utf-8'))
-#     return hl.hexdigest()
-
-# def get_chrome_driver():
-#     """ 获得模拟浏览器 Chrome
-#
-#     :return:
-#     """
-#     chrome_options = options.Options()
-#     # chrome_options.add_argument('--headless')
-#     return webdriver.Chrome(chrome_options=chrome_options)
-
-
-# def prepare_request(property):
-#     rq = json_loader(property)
-#     # print('当前访问 ' + rq['url'])
-#
-#     page = rq['page']
-#     url = rq['url']
-#     headers = rq['headers']
-#     cookie = rq['cookie']
-#
-#     # 创建对象
-#     return Request(url, headers, cookie)
-from dao.ArticleDao import ArticleDao
+import process.CommentProcess as ComPro
+import process.ReplyProcess as RepPro
 
 
 class Major:
@@ -71,9 +31,13 @@ class Major:
 
         self.__art_dao: ArtDao.ArticleDao = None
         self.__cus_dao: CusDao.CustomerDao = None
+        self.__com_dao: ComDao.CommentDao = None
+        self.__rep_dao: RepDao.ReplyDao = None
 
         self.__art_pro: ArtPro.ArticleProcess = None
         self.__cus_pro: CusPro.CustomerProcess = None
+        self.__com_pro: ComPro.CommentProcess = None
+        self.__rep_pro: RepPro.ReplyProcess = None
 
         self.__start: int = None
         self.__end: int = None
@@ -89,10 +53,14 @@ class Major:
     def init_dao(self):
         self.__art_dao = ArtDao.ArticleDao(self.__base)
         self.__cus_dao = CusDao.CustomerDao(self.__base)
+        self.__com_dao = ComDao.CommentDao(self.__base)
+        self.__rep_dao = RepDao.ReplyDao(self.__base)
 
     def init_process(self):
         self.__art_pro = ArtPro.ArticleProcess(self.__art_dao)
         self.__cus_pro = CusPro.CustomerProcess(self.__cus_dao)
+        self.__com_pro = ComPro.CommentProcess(self.__com_dao)
+        self.__rep_pro = RepPro.ReplyProcess(self.__rep_dao)
 
     def before_process(self, start: int, end: int, total: int):
         """ [start, end]
@@ -112,18 +80,63 @@ class Major:
             print("current page: %d, total %d" % (page, self.__total))
             news_data = art_request.more()['data']
             for data in news_data:
+                # 先设置 driver
+                # driver = Driver.Driver.get_chrome_driver()
+
                 # 文章作者
-                art_customer_url = self.__cus_pro.get_customer_url(data)
-                if not self.__cus_pro.is_art_customer_exist(art_customer_url):
-                    self.__cus_pro.insert_art_customer(data)
-                art_customer_id = self.__cus_pro.get_art_customer_id_by_url(art_customer_url)
-                # 文章缩略图
+                art_customer_url = self.__cus_pro.get_article_customer_url(data)
+                if not self.__cus_pro.is_customer_exist(art_customer_url):
+                    self.__cus_pro.insert_art_customer(data, art_customer_url)
+                art_customer_id = self.__cus_pro.get_customer_id_by_url(art_customer_url)
+                # 文章
                 article_url = self.__art_pro.get_article_url(data)
                 if not self.__art_pro.is_article_exist(article_url):
                     self.__art_pro.insert_tiny_article(data, article_url, art_customer_id)
+                    # ToDo 底下的两步放到后面去, 减少等待时间.
+                    # self.__art_pro.insert_full_article(article_url, driver)
+                    # driver.close()
                 else:
                     continue
                 article_id = self.__art_pro.get_article_id_by_url(article_url)
+
+                # 评论
+                comment_url = 'https://www.toutiao.com/api/pc/article/v4/tab_comments/?' \
+                              'aid=66&app_name=toutiao-web&group_id={0}&item_id={1}&offset=0&count={2}'\
+                              .format(data['group_id'], data['item_id'], 10)
+                comment_request = Request.Request(os.path.join('properties', 'test.json'))
+                comment_request.set_url(comment_url)
+                comments_data = comment_request.more()['data']
+
+                for comment_data in comments_data:
+                    comment = comment_data['comment']
+
+                    # 评论作者
+                    com_customer_url = self.__cus_pro.get_comment_customer_url(comment)
+                    if not self.__cus_pro.is_customer_exist(com_customer_url):
+                        self.__cus_pro.insert_comment_customer(comment, com_customer_url)
+                    com_customer_id = self.__cus_pro.get_customer_id_by_url(com_customer_url)
+
+                    # 评论内容 [从成本考虑, 不对评论内容去重, 如果文章存在, 就认为评论和回复都存在.]
+                    self.__com_pro.insert_comment(comment, article_id, com_customer_id)
+
+                    # 回复
+                    reply_url = 'https://www.toutiao.com/api/pc/2/comment/v4/reply_list/?' \
+                                'aid=24&app_name=toutiao-web&id={0}&offset=0&count={1}&repost=0'\
+                                .format(comment['id_str'], 20)
+                    reply_request = Request.Request(os.path.join('properties', 'test.json'))
+                    reply_request.set_url(reply_url)
+                    replys_data = reply_request.more()['data']['data']
+
+                    for reply in replys_data:
+
+                        # 回复作者
+                        rep_customer_url = self.__cus_pro.get_reply_customer_url(reply['user'])
+                        if not self.__cus_pro.is_customer_exist(rep_customer_url):
+                            self.__cus_pro.insert_reply_customer(reply['user'], rep_customer_url)
+                        rep_customer_id = self.__cus_pro.get_customer_id_by_url(rep_customer_url)
+
+                        # 回复内容
+
 
 
 if __name__ == '__main__':
@@ -199,55 +212,53 @@ if __name__ == '__main__':
             
             """
             # 陈呢个浏览器不注意, 搞点评论
-            comment_url = 'https://www.toutiao.com/api/pc/article/v4/tab_comments/?aid=66&app_name=toutiao-web&group_id={0}&item_id={1}&offset=0&count={2}'.format(data['group_id'], data['item_id'], 10)
-            comment_request = prepare_request(os.path.join('properties', 'test.json'))
-            comment_request.set_url(comment_url)
-            comments_data = comment_request.more()['data']
-
+            # comment_url = 'https://www.toutiao.com/api/pc/article/v4/tab_comments/?aid=66&app_name=toutiao-web&group_id={0}&item_id={1}&offset=0&count={2}'.format(data['group_id'], data['item_id'], 10)
+            # comment_request = prepare_request(os.path.join('properties', 'test.json'))
+            # comment_request.set_url(comment_url)
+            # comments_data = comment_request.more()['data']
 
             for comment_data in comments_data:
                 com_data = comment_data['comment']
                 comment = ComMod.CommentModel()
                 com_customer = CusMod.CustomerModel()
 
-                try:
-                    # 评论的作者
-                    com_customer.cus_id = None
-                    com_customer.cus_avatar_url = com_data['user_profile_image_url']
-                    com_customer.cus_name = com_data['user_name']
-                    com_customer.cus_url = "https://www.toutiao.com/c/user/" + str(com_data['user_id'])
-                    com_customer.cus_style = None
-                    com_customer.cus_pass = set_cus_pass("123456")
-                    com_customer.cus_background_url = None
-                except:
-                    print("hhhh")
+                # try:
+                #     # 评论的作者
+                #     com_customer.cus_id = None
+                #     com_customer.cus_avatar_url = com_data['user_profile_image_url']
+                #     com_customer.cus_name = com_data['user_name']
+                #     com_customer.cus_url = "https://www.toutiao.com/c/user/" + str(com_data['user_id'])
+                #     com_customer.cus_style = None
+                #     com_customer.cus_pass = set_cus_pass("123456")
+                #     com_customer.cus_background_url = None
+                # except:
+                #     print("hhhh")
 
 
-                try:
-                    # 评论
-                    comment.com_id = None
-                    comment.com_content = com_data['text']
-                    comment.com_article_id = None
-                    comment.com_customer_id = None
-                    comment.com_like_num = com_data['digg_count']
-                    # 评论时间的处理
-                    # create_time
-                    timeStamp = com_data['create_time']
-                    timeArray = time.localtime(timeStamp)
-                    comment.com_time = time.strftime("%Y-%m-%d %H:%M:%S", timeArray)
-                except:
-                    print("yyyy")
+                # try:
+                #     # 评论
+                #     comment.com_id = None
+                #     comment.com_content = com_data['text']
+                #     comment.com_article_id = None
+                #     comment.com_customer_id = None
+                #     comment.com_like_num = com_data['digg_count']
+                #     # 评论时间的处理
+                #     # create_time
+                #     timeStamp = com_data['create_time']
+                #     timeArray = time.localtime(timeStamp)
+                #     comment.com_time = time.strftime("%Y-%m-%d %H:%M:%S", timeArray)
+                # except:
+                #     print("yyyy")
 
                     # print(com_customer.cus_url)
-
 
                 """ 获取回复数据
                 """
                 # 想办法搞点回复
-                reply_url = 'https://www.toutiao.com/api/pc/2/comment/v4/reply_list/?aid=24&app_name=toutiao-web&id={0}&offset=0&count={1}&repost=0'.format(com_data['id_str'], 20)
-                reply_request = prepare_request(os.path.join('properties', 'test.json'))
-                reply_request.set_url(reply_url)
-                replys_data = reply_request.more()['data']['data']
+                # reply_url = 'https://www.toutiao.com/api/pc/2/comment/v4/reply_list/?aid=24&app_name=toutiao-web&id={0}&offset=0&count={1}&repost=0'.format(com_data['id_str'], 20)
+                # reply_request = prepare_request(os.path.join('properties', 'test.json'))
+                # reply_request.set_url(reply_url)
+                # replys_data = reply_request.more()['data']['data']
 
                 for reply_data in replys_data:
                     reply = RepMod.ReplyModel()
@@ -256,16 +267,16 @@ if __name__ == '__main__':
 
                     try:
                         # reply 的 customer
-                        rep_cus_data = reply_data['user']
-                        rep_customer.cus_id = None
-                        rep_customer.cus_url = None
-                        rep_customer.cus_name = rep_cus_data['name']
-                        rep_customer.cus_avatar_url = rep_cus_data['avatar_url']
-                        # description 貌似只有回复中的 user 数据有
-                        if rep_cus_data['description'] != '':
-                            rep_customer.cus_style = rep_cus_data['description']
-                        rep_customer.cus_background_url = None
-                        rep_customer.cus_pass = set_cus_pass("123456")
+                        # rep_cus_data = reply_data['user']
+                        # rep_customer.cus_id = None
+                        # rep_customer.cus_url = None
+                        # rep_customer.cus_name = rep_cus_data['name']
+                        # rep_customer.cus_avatar_url = rep_cus_data['avatar_url']
+                        # # description 貌似只有回复中的 user 数据有
+                        # if rep_cus_data['description'] != '':
+                        #     rep_customer.cus_style = rep_cus_data['description']
+                        # rep_customer.cus_background_url = None
+                        # rep_customer.cus_pass = set_cus_pass("123456")
                     except:
                         print("jjjj")
 
@@ -316,7 +327,6 @@ if __name__ == '__main__':
             #     for tag in tags_ele:
             #         tags.append(tag.get_attribute('innerHTML'))
             #     article.art_tags = '&&'.join(tags)
-            #     article.art_comment_num = None
             # except:
             #     print("uiudu")
             # finally:
