@@ -19,9 +19,8 @@ class ArticleProcess:
         else:
             return True
 
-    def insert_tiny_article(self, data, art_url, art_customer_id):
+    def get_tiny_article(self, data, art_url, art_customer_id):
         art_mod = ArtMod.ArticleModel()
-        print(data)
         art_mod.art_url = art_url
         art_mod.art_abstract = data['abstract']
         art_mod.art_title = data['title']
@@ -34,24 +33,27 @@ class ArticleProcess:
             art_mod.art_image_url = data['middle_image']
         except:
             art_mod.art_image_url = ''
-        # Except Here! 可能会出现异常
-        art_mod.art_comment_num = data['comments_count']
+
+        art_mod.art_comment_num = 0
         art_mod.art_customer_id = art_customer_id
         art_mod.art_time = Time.Time.time_trans(data['behot_time'])
-        
-        self.__dao.insert_article(art_mod)
+        return art_mod
+        # self.__dao.insert_article(art_mod)
 
     def get_article_id_by_url(self, url):
         return self.__dao.search_article_id_by_url(url)
 
-    def insert_full_article(self, url, driver):
+    def get_full_article(self, art_mod, url, driver):
         driver.get(url)
-        art_mod = ArtMod.ArticleModel()
+        # art_mod = ArtMod.ArticleModel()
         art_mod.art_content = driver.find_element_by_class_name("article-content").get_attribute('innerHTML')
         tags_ele = driver.find_elements_by_class_name('label-link')
         tags = []
         for tag in tags_ele:
             tags.append(tag.get_attribute('innerHTML'))
         art_mod.art_tags = '&&'.join(tags)
+        return art_mod
+        # self.__dao.update_full_article_by_url(url, art_mod)
 
-        self.__dao.update_full_article_by_url(url, art_mod)
+    def insert_article(self, art_mod):
+        self.__dao.insert_article(art_mod)

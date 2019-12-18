@@ -10,10 +10,11 @@ class ReplyModel:
         self.rep_article_id = None
         self.rep_comment_id = None
         self.rep_reply_id = None
+        self.rep_identify_id = None
         self.rep_legal = 1
 
     def set(self, rep_id, rep_content, rep_like_num, rep_type, rep_time,
-            rep_customer_id, rep_article_id, rep_comment_id, rep_reply_id):
+            rep_customer_id, rep_article_id, rep_comment_id, rep_reply_id, rep_identify_id):
         self.rep_id = rep_id
         self.rep_content = rep_content
         self.rep_like_num = rep_like_num
@@ -23,6 +24,7 @@ class ReplyModel:
         self.rep_article_id = rep_article_id
         self.rep_comment_id = rep_comment_id
         self.rep_reply_id = rep_reply_id
+        self.rep_identify_id = rep_identify_id
         self.rep_legal = 1
 
 

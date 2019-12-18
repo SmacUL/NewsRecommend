@@ -81,6 +81,8 @@ CREATE TABLE NewsRecommend.Comments (
     -- 评论的分数
 	com_scope int UNSIGNED default 0,
     com_legal tinyint default 0,
+    -- 爬虫过程中的评论标识
+    com_identify_id INT UNSIGNED,
     
     com_customer_id INT UNSIGNED,
     com_article_id INT UNSIGNED, 
@@ -105,6 +107,9 @@ CREATE TABLE NewsRecommend.Replys (
     -- 回复的分数
 	rep_scope int UNSIGNED default 0,
 	rep_legal tinyint default 0,
+
+    -- 爬虫过程中的评论标识
+    rep_identify_id INT UNSIGNED,
 
     rep_customer_id INT UNSIGNED,
     rep_article_id INT UNSIGNED,

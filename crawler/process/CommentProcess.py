@@ -9,9 +9,13 @@ class CommentProcess:
     def __init__(self, dao: ComDao.CommentDao):
         self.__dao = dao
 
-    def insert_comment(self, data, com_article_id, com_customer_id):
-        com_mod = ComMod.CommentModel()
+    def get_comment_identiy_id(self, data):
+        return data['id']
 
+    def insert_comment(self, data, comment_identify_id, com_article_id, com_customer_id):
+        com_mod = ComMod.CommentModel()
+        
+        com_mod.com_identify_id = comment_identify_id
         com_mod.com_content = data['text']
         com_mod.com_article_id = com_article_id
         com_mod.com_customer_id = com_customer_id
@@ -20,4 +24,13 @@ class CommentProcess:
 
         self.__dao.insert_comment(com_mod)
 
+    def is_comment_exist(self, id):
+        result = self.__dao.count_comment_by_identify_id(id)
+        if result is None or result == 0:
+            return False
+        else:
+            return True
+
+    def get_comment_id_by_identify_id(self, id):
+        return self.__dao.search_comment_id_by_identify_id(id)
 
