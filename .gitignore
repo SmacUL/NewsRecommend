@@ -14,3 +14,8 @@ crawler/properties/database-properties.json
 crawler/properties/filter-properties.json
 crawler/properties/request-properties.json
 crawler/properties/reply-comment-request-properties.json
+crawler/properties/database.json
+crawler/properties/filter.json
+crawler/properties/reply-comment-request.json
+crawler/properties/request.json
+crawler/properties/scope.json
