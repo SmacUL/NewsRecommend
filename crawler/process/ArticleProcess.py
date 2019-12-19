@@ -2,6 +2,8 @@ import dao.ArticleDao as ArtDao
 import model.ArticleModel as ArtMod
 
 import util.Time as Time
+import util.Filter as Filter
+import util.Json as Json
 
 
 class ArticleProcess:
@@ -19,15 +21,16 @@ class ArticleProcess:
         else:
             return True
 
-    def get_tiny_article(self, data, art_url, art_customer_id):
+    def get_tiny_article(self, data, class_filter_path, art_url, art_customer_id):
         art_mod = ArtMod.ArticleModel()
         art_mod.art_url = art_url
         art_mod.art_abstract = data['abstract']
         art_mod.art_title = data['title']
         try:
-            art_mod.art_class = data['chinese_tag']
+            art_class = data['chinese_tag']
         except:
-            art_mod.art_class = '综合'
+            art_class = '综合'
+        art_mod.art_class = Filter.Filter().major_filter(art_class, Json.Json.read_json_file(class_filter_path))
 
         try:
             art_mod.art_image_url = data['middle_image']
@@ -57,3 +60,6 @@ class ArticleProcess:
 
     def insert_article(self, art_mod):
         self.__dao.insert_article(art_mod)
+
+    def update_article_comment_num(self, art_id):
+        self.__dao.update_article_comment_num(art_id)

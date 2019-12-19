@@ -82,7 +82,7 @@ CREATE TABLE NewsRecommend.Comments (
 	com_scope int UNSIGNED default 0,
     com_legal tinyint default 0,
     -- 爬虫过程中的评论标识
-    com_identify_id INT UNSIGNED,
+    com_identify_id varchar(64) default '',
     
     com_customer_id INT UNSIGNED,
     com_article_id INT UNSIGNED, 
@@ -109,7 +109,7 @@ CREATE TABLE NewsRecommend.Replys (
 	rep_legal tinyint default 0,
 
     -- 爬虫过程中的评论标识
-    rep_identify_id INT UNSIGNED,
+    rep_identify_id varchar(64) default '',
 
     rep_customer_id INT UNSIGNED,
     rep_article_id INT UNSIGNED,

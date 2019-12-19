@@ -28,6 +28,7 @@ class MySql:
     def get_result_all(self):
         try:
             result = self.__cursor.fetchall()
+            print(result)
             return result
         except Exception as err:
             print(err)
@@ -35,6 +36,7 @@ class MySql:
     def get_result_one(self):
         try:
             result = self.__cursor.fetchone()
+            print(result)
             return result
         except Exception as err:
             print(err)

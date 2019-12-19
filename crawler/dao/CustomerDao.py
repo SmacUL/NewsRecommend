@@ -10,12 +10,17 @@ class CustomerDao:
     def count_customer_by_url(self, url):
         search_sql = "select count(*) from Customers where cus_url = '%s'" % url
         self.__base.execute_sql(search_sql)
-        return self.__base.get_result_all()[0][0]
+        result = self.__base.get_result_one()
+        return result[0]
 
     def search_customer_id_by_url(self, url):
         search_sql = "select cus_id from Customers where cus_url = '%s'" % url
         self.__base.execute_sql(search_sql)
-        return self.__base.get_result_all()[0][0]
+        result = self.__base.get_result_one()
+        if result is None:
+            return None
+        else:
+            return result[0]
 
     def insert_customer(self, cus_mod: CusMod.CustomerModel):
         """ 插入用户数据

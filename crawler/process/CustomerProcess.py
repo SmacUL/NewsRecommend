@@ -67,7 +67,7 @@ class CustomerProcess:
         cus_mod.cus_url = cus_url
         cus_mod.cus_name = data['name']
         cus_mod.cus_avatar_url = data['avatar_url']
-        if cus_mod['description'] != '':
+        if data['description'] != '':
             cus_mod.cus_style = data['description']
         cus_mod.cus_background_url = None
         cus_mod.cus_pass = Md5.Md5.set_cus_pass("123456")

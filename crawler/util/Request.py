@@ -5,12 +5,6 @@ import util.Json as Json
 class Request:
     """ 用于创建访问请求
     """
-
-    # def __init__(self, url, headers, cookie):
-    #     self.__url = url
-    #     self.__headers = headers
-    #     self.__cookie = cookie
-
     def __init__(self, path):
         properties = Json.Json.read_json_file(path)
         self.__url = properties['url']
