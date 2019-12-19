@@ -55,28 +55,21 @@ class Major:
         self.__com_pro = ComPro.CommentProcess(self.__com_dao)
         self.__rep_pro = RepPro.ReplyProcess(self.__rep_dao)
 
-    def before_process(self, start: int, end: int, total: int):
-        """ [start, end]
-
-        :param start:
-        :param end:
-        :param total:
-        :return:
-        """
-        self.__start = start
-        self.__end = end
-        self.__total = total
+    def set_process_scope(self, path):
+        scope_map = Json.Json.read_json_file(path)
+        self.__start = scope_map['start']
+        self.__end = scope_map['end']
+        self.__total = scope_map['total']
 
     def major_process(self):
         art_request = Request.Request(os.path.join('properties', 'request.json'))
+        counter = 0
+        all_counter = 0
         for page in range(1, self.__end+1):
             print("current page: %d, total %d" % (page, self.__total))
             news_data = art_request.more()['data']
             for data in news_data:
                 print(data)
-                # 先设置 driver
-                driver = Driver.Driver.get_chrome_driver()
-
                 # 文章作者
                 art_customer_url = self.__cus_pro.get_article_customer_url(data)
                 if not self.__cus_pro.is_customer_exist(art_customer_url):
@@ -87,6 +80,7 @@ class Major:
                 print("文章作者处理完成\n")
 
                 # 文章内容
+                driver = Driver.Driver.get_chrome_driver()
                 try:
                     article_url = self.__art_pro.get_article_url(data)
                     if not self.__art_pro.is_article_exist(article_url):
@@ -106,7 +100,9 @@ class Major:
                 article_id = self.__art_pro.get_article_id_by_url(article_url)
                 if article_id is None:
                     continue
-                print("文章内容处理完成")
+                else:
+                    counter += 1
+                print("文章内容处理完成, 开始处理评论与回复数据")
 
                 # 评论
                 comment_url = 'https://www.toutiao.com/api/pc/article/v4/tab_comments/?' \
@@ -116,7 +112,6 @@ class Major:
                 comment_request.set_url(comment_url)
                 comments_data = comment_request.more()['data']
 
-                print("开始处理评论与回复数据")
                 for comment_data in comments_data:
                     comment = comment_data['comment']
 
@@ -136,7 +131,7 @@ class Major:
                     if comment_id is None:
                         continue
                     else:
-                        self.__art_pro.update_article_comment_num(art_customer_id)
+                        self.__art_pro.update_article_comment_num(article_id)
 
                     # 回复
                     reply_url = 'https://www.toutiao.com/api/pc/2/comment/v4/reply_list/?' \
@@ -168,6 +163,12 @@ class Major:
                                                         rep_customer_id, comment_id, rep_reply_id)
                 print("====================\n")
 
+            all_counter += len(news_data)
+            print("成功获取的陌生文章比例: %f \n" % (counter / all_counter))
+            if (counter / all_counter) < 0.2:
+                print("成功获取的陌生文章比例数量低于 20% , 程序终止. ")
+                break
+
 
 if __name__ == '__main__':
 
@@ -175,5 +176,5 @@ if __name__ == '__main__':
     major.init_database(os.path.join('properties', 'database.json'))
     major.init_dao()
     major.init_process()
-    major.before_process(1, 1, 1)
+    major.set_process_scope(os.path.join('properties', 'scope.json'))
     major.major_process()
