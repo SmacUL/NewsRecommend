@@ -18,3 +18,4 @@ crawler/properties/filter.json
 crawler/properties/reply-comment-request.json
 crawler/properties/request.json
 crawler/properties/scope.json
+*.pyc

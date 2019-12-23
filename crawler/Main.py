@@ -67,7 +67,13 @@ class Major:
         all_counter = 0
         for page in range(1, self.__end+1):
             print("current page: %d, total %d" % (page, self.__total))
-            news_data = art_request.more()['data']
+
+            try:
+                news_data = art_request.more()['data']
+            except Exception as err:
+                print(err)
+                continue
+
             for data in news_data:
                 print(data)
                 # 文章作者
@@ -110,7 +116,15 @@ class Major:
                               .format(data['group_id'], data['item_id'], 10)
                 comment_request = Request.Request(os.path.join('properties', 'reply-comment-request.json'))
                 comment_request.set_url(comment_url)
-                comments_data = comment_request.more()['data']
+                try:
+                    comments_data = comment_request.more()['data']
+                except Exception as err:
+                    print(err)
+                    continue
+
+                if comments_data is None:
+                    print("====================\n")
+                    continue
 
                 for comment_data in comments_data:
                     comment = comment_data['comment']
@@ -139,7 +153,14 @@ class Major:
                                 .format(comment['id_str'], 20)
                     reply_request = Request.Request(os.path.join('properties', 'reply-comment-request.json'))
                     reply_request.set_url(reply_url)
-                    replys_data = reply_request.more()['data']['data']
+                    try:
+                        replys_data = reply_request.more()['data']['data']
+                    except Exception as err:
+                        print(err)
+                        continue
+
+                    if replys_data is None:
+                        continue
 
                     for reply in replys_data:
 
