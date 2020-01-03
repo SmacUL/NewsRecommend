@@ -157,19 +157,19 @@ CREATE TABLE NewsRecommend.CustomerCustomerFollow (
 
 
 
--- acp 用户的新闻偏好程度记录
-DROP TABLE IF EXISTS NewsRecommend.ArticleCustomerPreference;
-CREATE TABLE NewsRecommend.ArticleCustomerPreference (
-    acp_id INT UNSIGNED NOT NULL,
-    -- acp_prefer 用户偏好 [0, 10]
-    acp_prefer INT UNSIGNED default 0,
-    acp_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+-- acb 用户的新闻偏好程度记录
+DROP TABLE IF EXISTS NewsRecommend.ArticleCustomerBehavior;
+CREATE TABLE NewsRecommend.ArticleCustomerBehavior (
+    acb_id INT UNSIGNED NOT NULL,
+    -- acb_behavior 用户行为: 无 0, 写作 1, 点赞 2, 点踩 3, 评论 4, 回复 5
+    acb_behavior INT UNSIGNED default 0,
+    acb_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     
-    acp_article_id INT UNSIGNED,
-    acp_customer_id INT UNSIGNED,
-	primary key(acp_id),
-    foreign key(acp_article_id) references Articles(art_id),
-    foreign key(acp_customer_id) references Customers(cus_id)
+    acb_article_id INT UNSIGNED,
+    acb_customer_id INT UNSIGNED,
+	primary key(acb_id),
+    foreign key(acb_article_id) references Articles(art_id),
+    foreign key(acb_customer_id) references Customers(cus_id)
 );
 
 

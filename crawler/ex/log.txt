@@ -1,0 +1,6 @@
+INFO:root:unsupported operand type(s) for +: 'int' and 'str'
+INFO:root:unsupported operand type(s) for +: 'int' and 'str'
+INFO:root:unsupported operand type(s) for +: 'int' and 'str'
+INFO:root:unsupported operand type(s) for +: 'int' and 'str'
+INFO:root:unsupported operand type(s) for +: 'int' and 'str'
+INFO:root:unsupported operand type(s) for +: 'int' and 'str'

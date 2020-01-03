@@ -1,5 +1,6 @@
 {
   "db_name": "",
   "user": "",
-  "password": ""
+  "password": "",
+  "print_sql": false
 }

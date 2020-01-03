@@ -1,7 +1,6 @@
 import os
 
 import util.MySql as MySql
-import util.Request as Request
 import util.Driver as Driver
 import util.Json as Json
 
@@ -41,7 +40,7 @@ class Major:
         :return:
         """
         db_map = Json.Json.read_json_file(path)
-        self.__base = MySql.MySql(db_map['db_name'], db_map['user'], db_map['password'])
+        self.__base = MySql.MySql(db_map['db_name'], db_map['user'], db_map['password'], print_sql=db_map['print_sql'])
 
     def init_dao(self):
         self.__art_dao = ArtDao.ArticleDao(self.__base)
@@ -62,16 +61,13 @@ class Major:
         self.__total = scope_map['total']
 
     def major_process(self):
-        art_request = Request.Request(os.path.join('properties', 'request.json'))
         counter = 0
         all_counter = 0
         for page in range(1, self.__end+1):
             print("current page: %d, total %d" % (page, self.__total))
 
-            try:
-                news_data = art_request.more()['data']
-            except Exception as err:
-                print(err)
+            news_data = self.__art_pro.get_news_data()
+            if news_data is None:
                 continue
 
             for data in news_data:
@@ -79,7 +75,8 @@ class Major:
                 # 文章作者
                 art_customer_url = self.__cus_pro.get_article_customer_url(data)
                 if not self.__cus_pro.is_customer_exist(art_customer_url):
-                    self.__cus_pro.insert_art_customer(data, art_customer_url)
+                    art_cus_mod = self.__cus_pro.get_article_customer_content(data, art_customer_url)
+                    self.__cus_pro.insert_customer(art_cus_mod)
                 art_customer_id = self.__cus_pro.get_customer_id_by_url(art_customer_url)
                 if art_customer_id is None:
                     continue
@@ -87,22 +84,19 @@ class Major:
 
                 # 文章内容
                 driver = Driver.Driver.get_chrome_driver()
-                try:
-                    article_url = self.__art_pro.get_article_url(data)
-                    if not self.__art_pro.is_article_exist(article_url):
-                        article_mod = self.__art_pro.get_tiny_article(
-                            data, os.path.join('properties', 'filter.json'), article_url, art_customer_id,)
-                        driver.implicitly_wait(10)
-                        self.__art_pro.get_full_article(article_mod, article_url, driver)
-                        self.__art_pro.insert_article(article_mod)
-                    else:
-                        print("====================\n")
-                        continue
-                except Exception as err:
-                    print(err)
-                    continue
-                finally:
+                article_url = self.__art_pro.get_article_url(data)
+                if not self.__art_pro.is_article_exist(article_url):
+                    article_mod = self.__art_pro.get_tiny_article(
+                        data, os.path.join('properties', 'filter.json'), article_url, art_customer_id,)
+                    driver.implicitly_wait(10)
+                    self.__art_pro.get_full_article(article_mod, article_url, driver)
+                    self.__art_pro.insert_article(article_mod)
                     driver.close()
+                else:
+                    driver.close()
+                    print("====================\n")
+                    continue
+
                 article_id = self.__art_pro.get_article_id_by_url(article_url)
                 if article_id is None:
                     continue
@@ -111,28 +105,19 @@ class Major:
                 print("文章内容处理完成, 开始处理评论与回复数据")
 
                 # 评论
-                comment_url = 'https://www.toutiao.com/api/pc/article/v4/tab_comments/?' \
-                              'aid=66&app_name=toutiao-web&group_id={0}&item_id={1}&offset=0&count={2}'\
-                              .format(data['group_id'], data['item_id'], 10)
-                comment_request = Request.Request(os.path.join('properties', 'reply-comment-request.json'))
-                comment_request.set_url(comment_url)
-                try:
-                    comments_data = comment_request.more()['data']
-                except Exception as err:
-                    print(err)
-                    continue
-
+                comments_data = self.__com_pro.get_comments_data(data)
                 if comments_data is None:
                     print("====================\n")
                     continue
 
                 for comment_data in comments_data:
-                    comment = comment_data['comment']
+                    comment = self.__com_pro.get_comment_data(comment_data)
 
                     # 评论作者
                     com_customer_url = self.__cus_pro.get_comment_customer_url(comment)
                     if not self.__cus_pro.is_customer_exist(com_customer_url):
-                        self.__cus_pro.insert_comment_customer(comment, com_customer_url)
+                        com_cus_mod = self.__cus_pro.get_comment_customer_content(comment, com_customer_url)
+                        self.__cus_pro.insert_customer(com_cus_mod)
                     com_customer_id = self.__cus_pro.get_customer_id_by_url(com_customer_url)
                     if com_customer_id is None:
                         continue
@@ -140,7 +125,8 @@ class Major:
                     # 评论内容
                     comment_identify_id = self.__com_pro.get_comment_identiy_id(comment)
                     if not self.__com_pro.is_comment_exist(comment_identify_id):
-                        self.__com_pro.insert_comment(comment, comment_identify_id, article_id, com_customer_id)
+                        com_mod = self.__com_pro.get_comment_content(comment, comment_identify_id, article_id, com_customer_id)
+                        self.__com_pro.insert_comment(com_mod)
                     comment_id = self.__com_pro.get_comment_id_by_identify_id(comment_identify_id)
                     if comment_id is None:
                         continue
@@ -148,40 +134,32 @@ class Major:
                         self.__art_pro.update_article_comment_num(article_id)
 
                     # 回复
-                    reply_url = 'https://www.toutiao.com/api/pc/2/comment/v4/reply_list/?' \
-                                'aid=24&app_name=toutiao-web&id={0}&offset=0&count={1}&repost=0'\
-                                .format(comment['id_str'], 20)
-                    reply_request = Request.Request(os.path.join('properties', 'reply-comment-request.json'))
-                    reply_request.set_url(reply_url)
-                    try:
-                        replys_data = reply_request.more()['data']['data']
-                    except Exception as err:
-                        print(err)
-                        continue
+                    replys_data = self.__rep_pro.get_replys_data(comment)
 
                     if replys_data is None:
                         continue
 
                     for reply in replys_data:
-
                         # 回复作者
-                        rep_customer_url = self.__cus_pro.get_reply_customer_url(reply['user'])
+                        rep_customer_data = self.__cus_pro.get_reply_customer_data(reply)
+                        rep_customer_url = self.__cus_pro.get_reply_customer_url(rep_customer_data)
                         if not self.__cus_pro.is_customer_exist(rep_customer_url):
-                            self.__cus_pro.insert_reply_customer(reply['user'], rep_customer_url)
+                            rep_cus_mod = self.__cus_pro.get_reply_customer_content(rep_customer_data, rep_customer_url)
+                            self.__cus_pro.insert_customer(rep_cus_mod)
                         rep_customer_id = self.__cus_pro.get_customer_id_by_url(rep_customer_url)
                         if rep_customer_id is None:
                             continue
 
                         # 回复内容
                         reply_identify_id = self.__rep_pro.get_reply_identiy_id(reply)
-                        try:
-                            rep_reply_identify_id = self.__rep_pro.get_reply_reply_identify_id(reply['reply_to_comment'])
-                            rep_reply_id = self.__rep_pro.get_reply_id_by_rep_identify_id(rep_reply_identify_id)
-                        except:
-                            rep_reply_id = None
+                        reply_to_comment_data = self.__rep_pro.get_reply_to_comment_data(reply)
+                        rep_reply_identify_id = self.__rep_pro.get_reply_reply_identify_id(reply_to_comment_data)
+                        rep_reply_id = self.__rep_pro.get_reply_id_by_rep_identify_id(rep_reply_identify_id)
                         if not self.__rep_pro.is_reply_exist(reply_identify_id):
-                            self.__rep_pro.insert_reply(reply, reply_identify_id, article_id,
-                                                        rep_customer_id, comment_id, rep_reply_id)
+                            rep_mod = self.__rep_pro.get_reply_content(reply, reply_identify_id, article_id,
+                                                             rep_customer_id, comment_id, rep_reply_id)
+                            self.__rep_pro.insert_reply(rep_mod)
+
                 print("====================\n")
 
             all_counter += len(news_data)
