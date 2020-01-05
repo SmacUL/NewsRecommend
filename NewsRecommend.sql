@@ -1,5 +1,5 @@
 DROP DATABASE IF EXISTS NewsRecommend;
-CREATE DATABASE IF NOT EXISTS NewsRecommend CHARACTER SET utf8;
+CREATE DATABASE IF NOT EXISTS NewsRecommend CHARACTER SET utf8mb4;
 
 
 -- cus 用户
@@ -8,8 +8,8 @@ CREATE TABLE NewsRecommend.Customers (
     cus_id INT UNSIGNED NOT NULL auto_increment,
     cus_name VARCHAR(64),
     cus_pass VARCHAR(255),
-    -- 用户的 url , 爬虫中用于识别用户
-    cus_url VARCHAR(255) default '',
+    -- 爬虫中用于识别用户
+    cus_spider VARCHAR(64) default '',
     -- 用户头像的 url
     cus_avatar_url VARCHAR(255) default '',
     -- 用户背景墙的图片 url
@@ -43,10 +43,10 @@ CREATE TABLE NewsRecommend.Articles (
     art_id INT UNSIGNED NOT NULL auto_increment,
     art_title VARCHAR(255) default '',
     art_content TEXT,
-    -- 文章的 url , 在爬虫中分辨文章
-    art_url VARCHAR(255) default '',
+    -- 在爬虫中分辨文章
+    art_spider VARCHAR(64) default '',
     -- 文章的分类
-    art_class VARCHAR(16) default '综合',
+    art_class VARCHAR(32),
     -- 文章的标签 应该以 & 分隔
     art_tags VARCHAR(128) default '',
     -- 文章缩略图的信息
@@ -82,7 +82,7 @@ CREATE TABLE NewsRecommend.Comments (
 	com_scope int UNSIGNED default 0,
     com_legal tinyint default 0,
     -- 爬虫过程中的评论标识
-    com_identify_id varchar(64) default '',
+    com_spider varchar(64) default '',
     
     com_customer_id INT UNSIGNED,
     com_article_id INT UNSIGNED, 
@@ -109,7 +109,7 @@ CREATE TABLE NewsRecommend.Replys (
 	rep_legal tinyint default 0,
 
     -- 爬虫过程中的评论标识
-    rep_identify_id varchar(64) default '',
+    rep_spider varchar(64) default '',
 
     rep_customer_id INT UNSIGNED,
     rep_article_id INT UNSIGNED,
@@ -145,7 +145,7 @@ CREATE TABLE NewsRecommend.Administrators (
 -- follower -> followee
 DROP TABLE IF EXISTS NewsRecommend.CustomerCustomerFollow;
 CREATE TABLE NewsRecommend.CustomerCustomerFollow (
-    ccf_id INT UNSIGNED NOT NULL,
+    ccf_id INT UNSIGNED NOT NULL auto_increment,
     ccf_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
     ccf_follower_id INT UNSIGNED,
@@ -158,9 +158,9 @@ CREATE TABLE NewsRecommend.CustomerCustomerFollow (
 
 
 -- acb 用户的新闻偏好程度记录
-DROP TABLE IF EXISTS NewsRecommend.ArticleCustomerBehavior;
-CREATE TABLE NewsRecommend.ArticleCustomerBehavior (
-    acb_id INT UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS NewsRecommend.ArticleCustomerBehaviors;
+CREATE TABLE NewsRecommend.ArticleCustomerBehaviors (
+    acb_id INT UNSIGNED NOT NULL auto_increment,
     -- acb_behavior 用户行为: 无 0, 写作 1, 点赞 2, 点踩 3, 评论 4, 回复 5
     acb_behavior INT UNSIGNED default 0,
     acb_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

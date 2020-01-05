@@ -6,16 +6,11 @@ crawler/database-properties.json
 .DS_Store
 
 /back/lib/*.jar
-crawler/properties/database-properties.json
-crawler/properties/request-properties.json
 back/src/main/resources/application.properties
-crawler/properties/filter-properties.json
-crawler/properties/database-properties.json
-crawler/properties/filter-properties.json
-crawler/properties/request-properties.json
-crawler/properties/database.json
-crawler/properties/filter.json
-crawler/properties/reply-comment-request.json
-crawler/properties/request.json
-crawler/properties/scope.json
+
 *.pyc
+spider/*/__init__.py
+spider/log/*.txt
+spider/.idea/*
+spider/experiment/*
+spider/properties/database.json

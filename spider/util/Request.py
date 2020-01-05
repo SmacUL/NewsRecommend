@@ -1,15 +1,13 @@
 import requests
-import util.Json as Json
-
 
 class Request:
     """ 用于创建访问请求
     """
-    def __init__(self, path):
-        properties = Json.Json.read_json_file(path)
-        self.__url = properties['url']
-        self.__headers = properties['headers']
-        self.__cookie = properties['cookie']
+
+    def __init__(self, url, headers=None, cookies=None):
+        self.__url = url
+        self.__headers = headers
+        self.__cookie = cookies
 
     def set_url(self, url):
         self.__url = url
