@@ -9,7 +9,7 @@ crawler/database-properties.json
 back/src/main/resources/application.properties
 
 *.pyc
-spider/*/__init__.py
+# spider/*/__init__.py
 spider/log/*.txt
 spider/.idea/*
 spider/experiment/*
