@@ -1,43 +1,37 @@
 <template>
-    <div class="edit-entrance">
-        <el-card>
-            <img class="image" src="@/assets/logo.png"/>
-            <div class="title">
-                <span>点击</span>
-                <el-button type="text">登录</el-button>
-                <span>开始书写自己的新闻</span>
-            </div>
-        </el-card>
-    </div>
+    <card-panel>
+        <img class="body-image" :src="logoSrc"/>
+        <div class="body-title">
+            <span>点击</span>
+            <el-button type="text">登录</el-button>
+            <span>开始书写自己的新闻</span>
+        </div>
+    </card-panel>
 </template>
 
 <script>
-export default {
-    name: 'EditEntrance'
-}
+    import Logo from '../../assets/logo.png'
+    import CardPanel from './DarkCard'
+    export default {
+        name: 'EditEntrance',
+        components: {CardPanel},
+        data: function() {
+            return {
+                logoSrc: Logo
+            }
+        }
+    }
 </script>
 
 <style scoped>
-.el-card {
-    border-radius: 0px;
-}
 
-.el-card.is-always-shadow {
-    box-shadow: none;
-    background-color: #f4f5f6;
-}
+    .body-image {
+        height: 50px;
+    }
 
-.el-card >>> .el-card__body {
-    padding: 15px;
-}
-
-.image {
-    height: 70px;
-}
-
-.title .el-button >>> span {
-    font-size: 16px;
-    font-weight: 500;
-}
+    .body-title .el-button >>> span {
+        font-size: 16px;
+        font-weight: 500;
+    }
 
 </style>

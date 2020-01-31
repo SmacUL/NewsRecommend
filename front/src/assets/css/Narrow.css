@@ -1,0 +1,50 @@
+body {
+    margin: 0 auto;
+}
+
+header {
+    height: 60px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 4px 0 rgba(0,0,0,.12);
+
+    width: 1000000px;
+    overflow: hidden;
+    position: fixed;
+    background-color: #fff;
+    z-index: 10;
+    top: 0;
+}
+
+main {
+    width: 1030px;
+    margin: 70px auto 10px;
+    position: relative;
+    z-index: 1;
+    height: 1000px;
+}
+
+/*nav {*/
+/*    width: 130px;*/
+/*    position: fixed;*/
+/*}*/
+
+article {
+    margin-left:0;
+    width: 710px;
+}
+
+aside {
+    width: 280px;
+    position: fixed;
+    top: 70px;
+    margin-left: 750px;
+}
+
+.top-bar {
+    width: 1030px;
+    height: 40px;
+    padding: 10px 0px 10px 0px;
+    position: fixed;
+    left: -515px;
+    margin-left: 50%;
+}

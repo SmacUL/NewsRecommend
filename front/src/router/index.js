@@ -1,47 +1,56 @@
 import Vue from 'vue'
-import Router from 'vue-router'
-// 主页面
-import ArticlePage from '@/pages/ArticlePage'
-import IndexPage from '@/pages/IndexPage'
-import PortPage from '@/pages/PortPage'
-import SearchPage from '@/pages/SearchPage'
-import SelfPage from '@/pages/SelfPage'
+import VueRouter from 'vue-router'
+// import Home from '../views/Home.vue'
 
-Vue.use(Router)
 
-export default new Router({
-    routes: [
-        {
-            path: '/',
-            alias: '/index',
-            name: 'IndexPage',
-            component: IndexPage
-        },
-        {
-            path: '/index',
-            name: 'IndexPage', 
-            component: IndexPage,
-        },
-        {
-            path: '/article/:artid',
-            name: 'ArticlePage', 
-            component: ArticlePage,
-        },
-        {
-            path: '/port',
-            name: 'PortPage', 
-            component: PortPage,
-        },
-        {
-            path: '/search/:input',
-            name: 'SearchPage', 
-            component: SearchPage,
-        },
+import IndexView from '../views/IndexView'
+import SearchView from '../views/SearchView'
+import ArticleView from "../views/ArticleView"
+import SelfView from '../views/SelfView'
 
-        {
-            path: '/self/:type/:id',
-            name: 'SelfPage', 
-            component: SelfPage,
-        },
-    ]
+Vue.use(VueRouter)
+
+const routes = [
+  {
+    path: '/',
+    name: 'IndexView',
+    component: IndexView
+  },
+  {
+    path: '/index',
+    name: 'IndexView',
+    component: IndexView
+  },
+  {
+    path: '/search',
+    name: 'SearchView',
+    component: SearchView
+  },
+  {
+    path: '/article',
+    name: 'ArticleView',
+    component: ArticleView
+  },
+  {
+    path: '/self',
+    name: 'SelfView',
+    component: SelfView
+  }
+
+  // {
+  //   path: '/about',
+  //   name: 'about',
+  //   // route level code-splitting
+  //   // this generates a separate chunk (about.[hash].js) for this route
+  //   // which is lazy-loaded when the route is visited.
+  //   component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+  // }
+]
+
+const router = new VueRouter({
+  mode: 'history',
+  base: process.env.BASE_URL,
+  routes
 })
+
+export default router
