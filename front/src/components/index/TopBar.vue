@@ -3,7 +3,7 @@
         <div class="body-image">
             <img src="@/assets/image/Logo.png"/>
         </div>
-        <search-panel :tip="tip"></search-panel>
+        <search-panel :tip="tip"  v-on:search="searchArticles"></search-panel>
         <div class="manage">
             <el-button type="text">登录</el-button>
             <el-button type="text">注册</el-button>
@@ -20,7 +20,13 @@
         components: {SearchPanel},
         methods: {
             searchArticles: function () {
-                this.$emit('search', this.message);
+                this.$axios.get('/api/index/test')
+                    .then((response) => {
+                        this.$message.info(response);
+                    })
+                    .catch((response) => {
+                        this.$message.info(response);
+                    })
             }
         },
         data: function() {

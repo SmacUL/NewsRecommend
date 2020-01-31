@@ -27,10 +27,10 @@ yarn serve
 
 ### 页面浏览
 ``` sh
-localhost:8080/         # 首页
-localhost:8080/article  # 文章阅读页
-localhost:8080/self     # 个人中心
-localhost:8080/search   # 搜索页面
+localhost:8071/         # 首页
+localhost:8071/article  # 文章阅读页
+localhost:8071/self     # 个人中心
+localhost:8071/search   # 搜索页面
 # ...
 ```
 
