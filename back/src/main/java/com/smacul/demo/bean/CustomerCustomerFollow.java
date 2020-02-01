@@ -1,5 +1,6 @@
 package com.smacul.demo.bean;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 public class CustomerCustomerFollow {
@@ -7,7 +8,7 @@ public class CustomerCustomerFollow {
     private Integer ccfId;
     private Integer ccfFollowerId;
     private Integer ccfFolloweeId;
-    private Date ccfTime;
+    private Timestamp ccfTime;
 
     public Integer getCcfId() {
         return ccfId;
@@ -33,15 +34,13 @@ public class CustomerCustomerFollow {
         this.ccfFolloweeId = ccfFolloweeId;
     }
 
-    public Date getCcfTime() {
+    public Timestamp getCcfTime() {
         return ccfTime;
     }
 
-    public void setCcfTime(Date ccfTime) {
+    public void setCcfTime(Timestamp ccfTime) {
         this.ccfTime = ccfTime;
     }
-
-
 
     @Override
     public String toString() {

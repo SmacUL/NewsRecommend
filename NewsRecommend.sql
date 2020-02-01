@@ -76,7 +76,7 @@ CREATE TABLE NewsRecommend.Comments (
     com_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     com_like_num INT UNSIGNED default 0,
     com_dislike_num INT UNSIGNED default 0,
-	-- 评论的回复数量
+	-- 评论的回复数量 Abandon
     com_reply_num INT UNSIGNED default 0,
     -- 评论的分数
 	com_scope int UNSIGNED default 0,
@@ -102,7 +102,7 @@ CREATE TABLE NewsRecommend.Replys (
     rep_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     rep_like_num INT UNSIGNED default 0,
     rep_dislike_num INT UNSIGNED default 0,
-	-- 回复的回复数量
+	-- 回复的回复数量 Abandon
     rep_reply_num INT UNSIGNED default 0,
     -- 回复的分数
 	rep_scope int UNSIGNED default 0,
@@ -161,7 +161,7 @@ CREATE TABLE NewsRecommend.CustomerCustomerFollow (
 DROP TABLE IF EXISTS NewsRecommend.ArticleCustomerBehaviors;
 CREATE TABLE NewsRecommend.ArticleCustomerBehaviors (
     acb_id INT UNSIGNED NOT NULL auto_increment,
-    -- acb_behavior 用户行为: 无 0, 写作 1, 点赞 2, 点踩 3, 评论 4, 回复 5
+    -- acb_behavior 用户行为: 无 0, 写作 1, 点赞 2, 点踩 3, 评论 4, 回复 5, 只浏览 6
     acb_behavior INT UNSIGNED default 0,
     acb_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     

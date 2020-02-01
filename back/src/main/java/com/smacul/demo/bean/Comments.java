@@ -8,22 +8,14 @@ public class Comments {
     private String comContent;
     private Timestamp comTime;
     private Integer comLikeNum;
-    private Boolean comLegal;
+    private Integer comDislikeNum;
+    // comReplyNum Abandon
+    private Integer comReplyNum;
+    private Integer comScope;
+    private Integer comLegal;
+    private String comSpider;
     private Integer comCustomerId;
     private Integer comArticleId;
-
-    @Override
-    public String toString() {
-        return "Comments{" +
-                "comId=" + comId +
-                ", comContent='" + comContent + '\'' +
-                ", comTime=" + comTime +
-                ", comLikeNum=" + comLikeNum +
-                ", comLegal=" + comLegal +
-                ", comCustomerId=" + comCustomerId +
-                ", comArticleId=" + comArticleId +
-                '}';
-    }
 
     public Integer getComId() {
         return comId;
@@ -57,12 +49,44 @@ public class Comments {
         this.comLikeNum = comLikeNum;
     }
 
-    public Boolean getComLegal() {
+    public Integer getComDislikeNum() {
+        return comDislikeNum;
+    }
+
+    public void setComDislikeNum(Integer comDislikeNum) {
+        this.comDislikeNum = comDislikeNum;
+    }
+
+    public Integer getComReplyNum() {
+        return comReplyNum;
+    }
+
+    public void setComReplyNum(Integer comReplyNum) {
+        this.comReplyNum = comReplyNum;
+    }
+
+    public Integer getComScope() {
+        return comScope;
+    }
+
+    public void setComScope(Integer comScope) {
+        this.comScope = comScope;
+    }
+
+    public Integer getComLegal() {
         return comLegal;
     }
 
-    public void setComLegal(Boolean comLegal) {
+    public void setComLegal(Integer comLegal) {
         this.comLegal = comLegal;
+    }
+
+    public String getComSpider() {
+        return comSpider;
+    }
+
+    public void setComSpider(String comSpider) {
+        this.comSpider = comSpider;
     }
 
     public Integer getComCustomerId() {
@@ -81,6 +105,21 @@ public class Comments {
         this.comArticleId = comArticleId;
     }
 
-
+    @Override
+    public String toString() {
+        return "Comments{" +
+                "comId=" + comId +
+                ", comContent='" + comContent + '\'' +
+                ", comTime=" + comTime +
+                ", comLikeNum=" + comLikeNum +
+                ", comDislikeNum=" + comDislikeNum +
+                ", comReplyNum=" + comReplyNum +
+                ", comScope=" + comScope +
+                ", comLegal=" + comLegal +
+                ", comSpider='" + comSpider + '\'' +
+                ", comCustomerId=" + comCustomerId +
+                ", comArticleId=" + comArticleId +
+                '}';
+    }
 
 }

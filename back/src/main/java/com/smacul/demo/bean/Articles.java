@@ -5,34 +5,19 @@ import java.sql.Timestamp;
 public class Articles {
     private Integer artId;
     private String artTitle;
-    private String artAbstract;
     private String artContent;
-    private String artUrl;
+    private String artSpider;
+    private String artClass;
+    // artTag 文章的标签 应该以 & 分隔
     private String artTag;
+    private String artImageUrl;
     private Integer artLikeNum;
     private Integer artDislikeNum;
     private Timestamp artTime;
-    private Boolean artLegal;
+    private Integer artCommentNum;
+    private Integer artScope;
+    private Integer getLegal;
     private Integer artCustomerId;
-    private String artImage;
-
-    @Override
-    public String toString() {
-        return "Articles{" +
-                "artId=" + artId +
-                ", artTitle='" + artTitle + '\'' +
-                ", artAbstract='" + artAbstract + '\'' +
-                ", artContent='" + artContent + '\'' +
-                ", artUrl='" + artUrl + '\'' +
-                ", artTag='" + artTag + '\'' +
-                ", artLikeNum=" + artLikeNum +
-                ", artDislikeNum=" + artDislikeNum +
-                ", artTime=" + artTime +
-                ", artLegal=" + artLegal +
-                ", artCustomerId=" + artCustomerId +
-                ", artImage='" + artImage + '\'' +
-                '}';
-    }
 
     public Integer getArtId() {
         return artId;
@@ -50,14 +35,6 @@ public class Articles {
         this.artTitle = artTitle;
     }
 
-    public String getArtAbstract() {
-        return artAbstract;
-    }
-
-    public void setArtAbstract(String artAbstract) {
-        this.artAbstract = artAbstract;
-    }
-
     public String getArtContent() {
         return artContent;
     }
@@ -66,12 +43,20 @@ public class Articles {
         this.artContent = artContent;
     }
 
-    public String getArtUrl() {
-        return artUrl;
+    public String getArtSpider() {
+        return artSpider;
     }
 
-    public void setArtUrl(String artUrl) {
-        this.artUrl = artUrl;
+    public void setArtSpider(String artSpider) {
+        this.artSpider = artSpider;
+    }
+
+    public String getArtClass() {
+        return artClass;
+    }
+
+    public void setArtClass(String artClass) {
+        this.artClass = artClass;
     }
 
     public String getArtTag() {
@@ -80,6 +65,14 @@ public class Articles {
 
     public void setArtTag(String artTag) {
         this.artTag = artTag;
+    }
+
+    public String getArtImageUrl() {
+        return artImageUrl;
+    }
+
+    public void setArtImageUrl(String artImageUrl) {
+        this.artImageUrl = artImageUrl;
     }
 
     public Integer getArtLikeNum() {
@@ -106,12 +99,28 @@ public class Articles {
         this.artTime = artTime;
     }
 
-    public Boolean getArtLegal() {
-        return artLegal;
+    public Integer getArtCommentNum() {
+        return artCommentNum;
     }
 
-    public void setArtLegal(Boolean artLegal) {
-        this.artLegal = artLegal;
+    public void setArtCommentNum(Integer artCommentNum) {
+        this.artCommentNum = artCommentNum;
+    }
+
+    public Integer getArtScope() {
+        return artScope;
+    }
+
+    public void setArtScope(Integer artScope) {
+        this.artScope = artScope;
+    }
+
+    public Integer getGetLegal() {
+        return getLegal;
+    }
+
+    public void setGetLegal(Integer getLegal) {
+        this.getLegal = getLegal;
     }
 
     public Integer getArtCustomerId() {
@@ -122,13 +131,23 @@ public class Articles {
         this.artCustomerId = artCustomerId;
     }
 
-    public String getArtImage() {
-        return artImage;
+    @Override
+    public String toString() {
+        return "Articles{" +
+                "artId=" + artId +
+                ", artTitle='" + artTitle + '\'' +
+                ", artContent='" + artContent + '\'' +
+                ", artSpider='" + artSpider + '\'' +
+                ", artClass='" + artClass + '\'' +
+                ", artTag='" + artTag + '\'' +
+                ", artImageUrl='" + artImageUrl + '\'' +
+                ", artLikeNum=" + artLikeNum +
+                ", artDislikeNum=" + artDislikeNum +
+                ", artTime=" + artTime +
+                ", artCommentNum=" + artCommentNum +
+                ", artScope=" + artScope +
+                ", getLegal=" + getLegal +
+                ", artCustomerId=" + artCustomerId +
+                '}';
     }
-
-    public void setArtImage(String artImage) {
-        this.artImage = artImage;
-    }
-
-
 }
