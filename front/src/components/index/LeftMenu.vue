@@ -13,6 +13,9 @@
         computed: {
 
         },
+        mounted: function () {
+            this.getLeftMenu();
+        },
         methods: {
             /**
              * 如果选中的类别超过了 this.leftMenu.majorLength 的限制, 即属于二级类别,
@@ -29,7 +32,18 @@
                } else {
                    this.leftMenu.curIndex = index;
                }
-            }
+            },
+
+
+            getLeftMenu() {
+                this.$axios.get('/api/index/classes')
+                    .then((response) => {
+                        this.leftMenu.artClassList = response.data;
+                    })
+                    .catch(() => {
+                        this.$message.info("抱歉, 发生了点错误");
+                    });
+            },
         },
         data: function() {
             return {

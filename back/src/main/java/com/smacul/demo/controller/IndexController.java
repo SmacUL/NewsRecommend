@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -29,10 +30,12 @@ public class IndexController {
      *
      * @return
      */
-    @RequestMapping("/tags")
-    public List<String> getLeftNavTags() {
-        return indexService.getLeftNavTags();
+    @RequestMapping("/classes")
+    public String[] getLeftNavClasses() {
+        String[] classes = {"健康", "你"};
+        return classes;
     }
+
 
     /**
      * 依据导航标签, 获取首页文章的缩略信息列表

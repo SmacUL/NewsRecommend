@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -21,8 +24,8 @@ public class IndexServiceImpl implements IndexService {
     HttpSession session;
 
     @Override
-    public List<String> getLeftNavTags() {
-        return articlesMapper.getLeftNavTags();
+    public List<String> getLeftNavClasses() {
+        return Arrays.asList("社会", "健康");
     }
 
     @Override
