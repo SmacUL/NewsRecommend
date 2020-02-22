@@ -1,5 +1,6 @@
 import requests
 
+
 class Request:
     """ 用于创建访问请求
     """
@@ -20,5 +21,6 @@ class Request:
 
     def more(self):
         resp = requests.get(self.__url, headers=self.__headers, cookies=self.__cookie)
+        resp.encoding = 'utf8mb4'
         self.__cookie = resp.cookies
         return resp.json()

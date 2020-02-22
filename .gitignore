@@ -14,3 +14,4 @@ spider/log/*.txt
 spider/.idea/*
 spider/experiment/*
 spider/properties/database.json
+spider/debug.log

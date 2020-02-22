@@ -310,10 +310,10 @@ class ReplyProcess:
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36'
             }
             result = Request.Request(reply_url, headers).more()['data']['data']
-            logging.info("get_reps_json 获取回复信息 %s 成功" % reply_url)
+            logging.info("获取回复信息 %s 成功" % reply_url)
             return result
         except:
-            logging.exception("get_reps_json 获取回复信息 失败")
+            logging.exception("获取回复信息 失败")
             raise
 
     def set_rep(self, rep_json, rep_art_id, rep_com_id, rep_cus_id, rep_mod: RepMod.ReplyModel):
@@ -329,9 +329,9 @@ class ReplyProcess:
             rep_mod.rep_article_id = rep_art_id
             rep_mod.rep_spider = str(rep_json['id'])
 
-            logging.info("set_rep 设置回复信息 成功")
+            logging.info("设置回复信息 成功")
         except:
-            logging.exception("set_rep 获取回复信息 失败")
+            logging.exception("获取回复信息 失败")
             raise
 
 

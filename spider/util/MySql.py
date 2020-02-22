@@ -13,23 +13,23 @@ class MySql:
         self.__cursor = self.__db_handle.cursor()
 
     def execute_sql(self, sql):
-        logging.info("execute_sql %s" % sql)
+        logging.info("%s" % sql)
         self.__cursor.execute(sql)
 
     def commit_transactions(self):
-        logging.info("commit_transactions")
+        logging.info("事务提交")
         self.__db_handle.commit()
 
     def commit_rollback(self):
-        logging.info("commit_rollback")
+        logging.info("提交回滚")
         self.__db_handle.rollback()
 
     def get_result_all(self):
         result = self.__cursor.fetchall()
-        logging.info("get_result_all 获得数据: %s" % result)
+        logging.info("获得数据: %s" % result)
         return result
 
     def get_result_one(self):
         result = self.__cursor.fetchone()
-        logging.info("get_result_one 获得数据: %s" % result)
+        logging.info("获得数据: %s" % result)
         return result

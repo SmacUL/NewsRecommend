@@ -2,9 +2,7 @@ import util.Request as Request
 import util.Time as Time
 import model.CommentModel as ComMod
 
-# import os.path
 import logging
-# logging.basicConfig(filename=os.path.join('log', 'major-log.txt'), filemode='a')
 
 
 class CommentProcess:
@@ -99,10 +97,10 @@ class CommentProcess:
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36'
             }
             result = Request.Request(com_url, headers).more()['data']
-            logging.info("get_com_json 获取评论页数据 %s 失败" % com_url)
+            logging.info("获取评论页数据 %s 失败" % com_url)
             return result
         except:
-            logging.exception("get_com_json 获取评论页数据 失败")
+            logging.exception("获取评论页数据 失败")
             return None
 
     def set_com(self, com_json, art_id, cus_id, com_mod: ComMod.CommentModel):
@@ -124,7 +122,7 @@ class CommentProcess:
             com_mod.com_legal = 1
             com_mod.com_spider = str(com_json['comment']['id'])
 
-            logging.info("set_com 设置评论数据 成功")
+            logging.info("设置评论数据 成功")
         except:
-            logging.exception("set_com 设置评论数据 失败")
+            logging.exception("设置评论数据 失败")
             raise

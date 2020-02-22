@@ -18,7 +18,14 @@ import util.Json as Json
 import util.Time as Time
 import os.path
 import logging
-logging.basicConfig(level=logging.INFO, filemode='a', filename=os.path.join('log', '%s.txt' % Time.Time.get_local_time()))
+
+log_file_name = os.path.join('log', '%s.txt' % Time.Time.get_local_time())
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+formatter = logging.Formatter('%(levelname)s - %(module)s - %(funcName)s :\n  \t%(message)s')
+handler = logging.FileHandler(filename=log_file_name, mode='a', encoding='utf-8')
+handler.setFormatter(formatter)
+logger.addHandler(handler)
 
 
 class Major:

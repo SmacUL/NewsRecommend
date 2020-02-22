@@ -131,10 +131,10 @@ class ArticleProcess:
             }
             result = Request.Request(url, headers, cookies).more()['data']
             # print(result)
-            logging.info("get_arts_brief_json_by_category 获取新闻缩率信息 %s 成功" % url)
+            logging.info("获取新闻缩率信息 %s 成功" % url)
             return result
         except:
-            logging.exception("get_arts_brief_json_by_category 获取新闻缩率信息 失败")
+            logging.exception("获取新闻缩率信息 失败")
             return None
 
     @DeprecationWarning
@@ -200,10 +200,10 @@ class ArticleProcess:
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36'
             }
             result = Request.Request(art_url, headers).more()['data']
-            logging.info("get_art_json 获取新闻内容数据 %s 成功" % art_url)
+            logging.info("获取新闻内容数据 %s 成功" % art_url)
             return result
         except:
-            logging.exception("get_art_json 获取新闻内容数据 失败")
+            logging.exception("获取新闻内容数据 失败")
             return None
 
     def set_art(self, art_brief_json, category, art_cus_id, art_mod: ArtMod.ArticleModel):
@@ -239,9 +239,9 @@ class ArticleProcess:
 
             art_mod.art_content = driver.find_element_by_class_name("article-content").get_attribute('innerHTML')
 
-            logging.info("set_art 设置新闻数据 url=%s 成功" % url)
+            logging.info("设置新闻数据 url=%s 成功" % url)
         except:
-            logging.exception("set_art 设置新闻数据 失败")
+            logging.exception("设置新闻数据 失败")
 
             raise
         finally:
