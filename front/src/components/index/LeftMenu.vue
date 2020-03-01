@@ -7,6 +7,7 @@
      * 类别菜单
      */
     import LeftMenuInner from "./LeftMenuInner";
+    import {translator} from "../../util/ClassTransfer"
     export default {
         components: {LeftMenuInner},
         name: "LeftMenu",
@@ -38,10 +39,10 @@
             getLeftMenu() {
                 this.$axios.get('/api/index/classes')
                     .then((response) => {
-                        this.leftMenu.artClassList = response.data;
+                        this.leftMenu.artClassList = translator(response.data);
                     })
                     .catch(() => {
-                        this.$message.info("抱歉, 发生了点错误");
+                        this.$message.info("抱歉, 发生了点故障");
                     });
             },
         },

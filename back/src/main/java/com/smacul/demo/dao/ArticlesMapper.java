@@ -23,6 +23,8 @@ public interface ArticlesMapper {
     @Select("select art_tag from Articles group by art_tag order by count(art_tag) desc")
     List<String> getLeftNavTags();
 
+    @Select("select art_class from Articles group by art_class order by count(art_class) desc")
+    String[] getLeftNavClasses();
 
     @Select("select art_id, art_title, art_image from Articles " +
             "where art_tag = '综合' order by art_time desc limit #{start}, #{pageSize}")

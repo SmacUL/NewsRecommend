@@ -24,8 +24,9 @@ public class IndexServiceImpl implements IndexService {
     HttpSession session;
 
     @Override
-    public List<String> getLeftNavClasses() {
-        return Arrays.asList("社会", "健康");
+    public String[] getLeftNavClasses() {
+//        return Arrays.asList("社会", "健康");
+        return articlesMapper.getLeftNavClasses();
     }
 
     @Override

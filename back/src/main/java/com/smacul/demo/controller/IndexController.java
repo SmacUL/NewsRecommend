@@ -30,12 +30,16 @@ public class IndexController {
      *
      * @return
      */
+//    @RequestMapping("/classes")
+//    public String[] getLeftNavClasses() {
+//        String[] classes = {"健康", "你"};
+//        return classes;
+//    }
+
     @RequestMapping("/classes")
     public String[] getLeftNavClasses() {
-        String[] classes = {"健康", "你"};
-        return classes;
+        return indexService.getLeftNavClasses();
     }
-
 
     /**
      * 依据导航标签, 获取首页文章的缩略信息列表

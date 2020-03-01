@@ -10,6 +10,9 @@
     export default {
         name: "TinyCenter",
         components: {TinyArticle},
+        methods: {
+
+        },
         data: function () {
             return {
                 tinyArticles: [
