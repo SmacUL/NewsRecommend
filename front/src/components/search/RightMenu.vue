@@ -10,7 +10,7 @@
     import EditEntrance from '../common/EditEntrance'
     import HotArticle from '../common/HotArticle'
 
-    import Logo from '../../assets/logo.png'
+    import Logo from '../../assets/image/LOGO.png'
 
     export default {
         name: 'RightMenu',

@@ -2,3 +2,5 @@ spring.datasource.driverClassName = com.mysql.jdbc.Driver
 spring.datasource.url = jdbc:mysql://
 spring.datasource.username =
 spring.datasource.password =
+mybatis.configuration.map-underscore-to-camel-case=true
+mybatis.mapper-locations=classpath:mapper/*.xml

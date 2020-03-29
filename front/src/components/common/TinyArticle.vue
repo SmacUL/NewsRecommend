@@ -1,14 +1,14 @@
 <template>
     <float-card class="float-card clear-float">
-        <div class="image" v-if="tinyArticle.artImage !== ''">
-            <img :src="tinyArticle.artImage" >
+        <div class="image" v-if="tinyArticle.artImageUrl !== ''">
+            <img :src="tinyArticle.artImageUrl" >
         </div>
         <div class="word" :class="[wideSwitch ? tinyArt : tinyArtWide]">
             <div class="title" @click="jumpToArticle(tinyArticle.artId)">{{ tinyArticle.artTitle }}</div>
-            <div class="description">{{ tinyArticle.artAbstract }}</div>
+            <!--<div class="description">{{ tinyArticle.artAbstract }}</div>-->
             <div class="info">
-                <span class="customer" @click="jumpToCustomer(tinyArticle.artId)">{{ tinyArticle.cusName }}</span>
-                <span>{{ dataTransfer }}</span>
+                <span class="customer" @click="jumpToCustomer(tinyArticle.artId)">{{ tinyArticle.customer.cusName }}</span>
+                <span>{{ date }}</span>
             </div>
         </div>
     </float-card>
@@ -23,9 +23,9 @@
         components: {FloatCard},
         computed: {
             wideSwitch: function () {
-                return this.tinyArticle.artImage !== '';
+                return this.tinyArticle.artImageUrl !== '';
             },
-            dataTransfer: function () {
+            date: function () {
                 return new Date(Date.parse(this.tinyArticle.artTime)).toLocaleString();
             }
         },

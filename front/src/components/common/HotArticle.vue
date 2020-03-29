@@ -5,8 +5,8 @@
             <el-button class="header-refresh" type="text" @click="refreshArticles">刷新</el-button>
         </div>
         <div class="hot-art-body clear-float" v-for="(hotArticle, i) in hotArticles" :key="i">
-            <img class="body-image" v-if="hotArticle.artImage !== ''" :src="hotArticle.artImage"/>
-            <span class="body-title" :class="[hotArticle.artImage !== '' ? narrowTitle : wideTitle]"
+            <img class="body-image" v-if="hotArticle.artImageUrl !== ''" :src="hotArticle.artImageUrl"/>
+            <span class="body-title" :class="[hotArticle.artImageUrl !== '' ? narrowTitle : wideTitle]"
                   @click="dumpToArticle(hotArticle.artId)">
                 {{ hotArticle.artTitle }}
             </span>
@@ -65,6 +65,10 @@ export default {
     .header-refresh span {
         font-size: 16px;
         font-weight: 500;
+    }
+
+    .hot-art-body {
+        margin-bottom: 10px;
     }
 
     .body-image {

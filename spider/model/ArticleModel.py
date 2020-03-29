@@ -5,7 +5,7 @@ class ArticleModel:
         self.art_title = None
         self.art_content = None
         self.art_spider = None
-        self.art_class = None
+        self.art_type = None
         self.art_image_url = None
         self.art_comment_num = None
         self.art_customer_id = None

@@ -26,11 +26,13 @@ main {
 nav {
     width: 130px;
     position: fixed;
+    z-index: 2;
 }
 
 article {
     margin-left:160px;
     width: 710px;
+    z-index: 1;
 }
 
 aside {

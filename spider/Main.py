@@ -49,6 +49,7 @@ class Major:
         categories = ['news_society', 'news_entertainment', 'news_tech', 'news_military', 'news_sports', 'news_car',
                       'news_finance', 'news_world', 'news_fashion', 'news_travel', 'news_discovery', 'news_baby',
                       'news_regimen', 'news_story', 'news_essay', 'news_game', 'news_history', 'news_food']
+
         for category in categories:
             print("\n当前类别: %s" % category)
             """ 处理 art """
@@ -82,6 +83,7 @@ class Major:
                         print("art 已存在")
                         continue
                     art_mod.art_id = self.__art_dao.search_art_id_by_spider(art_mod.art_spider)
+                    art_mod.art_time = self.__art_dao.search_art_time_by_spider(art_mod.art_spider)
                     # print("art 操作 成功")
                 except:
                     print("art 操作 失败")
@@ -90,6 +92,8 @@ class Major:
                 try:
                     if self.__art_dao.check_art_cus_relationship(art_mod.art_id, art_cus_mod.cus_id):
                         self.__cus_dao.insert_cus_behavior(1, art_mod.art_id, art_cus_mod.cus_id, art_mod.art_time)
+                        self.__cus_dao.update_cus_feature(category, art_cus_mod.cus_id)
+                        self.__art_dao.update_art_feature(1, art_mod.art_id, art_mod.art_time)
                     else:
                         pass
                     # print("art-cus 行为 1 数据库操作 成功")
@@ -136,6 +140,8 @@ class Major:
                     try:
                         if self.__com_dao.check_com_cus_relationship(art_mod.art_id, com_mod.com_id, com_cus_mod.cus_id):
                             self.__cus_dao.insert_cus_behavior(4, art_mod.art_id, com_cus_mod.cus_id, com_mod.com_time)
+                            self.__cus_dao.update_cus_feature(category, com_cus_mod.cus_id)
+                            self.__art_dao.update_art_feature(4, art_mod.art_id)
                         else:
                             pass
                         # print("art-cus 行为 4 数据库操作 成功")
@@ -179,12 +185,14 @@ class Major:
                             print("rep 处理 失败")
                             continue
 
-                        # rep cus behavior
+                        # reply customer behavior, customer feature data, article feature data
                         try:
                             if self.__rep_dao.check_rep_cus_relationship(art_mod.art_id, rep_mod.rep_id,
                                                                          rep_cus_mod.cus_id):
                                 self.__cus_dao.insert_cus_behavior(5, art_mod.art_id, rep_cus_mod.cus_id,
                                                                    rep_mod.rep_time)
+                                self.__cus_dao.update_cus_feature(category, rep_cus_mod.cus_id)
+                                self.__art_dao.update_art_feature(5, art_mod.art_id)
                             else:
                                 pass
                             # print("art-cus 行为 5 数据库操作 成功")

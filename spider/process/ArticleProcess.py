@@ -216,15 +216,17 @@ class ArticleProcess:
 
             art_mod.art_spider = art_brief_json['item_id']
             art_mod.art_comment_num = 0
-            for tar in art_brief_json['image_list']:
-                try:
-                    art_mod.art_image_url = tar['url']
-                    if art_mod.art_image_url is None:
-                        art_mod.art_image_url = ''
-                except:
+
+            try:
+                if len(art_brief_json['image_list']) == 0:
                     art_mod.art_image_url = ''
-                finally:
-                    break
+                else:
+                    for tar in art_brief_json['image_list']:
+                        art_mod.art_image_url = tar['url']
+                        break
+            except:
+                art_mod.art_image_url = ''
+
             art_mod.art_legal = 1
             art_mod.art_time = Time.Time.time_trans(art_brief_json['publish_time'])
             art_mod.art_customer_id = art_cus_id
@@ -233,8 +235,7 @@ class ArticleProcess:
                 art_mod.art_tags = art_brief_json['keywords']
             except:
                 art_mod.art_tags = ''
-            # art_mod.art_class = art_brief_json['tag']
-            art_mod.art_class = category
+            art_mod.art_type = category
             art_mod.art_title = art_brief_json['title']
 
             art_mod.art_content = driver.find_element_by_class_name("article-content").get_attribute('innerHTML')

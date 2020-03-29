@@ -2,12 +2,12 @@ package com.smacul.demo.bean;
 
 import java.sql.Timestamp;
 
-public class Articles {
+public class Article {
     private Integer artId;
     private String artTitle;
     private String artContent;
     private String artSpider;
-    private String artClass;
+    private String artType;
     // artTag 文章的标签 应该以 & 分隔
     private String artTag;
     private String artImageUrl;
@@ -51,12 +51,12 @@ public class Articles {
         this.artSpider = artSpider;
     }
 
-    public String getArtClass() {
-        return artClass;
+    public String getArtType() {
+        return artType;
     }
 
-    public void setArtClass(String artClass) {
-        this.artClass = artClass;
+    public void setArtType(String artType) {
+        this.artType = artType;
     }
 
     public String getArtTag() {
@@ -133,12 +133,12 @@ public class Articles {
 
     @Override
     public String toString() {
-        return "Articles{" +
+        return "Article{" +
                 "artId=" + artId +
                 ", artTitle='" + artTitle + '\'' +
                 ", artContent='" + artContent + '\'' +
                 ", artSpider='" + artSpider + '\'' +
-                ", artClass='" + artClass + '\'' +
+                ", artType='" + artType + '\'' +
                 ", artTag='" + artTag + '\'' +
                 ", artImageUrl='" + artImageUrl + '\'' +
                 ", artLikeNum=" + artLikeNum +

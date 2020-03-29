@@ -11,7 +11,7 @@
     import EditEntrance from '../common/EditEntrance'
     import HotArticle from '../common/HotArticle'
 
-    import Logo from '../../assets/logo.png'
+    import Logo from '../../assets/image/Logo.png'
     import EditorBrief from "../common/EditorBrief";
 
     export default {

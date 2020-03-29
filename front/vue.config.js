@@ -1,6 +1,5 @@
 module.exports = {
     devServer: {
-
         // Paths
         // assetsSubDirectory: 'static',
         // assetsPublicPath: '/',

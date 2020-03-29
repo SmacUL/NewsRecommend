@@ -2,7 +2,7 @@ package com.smacul.demo.bean;
 
 import java.sql.Timestamp;
 
-public class Replys {
+public class Reply {
 
     private Integer repId;
     private String repContent;
@@ -135,7 +135,7 @@ public class Replys {
 
     @Override
     public String toString() {
-        return "Replys{" +
+        return "Reply{" +
                 "repId=" + repId +
                 ", repContent='" + repContent + '\'' +
                 ", repType=" + repType +

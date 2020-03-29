@@ -2,7 +2,7 @@ package com.smacul.demo.bean;
 
 import java.sql.Timestamp;
 
-public class Comments {
+public class Comment {
 
     private Integer comId;
     private String comContent;
@@ -107,7 +107,7 @@ public class Comments {
 
     @Override
     public String toString() {
-        return "Comments{" +
+        return "Comment{" +
                 "comId=" + comId +
                 ", comContent='" + comContent + '\'' +
                 ", comTime=" + comTime +

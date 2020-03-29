@@ -2,10 +2,10 @@ package com.smacul.demo.bean;
 
 import java.sql.Timestamp;
 
-public class ArticleCustomerBehaviors {
+public class ArticleCustomerBehavior {
 
     private Integer acbId;
-    // acb_behavior 用户行为: 无 0, 写作 1, 点赞 2, 点踩 3, 评论 4, 回复 5, 只浏览 6
+    // acb_behavior 用户行为: 无 0, 写作 1, 点赞 2, 点踩 3, 评论 4, 回复 5, 浏览 6
     private Integer acbBehavior;
     private Timestamp acbTime;
     private Integer acbArticleId;
@@ -53,7 +53,7 @@ public class ArticleCustomerBehaviors {
 
     @Override
     public String toString() {
-        return "ArticleCustomerBehaviors{" +
+        return "ArticleCustomerBehavior{" +
                 "acbId=" + acbId +
                 ", acbBehavior=" + acbBehavior +
                 ", acbTime=" + acbTime +

@@ -10,7 +10,7 @@
 </template>
 
 <script>
-    import Logo from '../../assets/logo.png'
+    import Logo from '../../assets/image/Pen.png'
     import CardPanel from './DarkCard'
     export default {
         name: 'EditEntrance',
