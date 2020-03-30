@@ -1,7 +1,7 @@
 <template>
     <div>
         <header>
-            <top-bar class="top-bar"></top-bar>
+            <top-bar class="top-bar" :customer="customer"></top-bar>
         </header>
         <main>
             <nav>
@@ -33,6 +33,15 @@
         components: {HotArticle, EditEntrance, TinyArticle, TopBar, LeftMenu},
         mounted: function () {
             window.addEventListener('scroll', this.getMoreTinyArt, false);
+            this.$axios.get('/api/self/own')
+                .then((response) => {
+                    if (response.data) {
+                        this.customer = response.data;
+                    } else {
+                        this.$router.push({path: '/port'});
+                    }
+
+                })
             this.$axios.get('/api/load/type')
                 .then((response) => {
                     this.artTypes = response.data;
@@ -147,7 +156,10 @@
                     { artId: '4', artTitle: 'This is the template title of news', artImageUrl: Logo},
                     { artId: '5', artTitle: 'This is the template title of news', artImageUrl: Logo},
                     { artId: '6', artTitle: 'This is the template title of news', artImageUrl: Logo},
-                ]
+                ],
+                customer: {
+
+                }
             }
         }
     }

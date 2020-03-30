@@ -12,7 +12,7 @@ class CustomerProcess:
             cus_mod.cus_background_url =''
             cus_mod.cus_style = '这个用户很懒啥也没写'
             cus_mod.cus_avatar_url = art_brief_json['media_info']['avatar_url']
-            cus_mod.cus_name = art_brief_json['media_info']['name']
+            cus_mod.cus_name = art_brief_json['media_info']['name'] + cus_mod.cus_spider[0:4]
             cus_mod.cus_pass = Md5.Md5.set_cus_pass("123456")
             cus_mod.cus_id = None
             logging.info("设置新闻用户信息 成功")
@@ -33,7 +33,7 @@ class CustomerProcess:
             cus_mod.cus_background_url =''
             cus_mod.cus_style = '这个用户很懒啥也没写'
             cus_mod.cus_avatar_url = com_json['comment']['user_profile_image_url']
-            cus_mod.cus_name = com_json['comment']['user_name']
+            cus_mod.cus_name = com_json['comment']['user_name'] + cus_mod.cus_spider[0:4]
             cus_mod.cus_pass = Md5.Md5.set_cus_pass("123456")
             cus_mod.cus_id = None
             logging.info("设置评论用户信息 成功")
@@ -56,7 +56,7 @@ class CustomerProcess:
                 logging.warning("cus_style 获取 失败")
                 cus_mod.cus_style = '这个用户很懒啥也没写'
             cus_mod.cus_avatar_url = rep_json['user']['avatar_url']
-            cus_mod.cus_name = rep_json['user']['name']
+            cus_mod.cus_name = rep_json['user']['name'] + cus_mod.cus_spider[0:4]
             cus_mod.cus_pass = Md5.Md5.set_cus_pass("123456")
             cus_mod.cus_id = None
 

@@ -7,14 +7,15 @@ import IndexView from '../views/IndexView'
 import SearchView from '../views/SearchView'
 import ArticleView from "../views/ArticleView"
 import SelfView from '../views/SelfView'
+import PortView from "../views/PortView";
 
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
-    name: 'IndexView',
-    component: IndexView
+    name: 'PortView',
+    component: PortView
   },
   {
     path: '/index',
@@ -35,6 +36,11 @@ const routes = [
     path: '/self',
     name: 'SelfView',
     component: SelfView
+  },
+  {
+    path: '/port',
+    name: 'PortView',
+    component: PortView
   }
 
   // {

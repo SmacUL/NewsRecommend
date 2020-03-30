@@ -3,6 +3,7 @@ package com.smacul.demo.controller;
 
 import com.oracle.tools.packager.Log;
 import com.smacul.demo.bean.Article;
+import com.smacul.demo.bean.Customer;
 import com.smacul.demo.model.ArticleCustomerModel;
 import com.smacul.demo.service.LoadService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,8 @@ public class LoadController {
     @RequestMapping("/tiny")
     public List<ArticleCustomerModel> getTinyArtOnePageByClass (
             @RequestParam String artType, @RequestParam Integer page, @RequestParam Integer pageSize) {
+        Customer customer = (Customer) session.getAttribute("customer");
+        System.out.println(customer.toString());
         return loadService.getTinyArtOnePageByType(artType, page, pageSize);
     }
 

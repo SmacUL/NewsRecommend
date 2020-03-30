@@ -6,7 +6,7 @@ CREATE DATABASE IF NOT EXISTS NewsRecommend CHARACTER SET utf8mb4;
 DROP TABLE IF EXISTS NewsRecommend.Customers;
 CREATE TABLE NewsRecommend.Customers (
     cus_id INT UNSIGNED NOT NULL auto_increment,
-    cus_name VARCHAR(64),
+    cus_name VARCHAR(64) UNIQUE,
     cus_pass VARCHAR(255),
     -- 爬虫中用于识别用户
     cus_spider VARCHAR(64) default '',
