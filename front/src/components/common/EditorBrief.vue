@@ -17,9 +17,9 @@
         components: { DarkCard },
         props: ['articleAuthor'],
         methods: {
-            jumpToArticle: function (artId) {
-                this.$emit('jump', artId);
-            },
+            // jumpToArticle: function (artId) {
+            //     this.$emit('jump', artId);
+            // },
             jumpToCustomer: function (cusId) {
                 this.$emit('editor', cusId);
             }

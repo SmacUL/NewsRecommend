@@ -9,11 +9,13 @@
                                  :artClassList="artTypes" v-on:changeCurIndex="changeCurIndex"></left-menu>
             </nav>
             <article>
-                <tiny-article v-for="(tinyArticle, i) in tinyArticles" :key="i" :tinyArticle="tinyArticle"></tiny-article>
+                <tiny-article v-for="(tinyArticle, i) in tinyArticles" :key="i" :tinyArticle="tinyArticle"
+                              v-on:jump="jumpToArticle" v-on:editor="jumpToCustomer"></tiny-article>
             </article>
             <aside>
                 <edit-entrance class="edit-entrance"></edit-entrance>
-                <hot-article :title="page.hotTitle" :hot-articles="hotArticles" v-on:refresh="refreshHot"></hot-article>
+                <hot-article :title="page.hotTitle" :hot-articles="hotArticles"
+                             v-on:refresh="refreshHot" v-on:jump="jumpToArticle"></hot-article>
             </aside>
         </main>
     </div>
@@ -41,7 +43,7 @@
                         this.$router.push({path: '/port'});
                     }
 
-                })
+                });
             this.$axios.get('/api/load/type')
                 .then((response) => {
                     this.artTypes = response.data;
@@ -55,7 +57,7 @@
                         .then((response) => {
                             this.hotArticles = response.data;
                         });
-                })
+                });
             window.scrollTo(0, 0);
         },
         methods: {
@@ -115,6 +117,24 @@
                             }
                         })
                 }
+            },
+
+            /**
+             * 跳转至文章页面
+             * @param artId
+             */
+            jumpToArticle: function (artId) {
+                // this.$message.info(' ' + artId);
+                this.$router.push('/article/' + artId)
+            },
+
+            /**
+             * 跳转至作者用户页面
+             * @param cusId
+             */
+            jumpToCustomer: function (cusId) {
+                // this.$message.info(' ' + artId);
+                this.$router.push('/self/' + cusId);
             }
         },
         data: function () {

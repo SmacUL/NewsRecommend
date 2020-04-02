@@ -75,9 +75,4 @@
         padding: 5px 10px;
     }
 
-    /*.manage .el-button {*/
-    /*    height: 40px;*/
-    /*    display: inline-block;*/
-    /*}*/
-
 </style>

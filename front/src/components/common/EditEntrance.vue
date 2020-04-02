@@ -2,8 +2,8 @@
     <card-panel>
         <img class="body-image" :src="logoSrc"/>
         <div class="body-title">
-            <span>点击</span>
-            <el-button type="text">登录</el-button>
+            <!--<span>点击</span>-->
+            <el-button type="text">点击</el-button>
             <span>开始书写自己的新闻</span>
         </div>
     </card-panel>

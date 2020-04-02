@@ -16,6 +16,7 @@
 <script>
     export default {
         name: "ArticleCenter",
+        props: ['articleMain'],
         computed: {
             dataTransfer: function () {
                 return new Date(Date.parse(this.articleMain.artTime)).toLocaleString();
@@ -23,16 +24,7 @@
         },
         data: function() {
             return {
-                articleMain: {
-                    artId: 4,
-                    artTitle: "上海公安机关：外媒报道的所谓“中国特工”王立强系涉案在逃人员",
-                    artContent: "<p>新华社上海11月23日电 记者从上海市公安局静安分局获悉，澳大利亚《悉尼先驱晨报》报道的所谓“…护照和香港永久居民身份证均系伪造证件。</p><p>目前，公安机关对此案正在进一步调查中。</p>",
-                    artTag: "综合",
-                    artLikeNum: 0,
-                    artDislikeNum: 0,
-                    artTime: '2019-11-25T10:05:44.000+0000',
-                    cusName: '国际在线'
-                }
+
             }
         }
     }
@@ -56,6 +48,7 @@
     .content >>> p {
         text-align: left;
         font-size: 18px;
+        margin: 0px;
     }
 
     .content >>> img {

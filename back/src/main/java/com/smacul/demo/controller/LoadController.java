@@ -47,8 +47,6 @@ public class LoadController {
     @RequestMapping("/tiny")
     public List<ArticleCustomerModel> getTinyArtOnePageByClass (
             @RequestParam String artType, @RequestParam Integer page, @RequestParam Integer pageSize) {
-        Customer customer = (Customer) session.getAttribute("customer");
-        System.out.println(customer.toString());
         return loadService.getTinyArtOnePageByType(artType, page, pageSize);
     }
 

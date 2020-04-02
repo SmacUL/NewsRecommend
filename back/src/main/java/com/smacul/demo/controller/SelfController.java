@@ -21,6 +21,7 @@ public class SelfController {
     HttpSession session;
 
     /**
+     * 用户登录
      * localhost:8080/self/login?cusName=山东艾珍珍1&cusPass=123456
      *
      * @param cusName

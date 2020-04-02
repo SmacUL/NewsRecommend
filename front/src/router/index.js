@@ -28,12 +28,12 @@ const routes = [
     component: SearchView
   },
   {
-    path: '/article',
+    path: '/article/:artId',
     name: 'ArticleView',
     component: ArticleView
   },
   {
-    path: '/self',
+    path: '/self/:cusId',
     name: 'SelfView',
     component: SelfView
   },

@@ -7,7 +7,7 @@
             <div class="title" @click="jumpToArticle(tinyArticle.artId)">{{ tinyArticle.artTitle }}</div>
             <!--<div class="description">{{ tinyArticle.artAbstract }}</div>-->
             <div class="info">
-                <span class="customer" @click="jumpToCustomer(tinyArticle.artId)">{{ tinyArticle.customer.cusName }}</span>
+                <span class="customer" @click="jumpToCustomer(tinyArticle.customer.cusId)">{{ tinyArticle.customer.cusName }}</span>
                 <span>{{ date }}</span>
             </div>
         </div>
@@ -34,8 +34,8 @@
                 this.$emit('jump', artId);
             },
 
-            jumpToCustomer: function (artId) {
-                this.$emit('editor', artId);
+            jumpToCustomer: function (cusId) {
+                this.$emit('editor', cusId);
             }
         },
         data: function() {
