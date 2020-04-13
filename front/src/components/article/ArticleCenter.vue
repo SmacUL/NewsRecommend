@@ -81,7 +81,7 @@
     .content >>> p {
         text-align: left;
         font-size: 18px;
-        margin: 0px;
+        margin: 10px;
     }
 
     .content >>> img {

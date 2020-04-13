@@ -16,23 +16,19 @@
     import SearchPanel from '../common/SearchPanel'
 
     import Man from '../../assets/image/Man.png'
+    import {jumpInCurPage, jumpInNewPage} from "../../util/PageJump";
 
     export default {
         name: 'TopBar',
         props: ['customer'],
         components: {SearchPanel},
         methods: {
-            searchArticles: function () {
-                this.$axios.get('/api/index/test')
-                    .then((response) => {
-                        this.$message.info(response);
-                    })
-                    .catch((response) => {
-                        this.$message.info(response);
-                    })
+            searchArticles: function (message) {
+                jumpInNewPage('/search/' + message )
+                // searchContentByKeyAndTagTypePage(message, 'global', 'test', 0, 10)
             },
             loginOut: function () {
-                this.$router.push({path: '/port'});
+                jumpInCurPage('/port');
             }
 
         },

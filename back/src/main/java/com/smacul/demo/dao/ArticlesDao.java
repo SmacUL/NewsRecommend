@@ -25,6 +25,19 @@ public interface ArticlesDao {
     Boolean updateArtLikeNum(Integer artId);
 
     Boolean updateArtDislikeNum(Integer artId);
+
+    @Deprecated
+    List<ArticleCustomerModel> searchContentByKeyAndTagTypePage(
+            @Param("key") String key, @Param("type") String type, @Param("start") Integer start, @Param("pageSize") Integer pageSize);
+
+    List<ArticleCustomerModel> searchContentAuthor(
+            @Param("key") String key, @Param("start") Integer start, @Param("pageSize") Integer pageSize);
+
+    List<ArticleCustomerModel> searchContentArticle(
+            @Param("key") String key, @Param("start") Integer start, @Param("pageSize") Integer pageSize);
+
+    List<ArticleCustomerModel> searchContentGlobal(
+            @Param("key") String key, @Param("start") Integer start, @Param("pageSize") Integer pageSize);
 }
 
 

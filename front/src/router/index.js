@@ -23,7 +23,7 @@ const routes = [
     component: IndexView
   },
   {
-    path: '/search',
+    path: '/search/:key',
     name: 'SearchView',
     component: SearchView
   },

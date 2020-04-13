@@ -48,6 +48,51 @@
         where A.art_id = #{artId} and A.art_customer_id = C.cus_id
     </select>
 
+    <select id="searchContentByKeyAndTagTypePage" resultType="com.smacul.demo.model.ArticleCustomerModel">
+        select art_id, art_title, art_time, art_image_url, art_customer_id,
+                cus_id as 'customer.cusId',
+                cus_name as 'customer.cusName'
+        from (Articles left join Customers on Articles.art_customer_id = Customers.cus_id)
+                left join ArticleScoreList on Articles.art_id = ArticleScoreList.asl_article_id
+        where art_title like #{key} or art_content like #{key} or cus_name like #{key}
+        order by art_time desc
+        limit #{start}, #{pageSize}
+    </select>
+
+    <select id="searchContentAuthor" resultType="com.smacul.demo.model.ArticleCustomerModel">
+        select art_id, art_title, art_time, art_image_url, art_customer_id,
+                cus_id as 'customer.cusId',
+                cus_name as 'customer.cusName'
+        from (Articles left join Customers on Articles.art_customer_id = Customers.cus_id)
+                left join ArticleScoreList on Articles.art_id = ArticleScoreList.asl_article_id
+        where cus_name like #{key}
+        order by art_time desc
+        limit #{start}, #{pageSize}
+    </select>
+
+    <select id="searchContentArticle" resultType="com.smacul.demo.model.ArticleCustomerModel">
+        select art_id, art_title, art_time, art_image_url, art_customer_id,
+                cus_id as 'customer.cusId',
+                cus_name as 'customer.cusName'
+        from (Articles left join Customers on Articles.art_customer_id = Customers.cus_id)
+                left join ArticleScoreList on Articles.art_id = ArticleScoreList.asl_article_id
+        where art_title like #{key} or art_content like #{key}
+        order by art_time desc
+        limit #{start}, #{pageSize}
+    </select>
+
+    <select id="searchContentGlobal" resultType="com.smacul.demo.model.ArticleCustomerModel">
+        select art_id, art_title, art_time, art_image_url, art_customer_id,
+                cus_id as 'customer.cusId',
+                cus_name as 'customer.cusName'
+        from (Articles left join Customers on Articles.art_customer_id = Customers.cus_id)
+                left join ArticleScoreList on Articles.art_id = ArticleScoreList.asl_article_id
+        where art_title like #{key} or art_content like #{key} or cus_name like #{key}
+        order by art_time desc
+        limit #{start}, #{pageSize}
+    </select>
+
+
     <update id="updateArtLikeNum">
         update Articles set art_like_num=art_like_num+1 where art_id=#{artId}
     </update>
