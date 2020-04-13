@@ -11,7 +11,7 @@ CREATE TABLE NewsRecommend.Customers (
     -- 爬虫中用于识别用户
     cus_spider VARCHAR(64) default '',
     -- 用户头像的 url
-    cus_avatar_url VARCHAR(255) default '',
+    cus_avatar_url VARCHAR(255) default 'http://localhost:8080/img/Man.png',
     -- 用户背景墙的图片 url ABANDON
     cus_background_url VARCHAR(255) default '',
     -- 用户的个人描述

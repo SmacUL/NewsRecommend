@@ -1,7 +1,7 @@
 <template>
     <div class="comment-reply-input">
         <div class="avatar">
-            <img src="@/assets/logo.png" style="width: 100%">
+            <img :src="customer.cusAvatarUrl" style="width: 100%"/>
         </div>
         <div style="width: 90%">
             <div ref="toolbar" class="toolbar">
@@ -18,9 +18,12 @@
 
 <script>
     import WangEditor from 'wangeditor'
+    // import Man from '../../../assets/image/Man.png'
+    // import Man from '@/assets/image/Man.png'
+
     export default {
         name: "CommentReplyInput",
-        props: ['heightKey'],
+        props: ['heightKey', 'customer'],
         data: function() {
             return {
                 height: '70px',
@@ -32,7 +35,8 @@
                     'source', 'bold', 'underline', 'italic', 'emotion', 'undo', 'redo', 'fullscreen', 'emoticon',
                 ],
                 editor: null,
-                message: 'message'
+                message: 'message',
+                // manSrc: Man,
             }
         },
         mounted() {
@@ -45,8 +49,13 @@
             editor.create();
         },
         methods: {
+            /**
+             * 向上级组件返回用户输入的内容
+             */
             showMessage() {
-                alert(this.message);
+                // alert(this.message);
+                this.$emit('messageHandler', this.message);
+                this.editor.txt.clear();
             },
             changeHeight() {
                 if (this.heightKey) {
@@ -115,11 +124,11 @@
         /*overflow: hidden;*/
     }
 
-    .w-e-text {
+    .textplace >>> .w-e-text {
         padding: 5px 10px;
     }
 
-    .w-e-text p {
+    .textplace >>> .w-e-text p {
         margin: 0;
         line-height: 20px;
     }

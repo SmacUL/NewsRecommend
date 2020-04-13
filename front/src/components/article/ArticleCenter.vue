@@ -7,8 +7,14 @@
         </div>
         <div class="content" v-html="articleMain.artContent"></div>
         <div class="up-down clear-float">
-            <div class="up"><i class="el-icon-success"></i>{{ articleMain.artLikeNum }}</div>
-            <div class="down"><i class="el-icon-error"></i>{{ articleMain.artDislikeNum }}</div>
+            <div class="up">
+                <img :src='control.art.up' @click="cusLikeArt"/>
+                <span>{{ articleMain.artLikeNum }}</span>
+            </div>
+            <div class="down">
+                <img :src="control.art.down" @click="cusDislikeArt"/>
+                <span>{{ articleMain.artDislikeNum }}</span>
+            </div>
         </div>
     </div>
 </template>
@@ -22,9 +28,36 @@
                 return new Date(Date.parse(this.articleMain.artTime)).toLocaleString();
             }
         },
+        methods: {
+            cusLikeArt: function () {
+                if (this.control.art.up === require('../../assets/icon/Like.png')) {
+                    this.control.art.up = require('../../assets/icon/LikeFill.png');
+                    this.control.art.down = require('../../assets/icon/Dislike.png');
+                } else {
+                    this.control.art.up = require('../../assets/icon/Like.png');
+                }
+            },
+            cusDislikeArt: function () {
+                if (this.control.art.down === require('../../assets/icon/Dislike.png')) {
+                    this.control.art.down = require('../../assets/icon/DislikeFill.png');
+                    this.control.art.up = require('../../assets/icon/Like.png');
+                } else {
+                    this.control.art.down = require('../../assets/icon/Dislike.png')
+                }
+            }
+        },
         data: function() {
             return {
-
+                control: {
+                    art: {
+                        up: require('../../assets/icon/Like.png'),
+                        down: require('../../assets/icon/Dislike.png'),
+                    }
+                },
+                // likeImg: require('../../assets/icon/Like.png'),
+                // dislikeImg: require('../../assets/icon/Dislike.png'),
+                // likeImgFill: require('../../assets/icon/LikeFill.png'),
+                // dislikeImgFill: require('../../assets/icon/DislikeFill.png'),
             }
         }
     }
@@ -56,24 +89,52 @@
     }
 
     .up-down {
-        width: 120px;
+        width: 200px;
         margin: 0 auto;
         padding: 30px 0px
     }
 
     .up {
         float: left;
+        height: 30px;
+        width: 50px;
     }
 
-    .el-icon-success {
-        margin-right: 10px;
+    .up img {
+        height: 30px;
+        float: left;
     }
 
-    .down {
+    .up span {
+        display: inline-block;
+        line-height: 30px;
+        font-size: 20px;
         float: right;
     }
 
-    .el-icon-error {
-        margin-right: 10px;
+    /*.el-icon-success {*/
+    /*    margin-right: 10px;*/
+    /*}*/
+
+    .down {
+        float: right;
+        height: 30px;
+        width: 50px;
     }
+
+    .down img {
+        height: 30px;
+        float: left;
+    }
+
+    .down span {
+        display: inline-block;
+        line-height: 30px;
+        font-size: 20px;
+        float: right;
+    }
+
+    /*.el-icon-error {*/
+    /*    margin-right: 10px;*/
+    /*}*/
 </style>

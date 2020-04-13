@@ -26,7 +26,6 @@
         },
         data: function () {
             return {
-
             }
         }
     }

@@ -29,31 +29,35 @@
     import HotArticle from "../components/common/HotArticle";
 
     import Logo from '../assets/image/Logo.png'
+    import {getArtTypes, getHotArtOnePage, getTinyArtOnePageByType} from "../control/Load";
+    import {getCusSelfInfo} from "../control/Self";
+    import {jumpInCurPage, jumpInNewPage} from "../util/PageJump";
 
     export default {
         name: 'IndexView',
         components: {HotArticle, EditEntrance, TinyArticle, TopBar, LeftMenu},
         mounted: function () {
             window.addEventListener('scroll', this.getMoreTinyArt, false);
-            this.$axios.get('/api/self/own')
+            getCusSelfInfo()
                 .then((response) => {
                     if (response.data) {
                         this.customer = response.data;
                     } else {
-                        this.$router.push({path: '/port'});
+                        // this.$router.push({path: '/port'});
+                        jumpInCurPage('/part');
                     }
 
                 });
-            this.$axios.get('/api/load/type')
+            getArtTypes()
                 .then((response) => {
                     this.artTypes = response.data;
                 })
                 .then(() => {
-                    this.$axios.get('/api/load/tiny?artType=' + '综合' + '&page=' + this.page.tinyPage + '&pageSize=' + this.page.tinyPageSize)
+                    getTinyArtOnePageByType('综合', this.page.tinyPage, this.page.tinyPageSize)
                         .then((response) => {
                             this.tinyArticles = response.data;
                         });
-                    this.$axios.get('/api/load/hot?page=' + this.page.hotPage + '&pageSize=' + this.page.hotPageSize)
+                    getHotArtOnePage(this.page.hotPage, this.page.hotPageSize)
                         .then((response) => {
                             this.hotArticles = response.data;
                         });
@@ -78,7 +82,7 @@
                 }
 
                 this.page.tinyPage = 0;
-                this.$axios.get('/api/load/tiny?artType=' + this.artTypes[this.page.menuCurIndex] + '&page=' + this.page.tinyPage + '&pageSize=' + this.page.tinyPageSize)
+                    getTinyArtOnePageByType(this.artTypes[this.page.menuCurIndex], this.page.tinyPage, this.page.tinyPageSize)
                     .then((response) => {
                         this.tinyArticles = response.data;
                     });
@@ -94,7 +98,7 @@
                 } else {
                     this.page.hotPage += 1;
                 }
-                this.$axios.get('/api/load/hot?page=' + this.page.hotPage + '&pageSize=' + this.page.hotPageSize)
+                getHotArtOnePage(this.page.hotPage, this.page.hotPageSize)
                     .then((response) => {
                         this.hotArticles = response.data;
                     })
@@ -110,7 +114,7 @@
                 let scrollHeight = artHeight - innerHeight + otherHeight;
                 if (scrollHeight <= (document.documentElement.scrollTop + 5)) {
                     this.page.tinyPage += 1;
-                    this.$axios.get('/api/load/tiny?artType=' + this.artTypes[this.page.menuCurIndex] + '&page=' + this.page.tinyPage + '&pageSize=' + this.page.tinyPageSize)
+                    getTinyArtOnePageByType(this.artTypes[this.page.menuCurIndex], this.page.tinyPage, this.page.tinyPageSize)
                         .then((response) => {
                             for (let i = 0; i < response.data.length; i++) {
                                 this.tinyArticles.push(response.data[i]);
@@ -124,8 +128,8 @@
              * @param artId
              */
             jumpToArticle: function (artId) {
-                // this.$message.info(' ' + artId);
-                this.$router.push('/article/' + artId)
+                // this.$router.push('/article/' + artId)
+                jumpInNewPage('/article/' + artId);
             },
 
             /**
@@ -133,8 +137,8 @@
              * @param cusId
              */
             jumpToCustomer: function (cusId) {
-                // this.$message.info(' ' + artId);
-                this.$router.push('/self/' + cusId);
+                // this.$router.push('/self/' + cusId);
+                jumpInNewPage('/self/' + cusId);
             }
         },
         data: function () {

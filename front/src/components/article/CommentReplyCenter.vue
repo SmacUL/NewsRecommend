@@ -1,27 +1,43 @@
 <template>
     <div>
-        <comment-reply-input></comment-reply-input>
-        <div class="comments" v-for="(comment, i) in comments.slice((curPage-1)*pageSize, (curPage)*pageSize)" :key="i">
-            <comment-reply-item class="comment-reply-item"
-                                @ready="showReplyInput"
-                                :id=comment.id
-                                :name=comment.name :content=comment.content
-                                :time=comment.time :likenum=comment.likenum
-                                :commentId=comment.id
-                                :replyId='-2' :replyName='""'
-                                :readyType=readyType :readyId=readyId
-            ></comment-reply-item>
-            <reply-main @readyagain="showReplyInput"
-                        :replys=comment.replys :commentId=comment.id
-                        :readyType=readyType :readyId=readyId>
+        <comment-reply-input :customer="customer" @messageHandler="addComment"></comment-reply-input>
+        <div class="comments" v-for="(comment, i) in comments.slice((control.com.page-1)*control.com.pageSize, (control.com.page)*control.com.pageSize)" :key="i">
+            <div class="clear-float">
+                <div class="avatar">
+                    <img :src='comment.customer.cusAvatarUrl'>
+                </div>
+                <div class="comment">
+                    <div style="text-align: left; font-weight: 500; font-size: 18px;">
+                        <span>{{comment.customer.cusName}}</span>
+                    </div>
+                    <!--<div class="content">{{comment.comContent}}</div>-->
+                    <div class="content" v-html="comment.comContent"></div>
+                    <div class="info">
+                        <span>{{ date(comment.comTime) }}</span>
+                        <!--<span>{{comment.comLikeNum}}</span>-->
+                        <el-button type="text" @click="addCancelReply(comment.comId)">
+                            <span v-show="control.add.type == 1 && control.add.id == comment.comId">收起</span>
+                            <span v-show="control.add.type != 1 || control.add.id != comment.comId">评论</span>
+                        </el-button>
+                    </div>
+                </div>
+                <!-- 评论回复输入框 -->
+                <comment-reply-input @readycancel="cancelMessage" @messageHandler="addReply"
+                                     v-if="control.add.type == 1 && control.add.id == comment.comId"
+                                     :heightKey=false :customer="customer">
+                </comment-reply-input>
+            </div>
+
+            <reply-main :replys=comment.replys :commentId=comment.comId :add="control.add" :customer="customer"
+                        @quickShow="$emit('quickShow')">
             </reply-main>
         </div>
         <el-pagination v-if="comments.length > 4"
                        background
                        layout="prev, pager, next"
                        @current-change="commentHandleCurrentChange"
-                       :page-size="pageSize"
-                       :current-page="curPage"
+                       :page-size="control.com.pageSize"
+                       :current-page="control.com.page"
                        :total="comments.length"
         >
         </el-pagination>
@@ -30,71 +46,101 @@
 
 <script>
     import CommentReplyInput from "./comment-reply-main/CommentReplyInput";
-    import CommentReplyItem from "./comment-reply-main/CommentReplyItem";
     import ReplyMain from "./comment-reply-main/ReplyMain";
+    import {transUTCtoLocal} from "../../util/TimeHandler";
+    import {cusAddComment, cusAddReply} from "../../control/Discuss";
 
     /**
      * /src/components/article/comment-reply-main/ 路径下包含了 CommentReplyMain 模块需要的子组件
      */
     export default {
         name: "CommentReplyCenter",
-        components: {ReplyMain, CommentReplyItem, CommentReplyInput},
+        components: {ReplyMain, CommentReplyInput},
+        props: ["comments", 'customer'],
         methods: {
-            commentHandleCurrentChange(val) {
-                this.curPage = val;
-                this.readyType = -3;
-                this.readyId = -3;
+            cancelMessage: function() {
+                this.control.add.id = -1;
             },
-            showReplyInput(type, id) {
-                this.readyType = type;
-                this.readyId = id;
-            }
+            addCancelReply(comId) {
+                if (this.control.add.type == 1 && this.control.add.id == comId) {
+                    this.control.add.type = -1;
+                    this.control.add.id = -1;
+                } else {
+                    this.control.add.type = 1;
+                    this.control.add.id = comId;
+                }
+            },
+            commentHandleCurrentChange(val) {
+                this.control.com.page = val;
+                this.control.type = -1;
+                this.control.id = -1;
+            },
+            date: function (time) {
+                return transUTCtoLocal(time);
+            },
+            /**
+             * 发表评论对文章
+             *
+             * @param message
+             */
+            addComment: function (message) {
+                let comment = {
+                    comContent: message,
+                    comCustomerId: this.customer.cusId,
+                    comArticleId: this.comments[0].comArticleId,
+                };
+                cusAddComment(comment)
+                    .then((response) => {
+                        if(response.data) {
+                            this.$message.info("评论成功");
+                            this.$emit('quickShow');
+                            this.control.com.page = 1;
+                        } else {
+                            this.$message.info("评论失败");
+                        }
+                    })
+            },
 
+            /**
+             * 添加回复
+             *
+             * @param message
+             */
+            addReply: function (message) {
+                let reply = {
+                    repContent: message,
+                    repType: 0,
+                    repCustomerId: this.customer.cusId,
+                    repArticleId: this.comments[0].comArticleId,
+                    // 回复针对的评论的 id
+                    repCommentId: this.control.add.id,
+                };
+                cusAddReply(reply)
+                    .then((response) => {
+                        if (response.data) {
+                            this.$message.info("回复成功");
+                            this.$emit('quickShow');
+                            // todo 这个地方要重新计算一遍位置
+                        } else {
+                            this.$message.info("回复失败");
+                        }
+                    });
+                this.control.add.type = -1;
+                this.control.add.id = -1;
+            }
         },
         data: function() {
             return {
-                pageSize: 4,
-                curPage: 1,
-                replypageSize: 4,
-                replyCurPage: 1,
-
-                // readyType : 指明了回复的对象是 评论(-2) 回复(>=0) 或者 空对象(-1)
-                readyType: -3,
-                readyId: -3,
-
-                comments: [
-                    {
-                        id: 0, name: 'user0', content: 'asdfasdf', time: '2019-09-09', likenum: 23,
-                        replys: [
-                            { id: 1, name: 'user1', replyId: -1, replyName: '', content: '3247987zkxchxzhc', time: '2039-93-12', likenum: 12 },
-                            { id: 122, name: 'user1', replyId: 1, replyName: 'user1', content: '3247987zkxchxzhc', time: '2039-93-12', likenum: 12 },
-                            { id: 14, name: 'user1', replyId: -1, replyName: '', content: '3247987zkxchxzhc', time: '2039-93-12', likenum: 1},
-                            { id: 156, name: 'user1', replyId: -1, replyName: '', content: '3247987zkxchxzhc', time: '2039-93-12', likenum: 10},
-                            { id: 1123, name: 'user1', replyId: -1, replyName: '', content: '3247987zkxchxzhc', time: '2039-93-12', likenum: 1},
-                            { id: 156, name: 'user2', replyId: -1, replyName: '', content: '3247987zkxchxzhc', time: '2039-93-12', likenum: 10}
-                        ]
+                control: {
+                    com: {
+                        page: 1,
+                        pageSize: 4,
                     },
-                    {
-                        id: 4, name: 'user4', content: 'asdfasdf', time: '2019-09-09', likenum: 78,
-                        replys: []
-                    },
-                    {
-                        id: 9, name: 'user9', content: 'asdfasdf', time: '2019-09-09', likenum: 78,
-                        replys: []
-                    },
-                    {
-                        id: 12, name: 'user12', content: 'asdfasdf', time: '2019-09-09', likenum: 78,
-                        replys: []
-                    },
-                    {
-                        id: 19, name: 'user19', content: 'asdfasdf', time: '2019-09-09', likenum: 78,
-                        replys: []
-                    },
-                    {
-                        id: 20, name: 'user20', content: 'asdfasdf', time: '2019-09-09', likenum: 78,
-                        replys: []
+                    add: {
+                        type: -1,
+                        id: -1,
                     }
-                ]
+                }
             }
         },
 
@@ -109,5 +155,53 @@
     .reply-main {
         margin-left: 10%;
         margin-bottom: 5px;
+    }
+
+    .avatar {
+        float: left;
+        margin-right: 3%;
+        width: 7%;
+    }
+
+    .avatar img{
+        width: 100%;
+    }
+
+    .comment {
+        float: left;
+        width: 90%;
+    }
+
+    .name {
+        font-size: 20px;
+        font-weight: 600;
+        text-align: left;
+        margin-bottom: 5px;
+        float: left;
+    }
+
+    .reply {
+        float: left;
+    }
+
+    .content {
+        font-size: 16px;
+        line-height: 20px;
+        text-align: left;
+        word-wrap: break-word;
+    }
+
+    .info {
+        font-size: 14px;
+        color: #888888;
+        text-align: left;
+    }
+
+    .info span {
+        margin-right: 10px;
+    }
+
+    .content >>> p {
+        margin: 0;
     }
 </style>

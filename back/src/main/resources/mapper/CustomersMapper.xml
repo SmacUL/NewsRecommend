@@ -14,4 +14,10 @@
     <insert id="insertCus">
         insert into Customers(cus_name, cus_pass) values(#{cusName}, #{cusPass});
     </insert>
+
+    <select id="searchCustomerByCusId" resultType="com.smacul.demo.bean.Customer">
+        select cus_avatar_url, cus_id, cus_name, cus_type
+        from Customers
+        where cus_id = #{cusId}
+    </select>
 </mapper>

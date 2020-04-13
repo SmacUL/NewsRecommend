@@ -5,10 +5,9 @@
         </div>
         <div class="word" :class="[wideSwitch ? tinyArt : tinyArtWide]">
             <div class="title" @click="jumpToArticle(tinyArticle.artId)">{{ tinyArticle.artTitle }}</div>
-            <!--<div class="description">{{ tinyArticle.artAbstract }}</div>-->
             <div class="info">
                 <span class="customer" @click="jumpToCustomer(tinyArticle.customer.cusId)">{{ tinyArticle.customer.cusName }}</span>
-                <span>{{ date }}</span>
+                <span>{{ date(tinyArticle.artTime) }}</span>
             </div>
         </div>
     </float-card>
@@ -17,6 +16,7 @@
 <script>
 
     import FloatCard from "./FloatCard";
+    import {transUTCtoLocal} from "../../util/TimeHandler";
     export default {
         name: "TinyArticle",
         props: ['tinyArticle'],
@@ -25,9 +25,7 @@
             wideSwitch: function () {
                 return this.tinyArticle.artImageUrl !== '';
             },
-            date: function () {
-                return new Date(Date.parse(this.tinyArticle.artTime)).toLocaleString();
-            }
+
         },
         methods: {
             jumpToArticle: function (artId) {
@@ -36,6 +34,9 @@
 
             jumpToCustomer: function (cusId) {
                 this.$emit('editor', cusId);
+            },
+            date: function (time) {
+                return transUTCtoLocal(time);
             }
         },
         data: function() {

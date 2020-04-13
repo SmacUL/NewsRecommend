@@ -4,7 +4,7 @@
         <main>
             <article>
                 <article-main :articleMain="artMain"></article-main>
-                <comment-reply-main></comment-reply-main>
+                <comment-reply-main :comments="comments" :customer="customer" @quickShow="quickShow"></comment-reply-main>
             </article>
             <aside>
                 <editor-brief class="editor-brief" :articleAuthor="artMain.customer" v-on:editor="jumpToCustomer"></editor-brief>
@@ -25,28 +25,38 @@
     import HotArticle from "../components/common/HotArticle";
 
     import Logo from '../assets/image/Logo.png'
+    import {getFullArtWithCus, getHotArtOnePage} from "../control/Load";
+    import {getCusSelfInfo} from "../control/Self";
+    import {getCommentList} from "../control/Discuss";
+    import {jumpInCurPage, jumpInNewPage} from "../util/PageJump";
 
     export default {
         name: "ArticleView",
         components: {HotArticle, EditEntrance, EditorBrief, ArticleMain, CommentReplyMain, TopBar},
         mounted: function() {
             let artId = this.$route.params.artId;
-            this.$axios.get('/api/self/own')
+            getCusSelfInfo()
                 .then((response) => {
                     if (response.data) {
                         this.customer = response.data;
                     } else {
-                        this.$router.push({path: '/port'});
+                        // this.$router.push({path: '/port'});
+                        jumpInCurPage('/port');
                     }
                 });
-            this.$axios.get('/api/load/main?artId=' + artId)
+            getFullArtWithCus(artId)
                 .then((response) => {
                     this.artMain = response.data;
                 });
-            this.$axios.get('/api/load/hot?page=' + this.page.hotPage + '&pageSize=' + this.page.hotPageSize)
+            getHotArtOnePage(this.page.hotPage, this.page.hotPageSize)
                 .then((response) => {
                     this.hotArticles = response.data;
                 });
+            getCommentList(artId)
+                .then((response) => {
+                    this.comments = response.data;
+                });
+            window.scrollTo(0, 0);
         },
         methods: {
             /**
@@ -58,7 +68,7 @@
                 } else {
                     this.page.hotPage += 1;
                 }
-                this.$axios.get('/api/load/hot?page=' + this.page.hotPage + '&pageSize=' + this.page.hotPageSize)
+                getHotArtOnePage(this.page.hotPage, this.page.hotPageSize)
                     .then((response) => {
                         this.hotArticles = response.data;
                     })
@@ -72,15 +82,19 @@
              * @param artId
              */
             jumpToArticle: function (artId) {
-                this.$message.info(' ' + artId);
-                let route = this.$router.resolve('/article/' + artId)
-                // this.$router.push({name: '/article/', params: {artId: artId, isFresh: true}})
-                // this.$router.push({name: '/article/'+ artId, params: {isFresh: true}})
-                window.open(route.href, '_self');
+                jumpInNewPage('/article/' + artId);
             },
 
             jumpToCustomer: function (cusId) {
-                this.$router.push('/self/' + cusId);
+                jumpInNewPage('/self/' + cusId);
+            },
+
+            quickShow: function () {
+                let artId = this.$route.params.artId;
+                getCommentList(artId)
+                    .then((response) => {
+                        this.comments = response.data;
+                    })
             }
         },
         data: function () {
@@ -88,7 +102,9 @@
                 page: {
                     hotTitle: '热点新闻',
                     hotPage: 0,
-                    hotPageSize: 6
+                    hotPageSize: 6,
+                    // comPage: 0,
+                    // comPageSize: 4
                 },
                 customer: {
 
@@ -104,6 +120,9 @@
                     { artId: '5', artTitle: 'This is the template title of news', artImageUrl: Logo},
                     { artId: '6', artTitle: 'This is the template title of news', artImageUrl: Logo},
                 ],
+                comments: [
+
+                ]
             }
         }
     }

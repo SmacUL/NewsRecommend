@@ -61,6 +61,7 @@
     .manage {
         float: right;
         height: 40px;
+        padding-top: 5px;
     }
 
     .manage >>> .el-button {
@@ -72,7 +73,8 @@
     .manage img {
         width: 30px;
         height: 30px;
-        padding: 5px 10px;
+        /*padding: 5px 10px;*/
+        margin-right: 5px;
     }
 
 </style>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.smacul.demo.dao.CommentsDao">
+
+    <update id="updateComLikeNum">
+        update Comments set com_like_num=com_like_num+1 where com_id=#{comId}
+    </update>
+
+    <update id="updateComDislikeNum">
+        update Comments set com_dislike_num=com_dislike_num+1 where com_id=#{comId}
+    </update>
+
+    <select id="searchCommentList" resultMap="searchCommentsRM">
+        select *
+        from Comments
+        where com_article_id = #{artId}
+        order by com_time desc
+    </select>
+
+    <insert id="insertComment" parameterType="com.smacul.demo.bean.Comment">
+        insert into Comments(com_content, com_legal, com_customer_id, com_article_id)
+        values(#{comContent}, #{comLegal}, #{comCustomerId}, #{comArticleId})
+    </insert>
+
+
+    <resultMap id="searchCommentsRM" type="com.smacul.demo.model.CommentCustomerModel">
+        <id property="comId" column="com_id"></id>
+        <result property="comArticleId" column="com_article_id"></result>
+        <result property="comContent" column="com_content"></result>
+        <result property="comCustomerId" column="com_customer_id"></result>
+        <result property="comDislikeNum" column="com_dislike_num"></result>
+        <result property="comLegal" column="com_legal"></result>
+        <result property="comLikeNum" column="com_like_num"></result>
+        <result property="comReplyNum" column="com_reply_num"></result>
+        <result property="comScope" column="com_scope"></result>
+        <result property="comSpider" column="com_spider"></result>
+        <result property="comTime" column="com_time"></result>
+        <collection property="customer" select="com.smacul.demo.dao.CustomersDao.searchCustomerByCusId" column="cusId=com_customer_id" javaType="com.smacul.demo.bean.Customer"></collection>
+        <collection property="replys" select="com.smacul.demo.dao.ReplysDao.searchReplysByComId" column="comId=com_id" javaType="java.util.ArrayList"></collection>
+    </resultMap>
+
+</mapper>
