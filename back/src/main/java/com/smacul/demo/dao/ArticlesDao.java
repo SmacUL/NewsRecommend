@@ -20,11 +20,11 @@ public interface ArticlesDao {
 
     List<ArticleCustomerModel> searchHotArtOnePage(@Param("start")Integer start, @Param("pageSize")Integer pageSize);
 
-    ArticleCustomerModel searchFullArtWithCus(Integer artId);
+    ArticleCustomerModel searchFullArtWithCus(@Param("artId") Integer artId);
 
-    Boolean updateArtLikeNum(Integer artId);
+    Boolean updateArtLikeNum(@Param("artId") Integer artId);
 
-    Boolean updateArtDislikeNum(Integer artId);
+    Boolean updateArtDislikeNum(@Param("artId") Integer artId);
 
     @Deprecated
     List<ArticleCustomerModel> searchContentByKeyAndTagTypePage(

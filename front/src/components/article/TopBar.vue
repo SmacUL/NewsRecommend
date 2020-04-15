@@ -1,9 +1,9 @@
 <template>
     <div class="clear-float">
         <div class="body-image">
-            <img src="@/assets/image/Logo.png"/>
+            <img src="@/assets/image/Logo.png"  @click="jumpToSelf"/>
         </div>
-        <search-panel :tip="tip"></search-panel>
+        <search-panel :tip="tip"  v-on:search="searchArticles"></search-panel>
         <div class="manage">
             <img v-if="customer.cusAvatarUrl !== ''" :src="customer.cusAvatarUrl"/>
             <img v-if="customer.cusAvatarUrl === ''" :src="manSrc"/>
@@ -15,14 +15,19 @@
 <script>
     import SearchPanel from '../common/SearchPanel'
     import Man from '../../assets/image/Man.png'
+    import {jumpInNewPage} from "../../util/PageJump";
 
     export default {
         name: 'TopBar',
         props: ['message', 'customer'],
         components: {SearchPanel},
         methods: {
-            searchArticles: function () {
-                this.$emit('search', this.message);
+            jumpToSelf: function() {
+                jumpInNewPage('/self/' + this.customer.cusId)
+            },
+            searchArticles: function (message) {
+                jumpInNewPage('/search/' + message )
+                // searchContentByKeyAndTagTypePage(message, 'global', 'test', 0, 10)
             },
             loginOut: function () {
                 this.$router.push({path: '/port'});

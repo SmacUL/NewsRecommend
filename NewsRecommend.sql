@@ -22,11 +22,11 @@ CREATE TABLE NewsRecommend.Customers (
     cus_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     -- cus_type 为 0 时是普通用户, 为 1 时是可编辑用户 ABANDON
     cus_type TINYINT default 0,
-    -- 此用户的关注的用户数量
+    -- 此用户的关注的用户数量 ABANDON
     cus_follow_num int UNSIGNED default 0,
-    -- 此用户的粉丝
+    -- 此用户的粉丝 ABANDON
     cus_fan_num int UNSIGNED default 0, 
-    -- 此用户的文章数量
+    -- 此用户的文章数量 ABANDON
     cus_article_num int UNSIGNED default 0,
     -- 用户评分 ABANDON
     cus_scope int UNSIGNED default 0,
@@ -161,7 +161,7 @@ CREATE TABLE NewsRecommend.CustomerCustomerFollow (
 DROP TABLE IF EXISTS NewsRecommend.ArticleCustomerBehaviors;
 CREATE TABLE NewsRecommend.ArticleCustomerBehaviors (
     acb_id INT UNSIGNED NOT NULL auto_increment,
-    -- acb_behavior 用户行为: 无 0, 写作 1, 点赞 2, 点踩 3, 评论 4, 回复 5(包括对回复的回复), 只浏览 6
+    -- acb_behavior 用户行为: 无 0, 写作 1, 点赞 2, 点踩 3, 评论 4, 回复 5(包括对回复的回复), 浏览 6
     acb_behavior INT UNSIGNED default 0,
     acb_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     
@@ -179,7 +179,7 @@ CREATE TABLE NewsRecommend.ArticleFeatureCount (
 
     afc_article_id INT UNSIGNED NOT NULL,
 
-    -- acb_behavior 用户行为: 无 0, 写作 1, 点赞 2, 点踩 3, 评论 4, 回复 5(包括对回复的回复), 只浏览 6
+    -- acb_behavior 用户行为: 无 0, 写作 1, 点赞 2, 点踩 3, 评论 4, 回复 5(包括对回复的回复), 浏览 6
     afc_like_num INT UNSIGNED default 0,
     afc_dislike_num INT UNSIGNED default 0,
     afc_comment_num INT UNSIGNED default 0,

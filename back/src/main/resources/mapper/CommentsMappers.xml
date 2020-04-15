@@ -38,8 +38,10 @@
         <result property="comScope" column="com_scope"></result>
         <result property="comSpider" column="com_spider"></result>
         <result property="comTime" column="com_time"></result>
-        <collection property="customer" select="com.smacul.demo.dao.CustomersDao.searchCustomerByCusId" column="cusId=com_customer_id" javaType="com.smacul.demo.bean.Customer"></collection>
-        <collection property="replys" select="com.smacul.demo.dao.ReplysDao.searchReplysByComId" column="comId=com_id" javaType="java.util.ArrayList"></collection>
+        <collection property="customer" select="com.smacul.demo.dao.CustomersDao.searchCustomerByCusId"
+                    column="cusId=com_customer_id" javaType="com.smacul.demo.bean.Customer"></collection>
+        <collection property="replys" select="com.smacul.demo.dao.ReplysDao.searchReplysByComId"
+                    column="comId=com_id" javaType="java.util.ArrayList"></collection>
     </resultMap>
 
 </mapper>

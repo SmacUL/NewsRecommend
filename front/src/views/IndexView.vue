@@ -44,7 +44,7 @@
                         this.customer = response.data;
                     } else {
                         // this.$router.push({path: '/port'});
-                        jumpInCurPage('/part');
+                        jumpInCurPage('/port');
                     }
 
                 });

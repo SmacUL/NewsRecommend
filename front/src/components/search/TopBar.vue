@@ -1,6 +1,6 @@
 <template>
     <div class="clear-float">
-        <div class="body-image">
+        <div class="body-image" v-on:click="jumpToSelf">
             <img src="@/assets/image/Logo.png"/>
         </div>
         <search-panel :tip="tip" v-on:search="searchArticles"></search-panel>
@@ -23,6 +23,9 @@
         props: ['customer'],
         components: {SearchPanel},
         methods: {
+            jumpToSelf: function() {
+                jumpInNewPage('/self/' + this.customer.cusId)
+            },
             searchArticles: function (message) {
                 jumpInNewPage('/search/' + message )
                 // searchContentByKeyAndTagTypePage(message, 'global', 'test', 0, 10)

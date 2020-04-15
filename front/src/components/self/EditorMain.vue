@@ -20,7 +20,7 @@
     import DarkCard from '../common/DarkCard'
     export default {
         name: "EditorMain",
-        // props: ['customer'],
+        props: ['customer'],
         components: { DarkCard },
         data: function () {
             return {
@@ -28,14 +28,6 @@
                     height: '150px',
                     width: '100%',
                     position: 'relative',
-                },
-                customer: {
-                    cusId: 1,
-                    cusName: '用户名称',
-                    cusAvatarUrl: require('@/assets/logo.png'),
-                    cusStyle: '这个用户很懒啥也没说',
-                    cusTime: '2019-09-09',
-                    cusType: 0,
                 },
             }
         }

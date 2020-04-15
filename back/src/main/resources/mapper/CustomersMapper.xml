@@ -3,6 +3,17 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.smacul.demo.dao.CustomersDao">
+
+<!--    <update id="updateCusInfo">-->
+<!--        update Customers set cus_-->
+<!--    </update>-->
+
+    <update id="updateCusPass">
+        update Customers set cus_pass=#{cussPass} where cusId=#{cusId}
+    </update>
+
+
+
     <select id="searchCusByName" resultType="com.smacul.demo.bean.Customer">
         select * from Customers where cus_name=#{cusName};
     </select>
@@ -20,4 +31,12 @@
         from Customers
         where cus_id = #{cusId}
     </select>
+
+    <select id="searchCusFullByCusId" resultType="com.smacul.demo.bean.Customer">
+        select cus_avatar_url, cus_id, cus_name, cus_type, cus_article_num, cus_fan_num, cus_follow_num,
+                cus_gender, cus_style, cus_time
+        from Customers
+        where cus_id = #{cusId}
+    </select>
+
 </mapper>

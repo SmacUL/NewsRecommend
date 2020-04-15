@@ -1,15 +1,20 @@
 package com.smacul.demo.controller;
 
 import com.smacul.demo.bean.Customer;
+import com.smacul.demo.model.CustomerBehaviorCountModel;
+import com.smacul.demo.model.CustomerDynamicModel;
 import com.smacul.demo.service.SelfService;
+import com.sun.tools.corba.se.idl.InterfaceGen;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/self")
@@ -75,5 +80,34 @@ public class SelfController {
     public Customer getCusSelfInfo() {
         return (Customer) session.getAttribute("customer");
     }
+
+    //public Customer modifyCusSelfInfo(@RequestBody Customer customer) {
+    //    return selfService.modifyCusSelfInfo(customer);
+    //}
+
+    @RequestMapping("/basic")
+    public Customer getCusBasicInfo(@RequestParam Integer cusId) {
+        return selfService.getCusBasicInfo(cusId);
+    }
+
+    @RequestMapping("/count")
+    public CustomerBehaviorCountModel getCusCountInfo(@RequestParam Integer cusId) {
+        return selfService.getCusCountInfo(cusId);
+    }
+
+    /**
+     *
+     * @param cusId 这个用户指用户中心归属的用户
+     * @param page
+     * @param pageSize
+     * @return
+     */
+    @RequestMapping("/dynamic")
+    public List<CustomerDynamicModel> getCusSelfDynamic(
+            @RequestParam Integer cusId, @RequestParam Integer page, @RequestParam Integer pageSize) {
+        return selfService.getCusSelfDynamic(cusId, page, pageSize);
+    }
+
+
 
 }

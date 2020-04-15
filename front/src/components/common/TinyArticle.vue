@@ -5,6 +5,7 @@
         </div>
         <div class="word" :class="[wideSwitch ? tinyArt : tinyArtWide]">
             <div class="title" @click="jumpToArticle(tinyArticle.artId)">{{ tinyArticle.artTitle }}</div>
+            <!--<div>adsfasfdasdf</div>-->
             <div class="info">
                 <span class="customer" @click="jumpToCustomer(tinyArticle.customer.cusId)">{{ tinyArticle.customer.cusName }}</span>
                 <span>{{ date(tinyArticle.artTime) }}</span>
