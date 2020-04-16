@@ -12,16 +12,18 @@ CREATE TABLE NewsRecommend.Customers (
     cus_spider VARCHAR(64) default '',
     -- 用户头像的 url
     cus_avatar_url VARCHAR(255) default 'http://localhost:8080/img/Man.png',
-    -- 用户背景墙的图片 url ABANDON
-    cus_background_url VARCHAR(255) default '',
+
     -- 用户的个人描述
     cus_style VARCHAR(255) default '这个人很懒, 什么都没写',
     -- cus_gender 为 0 时性别未知, 为 1 时为男, 为 -1 时为女
     cus_gender TINYINT DEFAULT 0,
     -- 用户的创建时间
     cus_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
     -- cus_type 为 0 时是普通用户, 为 1 时是可编辑用户 ABANDON
     cus_type TINYINT default 0,
+    -- 用户背景墙的图片 url ABANDON
+    cus_background_url VARCHAR(255) default '',
     -- 此用户的关注的用户数量 ABANDON
     cus_follow_num int UNSIGNED default 0,
     -- 此用户的粉丝 ABANDON
@@ -30,6 +32,7 @@ CREATE TABLE NewsRecommend.Customers (
     cus_article_num int UNSIGNED default 0,
     -- 用户评分 ABANDON
     cus_scope int UNSIGNED default 0,
+
     -- cus_legal 为 0 时待审核, 为 1 时合法, 为 -1 不合法
     cus_legal TINYINT default 0,
 	
@@ -51,15 +54,17 @@ CREATE TABLE NewsRecommend.Articles (
     art_tags VARCHAR(128) default '',
     -- 文章缩略图的信息
     art_image_url VARCHAR(255) default '',
-    -- 文章的点赞数量
-    art_like_num INT UNSIGNED default 0,
-    -- 文章的点踩数量
-    art_dislike_num INT UNSIGNED default 0,
     art_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    -- 文章的评论数量
+
+    -- 文章的点赞数量 ABANDON
+    art_like_num INT UNSIGNED default 0,
+    -- 文章的点踩数量 ABANDON
+    art_dislike_num INT UNSIGNED default 0,
+    -- 文章的评论数量 ABANDON
     art_comment_num INT UNSIGNED default 0,
     -- 文章的分数 ABANDON
 	art_scope int UNSIGNED default 0,
+    
     art_legal tinyint default 0,
     
     art_customer_id INT UNSIGNED,
@@ -74,16 +79,19 @@ CREATE TABLE NewsRecommend.Comments (
     com_id INT UNSIGNED NOT NULL auto_increment,
     com_content TEXT,
     com_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    com_legal tinyint default 0,
+    -- 爬虫过程中的评论标识
+    com_spider varchar(64) default '',
+
+    -- ABANDON
     com_like_num INT UNSIGNED default 0,
+    -- ABANDON
     com_dislike_num INT UNSIGNED default 0,
 	-- 评论的回复数量 ABANDON
     com_reply_num INT UNSIGNED default 0,
     -- 评论的分数 ABANDON
 	com_scope int UNSIGNED default 0,
-    com_legal tinyint default 0,
-    -- 爬虫过程中的评论标识
-    com_spider varchar(64) default '',
-    
+
     com_customer_id INT UNSIGNED,
     com_article_id INT UNSIGNED, 
 	primary key(com_id),
@@ -100,16 +108,18 @@ CREATE TABLE NewsRecommend.Replys (
     -- 回复的类型, 0 是对评论的回复, 1 是对回复的回复
     rep_type tinyint default 0, 
     rep_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	rep_legal tinyint default 0,
+    -- 爬虫过程中的评论标识
+    rep_spider varchar(64) default '',
+
+    -- ABANDON
     rep_like_num INT UNSIGNED default 0,
+    -- ABANDON
     rep_dislike_num INT UNSIGNED default 0,
 	-- 回复的回复数量 ABANDON
     rep_reply_num INT UNSIGNED default 0,
     -- 回复的分数 ABANDON
 	rep_scope int UNSIGNED default 0,
-	rep_legal tinyint default 0,
-
-    -- 爬虫过程中的评论标识
-    rep_spider varchar(64) default '',
 
     rep_customer_id INT UNSIGNED,
     rep_article_id INT UNSIGNED,
@@ -216,6 +226,7 @@ CREATE TABLE NewsRecommend.CustomerFeatureCount (
     cfc_news_game INT UNSIGNED default 0,
     cfc_news_history INT UNSIGNED default 0,
     cfc_news_food INT UNSIGNED default 0,
+    cfc_news_car INT UNSIGNED default 0,
 
 	primary key(cfc_id),
     foreign key(cfc_customer_id) references Customers(cus_id)

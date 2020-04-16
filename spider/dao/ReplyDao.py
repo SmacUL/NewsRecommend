@@ -30,19 +30,19 @@ class ReplyDao:
     def insert_rep(self, rep_mod: RepMod.ReplyModel):
         try:
             if rep_mod.rep_reply_id is None:
-                insert_sql = "insert into Replys(rep_content, rep_like_num, rep_type, rep_time," \
+                insert_sql = "insert into Replys(rep_content, rep_type, rep_time," \
                              " rep_customer_id, rep_article_id, rep_comment_id, " \
                              " rep_spider, rep_legal)" \
-                             " values ('%s', %d, %d, '%s', %d, %d, %d, '%s', %d)" \
-                             % (str(rep_mod.rep_content), int(rep_mod.rep_like_num), int(rep_mod.rep_type), str(rep_mod.rep_time),
+                             " values ('%s', %d, '%s', %d, %d, %d, '%s', %d)" \
+                             % (str(rep_mod.rep_content), int(rep_mod.rep_type), str(rep_mod.rep_time),
                                 int(rep_mod.rep_customer_id), int(rep_mod.rep_article_id), int(rep_mod.rep_comment_id),
                                 str(rep_mod.rep_spider), int(rep_mod.rep_legal))
             else:
-                insert_sql = "insert into Replys(rep_content, rep_like_num, rep_type, rep_time," \
+                insert_sql = "insert into Replys(rep_content, rep_type, rep_time," \
                              " rep_customer_id, rep_article_id, rep_comment_id, " \
                              "rep_reply_id, rep_spider, rep_legal)" \
-                             " values ('%s', %d, %d, '%s', %d, %d, %d, %d, '%s', %d)" \
-                             % (str(rep_mod.rep_content), int(rep_mod.rep_like_num), int(rep_mod.rep_type), str(rep_mod.rep_time),
+                             " values ('%s', %d, '%s', %d, %d, %d, %d, '%s', %d)" \
+                             % (str(rep_mod.rep_content), int(rep_mod.rep_type), str(rep_mod.rep_time),
                                 int(rep_mod.rep_customer_id), int(rep_mod.rep_article_id), int(rep_mod.rep_comment_id),
                                 int(rep_mod.rep_reply_id), str(rep_mod.rep_spider), int(rep_mod.rep_legal))
 

@@ -6,7 +6,7 @@ class CustomerModel:
         self.cus_spider = None
         self.cus_avatar_url = None
         self.cus_style = None
-        self.cus_background_url = ''
+        # self.cus_background_url = ''
         self.cus_legal = 1
 
 

@@ -36,10 +36,10 @@ class CommentDao:
         :return:
         """
         try:
-            insert_sql = "insert into Comments(com_content, com_like_num, com_customer_id," \
+            insert_sql = "insert into Comments(com_content, com_customer_id," \
                          " com_article_id, com_time, com_spider, com_legal)" \
-                         " values ('%s', %d, %d, %d, '%s', '%s', %d)" \
-                         % (com_mod.com_content, com_mod.com_like_num, com_mod.com_customer_id,
+                         " values ('%s', %d, %d, '%s', '%s', %d)" \
+                         % (com_mod.com_content, com_mod.com_customer_id,
                             com_mod.com_article_id,com_mod.com_time, com_mod.com_spider, com_mod.com_legal)
             self.__base.execute_sql(insert_sql)
             self.__base.commit_transactions()

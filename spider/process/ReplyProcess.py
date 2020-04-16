@@ -322,7 +322,7 @@ class ReplyProcess:
             rep_mod.rep_legal = 1
             rep_mod.rep_customer_id = rep_cus_id
             rep_mod.rep_time = Time.Time.time_trans(rep_json['create_time'])
-            rep_mod.rep_like_num = rep_json['digg_count']
+            # rep_mod.rep_like_num = rep_json['digg_count']
             rep_mod.rep_content = rep_json['text']
             rep_mod.rep_comment_id = rep_com_id
             rep_mod.rep_id = None

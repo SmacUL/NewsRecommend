@@ -41,11 +41,11 @@ class ArticleDao:
         try:
             insert_sql = "insert into Articles(art_title, art_spider, art_type, art_image_url, " \
                          "art_content, art_tags, " \
-                         "art_customer_id, art_time, art_comment_num, art_legal)" \
-                         " values ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', %d, %d)" \
+                         "art_customer_id, art_time, art_legal)" \
+                         " values ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', %d)" \
                          % (art_mod.art_title, art_mod.art_spider, art_mod.art_type, art_mod.art_image_url,
                             art_mod.art_content, art_mod.art_tags,
-                            art_mod.art_customer_id, art_mod.art_time, art_mod.art_comment_num, art_mod.art_legal)
+                            art_mod.art_customer_id, art_mod.art_time, art_mod.art_legal)
 
             self.__base.execute_sql(insert_sql)
             self.__base.commit_transactions()
@@ -92,6 +92,7 @@ class ArticleDao:
             logging.exception("关系 新闻 art_id=%s 用户 cus_id=%s 数据库查询 错误" % (art_id, cus_id))
             raise
 
+    @DeprecationWarning
     def update_art_com_number(self, art_id):
         try:
             update_sql = "update Articles set art_comment_num = art_comment_num + 1 where art_id = %d" % art_id

@@ -52,7 +52,9 @@ class Major:
 
         for category in categories:
             print("\n当前类别: %s" % category)
-            """ 处理 art """
+
+            """ 处理 art 
+            """
             try:
                 arts_brief_json = self.__art_pro.get_arts_brief_json_by_category(category)
                 if len(arts_brief_json) != 0:
@@ -63,7 +65,8 @@ class Major:
                 continue
 
             for art_brief_json in arts_brief_json:
-                # art_cus
+                """ 新闻作者
+                """
                 art_cus_mod = CusMod.CustomerModel()
                 try:
                     self.__cus_pro.set_art_cus(art_brief_json, art_cus_mod)
@@ -72,7 +75,9 @@ class Major:
                 except:
                     print("art_cus 处理 失败")
                     continue
-                # art
+
+                """ 新闻
+                """
                 art_mod = ArtMod.ArticleModel()
                 try:
                     self.__art_pro.set_art(art_brief_json, category, art_cus_mod.cus_id, art_mod)
@@ -88,7 +93,9 @@ class Major:
                 except:
                     print("art 操作 失败")
                     continue
-                # art cus behavior
+
+                """ 新闻 用户 行为
+                """
                 try:
                     if self.__art_dao.check_art_cus_relationship(art_mod.art_id, art_cus_mod.cus_id):
                         self.__cus_dao.insert_cus_behavior(1, art_mod.art_id, art_cus_mod.cus_id, art_mod.art_time)
@@ -101,7 +108,8 @@ class Major:
                     print("art-cus 行为 1 数据库操作 失败")
                     continue
 
-                """ handel the coms """
+                """ 评论与回复处理
+                """
                 try:
                     coms_json = self.__com_pro.get_coms_json(art_brief_json)
                     if len(coms_json) != 0:
@@ -111,7 +119,8 @@ class Major:
                     continue
 
                 for com_json in coms_json:
-                    # com_cus
+                    """ 评论用户
+                    """
                     com_cus_mod = CusMod.CustomerModel()
                     try:
                         self.__cus_pro.set_com_cus(com_json, com_cus_mod)
@@ -120,7 +129,8 @@ class Major:
                     except:
                         print("com_cus 处理 错误")
                         continue
-                    # com
+                    """ 评论
+                    """
                     com_mod = ComMod.CommentModel()
                     try:
                         self.__com_pro.set_com(com_json, art_mod.art_id, com_cus_mod.cus_id, com_mod)
@@ -131,17 +141,18 @@ class Major:
                             print("com 已存在")
                             continue
                         com_mod.com_id = self.__com_dao.search_com_id_by_spider(com_mod.com_spider)
-                        self.__art_dao.update_art_com_number(art_mod.art_id)
+                        # self.__art_dao.update_art_com_number(art_mod.art_id)
                         # print("com 处理 成功")
                     except:
                         print("com 处理 失败")
                         continue
-                    # com cus behavior
+                    """ 评论 用户 行为
+                    """
                     try:
                         if self.__com_dao.check_com_cus_relationship(art_mod.art_id, com_mod.com_id, com_cus_mod.cus_id):
                             self.__cus_dao.insert_cus_behavior(4, art_mod.art_id, com_cus_mod.cus_id, com_mod.com_time)
                             self.__cus_dao.update_cus_feature(category, com_cus_mod.cus_id)
-                            self.__art_dao.update_art_feature(4, art_mod.art_id)
+                            self.__art_dao.update_art_feature(4, art_mod.art_id, art_mod.art_time)
                         else:
                             pass
                         # print("art-cus 行为 4 数据库操作 成功")
@@ -149,17 +160,19 @@ class Major:
                         print("art-cus 行为 4 数据库操作 失败")
                         continue
 
-                    """ handel the reps """
+                    """ 回复处理
+                    """
                     try:
                         reps_json = self.__rep_pro.get_reps_json(com_json)
-                        if len(reps_json) != 0:
-                            print("回复总长 %d" % len(reps_json))
+                        # if len(reps_json) != 0:
+                        # print("回复总长 %d" % len(reps_json))
                     except:
                         print("reps_json 获取 失败")
                         continue
 
                     for rep_json in reps_json:
-                        # rep_cus
+                        """ 回复用户
+                        """
                         rep_cus_mod = CusMod.CustomerModel()
                         try:
                             self.__cus_pro.set_rep_cus(rep_json, rep_cus_mod)
@@ -168,7 +181,8 @@ class Major:
                         except:
                             print("rep_cus 处理 失败")
                             continue
-                        # rep
+                        """ 回复
+                        """
                         rep_mod = RepMod.ReplyModel()
                         try:
                             self.__rep_pro.set_rep(rep_json, art_mod.art_id,
@@ -185,14 +199,15 @@ class Major:
                             print("rep 处理 失败")
                             continue
 
-                        # reply customer behavior, customer feature data, article feature data
+                        """ 回复 用户 行为
+                        """
                         try:
                             if self.__rep_dao.check_rep_cus_relationship(art_mod.art_id, rep_mod.rep_id,
                                                                          rep_cus_mod.cus_id):
                                 self.__cus_dao.insert_cus_behavior(5, art_mod.art_id, rep_cus_mod.cus_id,
                                                                    rep_mod.rep_time)
                                 self.__cus_dao.update_cus_feature(category, rep_cus_mod.cus_id)
-                                self.__art_dao.update_art_feature(5, art_mod.art_id)
+                                self.__art_dao.update_art_feature(5, art_mod.art_id, art_mod.art_time)
                             else:
                                 pass
                             # print("art-cus 行为 5 数据库操作 成功")
@@ -203,15 +218,4 @@ class Major:
 
 if __name__ == '__main__':
     Major(os.path.join('properties', 'database.json')).major()
-
-
-
-
-
-
-
-
-
-
-
 

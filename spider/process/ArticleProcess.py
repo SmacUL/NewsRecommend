@@ -215,7 +215,7 @@ class ArticleProcess:
             driver.get(url)
 
             art_mod.art_spider = art_brief_json['item_id']
-            art_mod.art_comment_num = 0
+            # art_mod.art_comment_num = 0
 
             try:
                 if len(art_brief_json['image_list']) == 0:

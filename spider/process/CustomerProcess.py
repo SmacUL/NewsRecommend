@@ -9,7 +9,7 @@ class CustomerProcess:
         try:
             cus_mod.cus_spider = str(art_brief_json['media_info']['media_id'])
             cus_mod.cus_legal = 1
-            cus_mod.cus_background_url =''
+            # cus_mod.cus_background_url =''
             cus_mod.cus_style = '这个用户很懒啥也没写'
             cus_mod.cus_avatar_url = art_brief_json['media_info']['avatar_url']
             cus_mod.cus_name = art_brief_json['media_info']['name'] + cus_mod.cus_spider[0:4]
@@ -30,7 +30,7 @@ class CustomerProcess:
         try:
             cus_mod.cus_spider = str(com_json['comment']['user_id'])
             cus_mod.cus_legal = 1
-            cus_mod.cus_background_url =''
+            # cus_mod.cus_background_url =''
             cus_mod.cus_style = '这个用户很懒啥也没写'
             cus_mod.cus_avatar_url = com_json['comment']['user_profile_image_url']
             cus_mod.cus_name = com_json['comment']['user_name'] + cus_mod.cus_spider[0:4]
@@ -47,7 +47,7 @@ class CustomerProcess:
         try:
             cus_mod.cus_spider = str(rep_json['user']['user_id'])
             cus_mod.cus_legal = 1
-            cus_mod.cus_background_url = ''
+            # cus_mod.cus_background_url = ''
             try:
                 cus_mod.cus_style = rep_json['user']['description']
                 if cus_mod.cus_style == '':

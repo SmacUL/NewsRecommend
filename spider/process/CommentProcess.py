@@ -116,7 +116,7 @@ class CommentProcess:
             com_mod.com_customer_id = cus_id
             com_mod.com_time = Time.Time.time_trans(com_json['comment']['create_time'])
             com_mod.com_content = com_json['comment']['text']
-            com_mod.com_like_num = com_json['comment']['digg_count']
+            # com_mod.com_like_num = com_json['comment']['digg_count']
             com_mod.com_article_id = art_id
             com_mod.com_id = None
             com_mod.com_legal = 1

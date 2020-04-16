@@ -37,10 +37,10 @@ class CustomerDao:
         """
         try:
             insert_sql = "insert into Customers(cus_name, cus_pass, cus_spider, cus_avatar_url, " \
-                         "cus_style, cus_background_url, cus_legal)" \
-                         " values ('%s', '%s', '%s', '%s', '%s', '%s', %d)" \
+                         "cus_style, cus_legal)" \
+                         " values ('%s', '%s', '%s', '%s', '%s', %d)" \
                          % (cus_mod.cus_name, cus_mod.cus_pass, cus_mod.cus_spider, cus_mod.cus_avatar_url,
-                            cus_mod.cus_style, cus_mod.cus_background_url, cus_mod.cus_legal)
+                            cus_mod.cus_style, cus_mod.cus_legal)
             self.__base.execute_sql(insert_sql)
             self.__base.commit_transactions()
             logging.info("用户 cus_spider=%s 数据库插入 成功" % cus_mod.cus_spider)
