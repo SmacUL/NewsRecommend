@@ -6,4 +6,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class ShapeServiceImpl implements ShapeService {
 
+    @Override
+    public Boolean updateCusArtTable(Integer behavior) {
+        return null;
+    }
 }
