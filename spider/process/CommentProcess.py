@@ -6,9 +6,17 @@ import logging
 
 
 class CommentProcess:
+    """ 评论数据的获取与填充
+
+    # 20-17-04 依据新的 SQL 修改
+
+    """
+
 
     def get_coms_json(self, art_brief_json):
         """ 获取评论列表
+
+        # 20-04-17 代码检查 OK
 
         参考接口:
             https://www.toutiao.com/article/v2/tab_comments/?aid=24&app_name=toutiao-web&group_id=6732655510039822860&item_id=6732655510039822860&offset=0&count=5
@@ -103,8 +111,11 @@ class CommentProcess:
             logging.exception("获取评论页数据 失败")
             return None
 
+
     def set_com(self, com_json, art_id, cus_id, com_mod: ComMod.CommentModel):
         """ set a single comment
+
+        # 20-04-17 修改完成
 
         :param com_json:
         :param art_id:
@@ -113,11 +124,10 @@ class CommentProcess:
         :return:
         """
         try:
-            com_mod.com_customer_id = cus_id
+            com_mod.com_cus_id = cus_id
             com_mod.com_time = Time.Time.time_trans(com_json['comment']['create_time'])
             com_mod.com_content = com_json['comment']['text']
-            # com_mod.com_like_num = com_json['comment']['digg_count']
-            com_mod.com_article_id = art_id
+            com_mod.com_art_id = art_id
             com_mod.com_id = None
             com_mod.com_legal = 1
             com_mod.com_spider = str(com_json['comment']['id'])
