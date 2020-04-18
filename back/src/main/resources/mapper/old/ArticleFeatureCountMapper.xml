@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.smacul.demo.dao.ArticleFeatureCountDao">
+
+
+    <select id="searchFeatureCountByArtId" resultType="com.smacul.demo.bean.ArticleFeatureCount">
+        select *
+        from ArticleFeatureCount
+        where afc_article_id = #{artId}
+    </select>
+
+<!--    <select id="searchCusSelfDynamic" resultType="com.smacul.demo.model.CustomerDynamicModel"></select>-->
+
+
+<!--    <resultMap id="searchCusSelfDynamicRM" type="com.smacul.demo.model.CustomerDynamicModel">-->
+<!--        <id property="cusId" column="cus_id"></id>-->
+<!--        -->
+<!--        -->
+<!--        <collection property="artWithCus" select="com.smacul.demo.dao.ArticlesDao.searchFullArtWithCus" column="artId=art_id"-->
+<!--        -->
+<!--        <result property="comArticleId" column="com_article_id"></result>-->
+
+<!--        <collection property="customer" select="com.smacul.demo.dao.CustomersDao.searchCustomerByCusId" column="cusId=com_customer_id" javaType="com.smacul.demo.bean.Customer"></collection>-->
+<!--        <collection property="replys" select="com.smacul.demo.dao.ReplysDao.searchReplysByComId" column="comId=com_id" javaType="java.util.ArrayList"></collection>-->
+<!--    </resultMap>-->
+</mapper>

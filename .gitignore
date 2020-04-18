@@ -1,16 +1,14 @@
 
-crawler/.idea/*
-crawler/__pycache__/*
-crawler/database-properties.json
-*/.DS_Store
+# crawler/.idea/*
+# crawler/__pycache__/*
+# crawler/database-properties.json
 .DS_Store
 
 /back/lib/*.jar
 back/src/main/resources/application.properties
 
 *.pyc
-# spider/*/__init__.py
-spider/log/*.txt
+spider/log/*.tx
 spider/.idea/*
 spider/experiment/*
 spider/properties/database.json

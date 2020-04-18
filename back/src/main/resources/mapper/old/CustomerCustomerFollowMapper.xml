@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.smacul.demo.dao.CustomerCustomerFollowDao">
+
+    <select id="countCusFollowNum" resultType="java.lang.Integer">
+        select count(*) from CustomerCustomerFollow where ccf_follower_id=#{cusId}
+    </select>
+
+    <select id="countCusFanNum" resultType="java.lang.Integer">
+        select count(*) from CustomerCustomerFollow where ccf_followee_id=#{cusId}
+    </select>
+</mapper>

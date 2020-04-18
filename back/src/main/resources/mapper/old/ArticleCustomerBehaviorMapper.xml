@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.smacul.demo.dao.ArticleCustomerBehaviorDao">
+
+    <select id="searchCusSelfDynamic" resultMap="searchCusSelfDynamicRM">
+        select acb_customer_id, acb_behavior, acb_article_id
+        from ArticleCustomerBehaviors
+        where acb_customer_id = #{cusId}
+        limit #{start}, #{pageSize}
+    </select>
+
+<!--    <select id="countCusBeLikedNum" resultType="java.lang.Integer">-->
+<!--        select count(*)-->
+<!--        from (ArticleCustomerBehaviors left join Articles on acb_article_id=art_id) left join Customers on art_customer_id=cus_id-->
+<!--        where acb_customer_id=2 and acb_behavior=4-->
+<!--    </select>-->
+
+    <select id="countCusWriteNum" resultType="java.lang.Integer">
+        select count(*)
+        from ArticleCustomerBehaviors
+        where acb_customer_id=#{cusId} and acb_behavior=1
+    </select>
+
+
+    <resultMap id="searchCusSelfDynamicRM" type="com.smacul.demo.model.CustomerDynamicModel">
+        <id property="acbCustomerId" column="acb_customer_id"></id>
+        <result property="acbBehavior" column="acb_behavior"></result>
+        <collection property="artWithCus" select="com.smacul.demo.dao.ArticlesDao.searchFullArtWithCus"
+                    column="artId=acb_article_id" javaType="com.smacul.demo.model.ArticleCustomerModel"></collection>
+        <collection property="feature" select="com.smacul.demo.dao.ArticleFeatureCountDao.searchFeatureCountByArtId"
+                    column="artId=acb_article_id" javaType="com.smacul.demo.bean.ArticleFeatureCount"></collection>
+    </resultMap>
+
+</mapper>
