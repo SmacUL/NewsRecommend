@@ -8,7 +8,7 @@
 back/src/main/resources/application.properties
 
 *.pyc
-spider/log/*.tx
+spider/log/*.txt
 spider/.idea/*
 spider/experiment/*
 spider/properties/database.json
