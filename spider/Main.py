@@ -103,7 +103,12 @@ class Major:
                 try:
                     if self.__art_dao.check_art_cus_relationship(art_mod.art_id, art_cus_mod.cus_id):
                         self.__cus_dao.insert_cus_behavior(
-                            art_cus_mod.cus_id, art_cus_mod.cus_id, 1, art_mod.art_time, art_mod.art_id, 1, art_mod.art_id
+                            art_cus_mod.cus_id, art_cus_mod.cus_id, 1, art_mod.art_id, 1,
+                            art_mod.art_id, cbr_time=art_mod.art_time
+                        )
+                        self.__cus_dao.insert_cus_behavior(
+                            art_cus_mod.cus_id, art_cus_mod.cus_id, 2, art_mod.art_id, 1,
+                            art_mod.art_id
                         )
                         self.__cus_dao.update_cus_feature(category, art_cus_mod.cus_id)
                         self.__art_dao.update_art_feature(1, art_mod.art_id, art_mod.art_time)
@@ -163,10 +168,13 @@ class Major:
                     try:
                         if self.__com_dao.check_com_cus_relationship(art_mod.art_id, com_mod.com_id, com_cus_mod.cus_id):
                             self.__cus_dao.insert_cus_behavior(
-                                com_cus_mod.cus_id, com_cus_mod.cus_id, 5, com_mod.com_time, art_mod.art_id, 2,
-                                com_mod.com_id
+                                com_cus_mod.cus_id, com_cus_mod.cus_id, 5, art_mod.art_id, 2,
+                                com_mod.com_id, cbr_time=com_mod.com_time
                             )
-
+                            self.__cus_dao.insert_cus_behavior(
+                                com_cus_mod.cus_id, art_cus_mod.cus_id, 2, art_mod.art_id, 1,
+                                art_mod.art_id
+                            )
                             self.__cus_dao.update_cus_feature(category, com_cus_mod.cus_id)
                             self.__art_dao.update_art_feature(4, art_mod.art_id, art_mod.art_time)
                         else:
@@ -225,8 +233,12 @@ class Major:
                             if self.__rep_dao.check_rep_cus_relationship(art_mod.art_id, rep_mod.rep_id,
                                                                          rep_cus_mod.cus_id):
                                 self.__cus_dao.insert_cus_behavior(
-                                    rep_cus_mod.cus_id, rep_cus_mod.cus_id, 8, rep_mod.rep_time, art_mod.art_id, 3,
-                                    rep_mod.rep_id
+                                    rep_cus_mod.cus_id, rep_cus_mod.cus_id, 8, art_mod.art_id, 3,
+                                    rep_mod.rep_id, cbr_time=rep_mod.rep_time
+                                )
+                                self.__cus_dao.insert_cus_behavior(
+                                    rep_cus_mod.cus_id, art_cus_mod.cus_id, 2, art_mod.art_id, 1,
+                                    art_mod.art_id
                                 )
                                 self.__cus_dao.update_cus_feature(category, rep_cus_mod.cus_id)
                                 self.__art_dao.update_art_feature(5, art_mod.art_id, art_mod.art_time)

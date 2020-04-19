@@ -109,10 +109,11 @@ class CustomerDao:
             raise
 
 
-    def insert_cus_behavior(self, cbr_cus_id_from, cbr_cus_id_to, cbr_behavior, cbr_time, cbr_art_id, cbr_type, cbr_target_id):
+    def insert_cus_behavior(self, cbr_cus_id_from, cbr_cus_id_to, cbr_behavior, cbr_art_id, cbr_type, cbr_target_id, cbr_time=None):
         """ 插入用户行为
 
         # 20-04-17 修改完成
+        # 20-04-19 方法修改, 将第二个 insert 移除, 同时允许行为时间为空
 
         :param cbr_cus_id_from:
         :param cbr_cus_id_to:
@@ -124,20 +125,25 @@ class CustomerDao:
         :return:
         """
         try:
-            insert_sql0 = "insert into CusBehaviorRecord(cbr_cus_id_from, cbr_cus_id_to, cbr_behavior, cbr_time, cbr_art_id, cbr_type, cbr_target_id) " \
-                         "values (%d, %d, %d, '%s', %d, %d, %d)" \
-                          % (cbr_cus_id_from, cbr_cus_id_to, cbr_behavior, cbr_time, cbr_art_id, cbr_type, cbr_target_id)
-            insert_sql1 = "insert into CusBehaviorRecord(cbr_cus_id_from, cbr_cus_id_to, cbr_behavior, cbr_time, cbr_art_id, cbr_type, cbr_target_id) " \
-                         "values (%d, %d, 2, '%s', %d, %d, %d)" \
-                          % (cbr_cus_id_from, cbr_cus_id_to, cbr_time, cbr_art_id, cbr_type, cbr_target_id)
+            if cbr_time is not None:
+                insert_sql = "insert into CusBehaviorRecord(cbr_cus_id_from, cbr_cus_id_to, cbr_behavior, cbr_time, cbr_art_id, cbr_type, cbr_target_id) " \
+                             "values (%d, %d, %d, '%s', %d, %d, %d)" \
+                              % (cbr_cus_id_from, cbr_cus_id_to, cbr_behavior, cbr_time, cbr_art_id, cbr_type, cbr_target_id)
+            else:
+                insert_sql = "insert into CusBehaviorRecord(cbr_cus_id_from, cbr_cus_id_to, cbr_behavior, cbr_art_id, cbr_type, cbr_target_id) " \
+                             "values (%d, %d, %d, %d, %d, %d)" \
+                              % (cbr_cus_id_from, cbr_cus_id_to, cbr_behavior, cbr_art_id, cbr_type, cbr_target_id)
+            # insert_sql1 = "insert into CusBehaviorRecord(cbr_cus_id_from, cbr_cus_id_to, cbr_behavior, cbr_time, cbr_art_id, cbr_type, cbr_target_id) " \
+            #              "values (%d, %d, 2, '%s', %d, %d, %d)" \
+            #               % (cbr_cus_id_from, cbr_cus_id_to, cbr_time, cbr_art_id, cbr_type, cbr_target_id)
 
-            self.__base.execute_sql(insert_sql0)
-            self.__base.execute_sql(insert_sql1)
+            self.__base.execute_sql(insert_sql)
+            # self.__base.execute_sql(insert_sql1)
             self.__base.commit_transactions()
             logging.info("用户 cus_id=%s 与用户 cus_id=%s 行为 %s 数据库插入 成功" % (cbr_cus_id_from, cbr_cus_id_to, cbr_behavior))
         except:
             self.__base.commit_rollback()
-            logging.exception("用户 cus_id=%s 与用户 cus_id=%s 行为 %s 数据库插入 成功" % (cbr_cus_id_from, cbr_cus_id_to, cbr_behavior))
+            logging.exception("用户 cus_id=%s 与用户 cus_id=%s 行为 %s 数据库插入 失败" % (cbr_cus_id_from, cbr_cus_id_to, cbr_behavior))
             raise
 
 
