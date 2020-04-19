@@ -4,24 +4,71 @@ import com.smacul.demo.bean.Customer;
 import com.smacul.demo.model.CusDynamicMod;
 import com.smacul.demo.model.CusFeatureFullMod;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 public interface SelfService {
 
-    Boolean checkCusIdentify(Customer customer);
+    /**
+     * 检查用户是否为新用户.
+     * 20-04-18 创建方法
+     * @param cusId
+     * @return
+     */
+    Boolean checkIsNewUser(Integer cusId);
 
-    Boolean checkIsNewUser(Customer customer);
+    /**
+     * 在用户登录时检查用户是否存在, 如果存在, 返回用户基本信息, 否则返回空.
+     * 20-04-28 创建方法
+     * @param cusName
+     * @param cusPass
+     * @return
+     * @throws NoSuchAlgorithmException
+     */
+    Customer checkCusForLogin(String cusName, String cusPass) throws NoSuchAlgorithmException;
 
-    String checkCusForLogin(String cusName, String cusPass);
+    /**
+     * 在用户注册时插入用户.
+     * 20-04-18 创建方法
+     * @param cusName
+     * @param cusPass
+     * @return
+     * @throws NoSuchAlgorithmException
+     */
+    String setNewCus(String cusName, String cusPass) throws NoSuchAlgorithmException;
 
-    String setNewCus(String cusName, String cusPass);
-
+    /**
+     * 获取用户基本数据, 不包括密码
+     * 20-04-18 创建方法
+     * @param cusId
+     * @return
+     */
     Customer getCusBasicInfo(Integer cusId);
 
-    Boolean setCusBasicInfo(Customer customer);
+    /**
+     * 设置用户基本数据, 可包括密码
+     * 20-04-18 创建方法
+     * @param customer
+     * @return
+     * @throws NoSuchAlgorithmException
+     */
+    Boolean setCusBasicInfo(Customer customer) throws NoSuchAlgorithmException;
 
-    Boolean setCusFollow(Integer cusId);
+    /**
+     * 处理用户关注, 行为代码: 11
+     * 20-04-18 创建方法
+     * @param cusIdFrom
+     * @param cusIdTo
+     * @return
+     */
+    Boolean setCusFollow(Integer cusIdFrom, Integer cusIdTo);
 
+    /**
+     * 获取用户完整的特征数据
+     * 20-04-18 创建方法
+     * @param cusId
+     * @return
+     */
     CusFeatureFullMod getCusFeatureInfo(Integer cusId);
 
     List<CusDynamicMod> getCusDynamic(Integer cusId, Integer page, Integer pageSize);

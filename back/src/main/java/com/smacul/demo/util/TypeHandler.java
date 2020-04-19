@@ -1,8 +1,10 @@
 package com.smacul.demo.util;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class TypeTranslator {
+public class TypeHandler {
 
     private static final String[] ch = {"综合", "社会", "娱乐", "科技", "军事", "体育", "汽车", "财经", "国际", "时尚", "旅游", "探索",
             "育儿", "养生", "故事", "美文", "游戏", "历史", "美食"};
@@ -10,6 +12,18 @@ public class TypeTranslator {
             "news_car", "news_finance", "news_world", "news_fashion", "news_travel",
             "news_discovery", "news_baby", "news_regimen", "news_story", "news_essay",
             "news_game", "news_history", "news_food"};
+
+    //public static List<String> sortTypeEn(List<Integer> nums) {
+    //    Map<String, Integer> dictionary = new HashMap<>();
+    //    for (int i = 0; i < nums.size(); i++) {
+    //        dictionary.put(en[i+1], nums.get(i));
+    //    }
+    //
+    //}
+
+    //public static List<String> sortTypeCh(List<Integer> nums) {
+    //
+    //}
 
     public static List<String> typeTransAllEnToCh(List<String> enTypes) {
         for (int i = 0; i < enTypes.size(); i++) {

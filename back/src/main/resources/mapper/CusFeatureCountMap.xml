@@ -5,4 +5,31 @@
 
 <mapper namespace="com.smacul.demo.dao.CusFeatureCountDao">
 
+    <select id="countBehaviorNum" resultType="java.lang.Integer">
+        select
+            cfc_news_society + cfc_news_entertainment + cfc_news_tech + cfc_news_military + cfc_news_sports + cfc_news_finance +
+            cfc_news_world + cfc_news_fashion + cfc_news_travel + cfc_news_discovery + cfc_news_baby + cfc_news_regimen +
+            cfc_news_story + cfc_news_essay + cfc_news_game + cfc_news_history + cfc_news_food + cfc_news_car
+        from CusFeatureCount
+        where cfc_cus_id = #{cusId}
+    </select>
+
+    <select id="getCusFeatureCountByCusId" resultType="com.smacul.demo.bean.CusFeatureCount">
+        select *
+        from CusFeatureCount
+        where cfc_cus_id = #{cusId}
+    </select>
+
+    <select id="getCusArtTypesBehaviorNums" resultType="java.lang.Integer">
+        select
+--             cfc_news_society + cfc_news_entertainment + cfc_news_tech + cfc_news_military + cfc_news_sports + cfc_news_finance +
+--             cfc_news_world + cfc_news_fashion + cfc_news_travel + cfc_news_discovery + cfc_news_baby + cfc_news_regimen +
+--             cfc_news_story + cfc_news_essay + cfc_news_game + cfc_news_history + cfc_news_food + cfc_news_car as cfc_news_global,
+            cfc_news_society, cfc_news_entertainment, cfc_news_tech, cfc_news_military, cfc_news_sports, cfc_news_car,
+            cfc_news_finance, cfc_news_world, cfc_news_fashion, cfc_news_travel, cfc_news_discovery, cfc_news_baby,
+            cfc_news_regimen, cfc_news_story, cfc_news_essay, cfc_news_game, cfc_news_history, cfc_news_food,
+        from CusFeatureCount
+        where cfc_cus_id = #{cusId}
+    </select>
+
 </mapper>

@@ -6,17 +6,58 @@ import java.util.List;
 
 public interface LoadService {
 
+    /**
+     * 为新用户提供文章类别列表
+     * 20-04-18 创建方法
+     * @return
+     */
     List<String> getArtTypesForNew();
 
-    List<String> getArtTypesForOld();
+    /**
+     * 为老用户提供文章类别列表
+     * 20-04-19 创建方法, TODO 功能上和 getArtTypesForNew 没有区别, 需要跟换
+     * @param cusId
+     * @return
+     */
+    List<String> getArtTypesForOld(Integer cusId);
 
+    /**
+     * 为新用户提供一页指定类别的新闻缩率信息
+     * 20-04-19 创建方法
+     * @param artType
+     * @param page
+     * @param pageSize
+     * @return
+     */
     List<ArtFullMod> getTinyArtOnePageByTypeForNew(String artType, Integer page, Integer pageSize);
 
+    /**
+     * 为老用户提供一页指定类别的新闻缩率信息
+     * 20-04-19 创建方法, TODO 功能上与 getTinyArtOnePageByTypeForNew 一样, 需要更换
+     * @param artType
+     * @param page
+     * @param pageSize
+     * @return
+     */
     List<ArtFullMod> getTinyArtOnePageByTypeForOld(String artType, Integer page, Integer pageSize);
 
+    /**
+     * 提供一页的热点新闻的缩略信息
+     * 20-04-19 创建方法
+     * @param page
+     * @param pageSize
+     * @return
+     */
     List<ArtFullMod> getHotArtOnePage(Integer page, Integer pageSize);
 
-    ArtFullMod getFullArt(Integer artId);
+    /**
+     * 获取一篇文章的完整信息, 包括文章, 文章作者, 文章特征统计数据, 当前用户与文章的关系
+     * 20-04-19 创建方法
+     * @param cusId
+     * @param artId
+     * @return
+     */
+    ArtFullMod getFullArt(Integer cusId, Integer artId);
 
     String setArtPreference(Integer artId, Integer type);
 

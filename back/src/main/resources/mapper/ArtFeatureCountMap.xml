@@ -5,4 +5,9 @@
 
 <mapper namespace="com.smacul.demo.dao.ArtFeatureCountDao">
 
+    <select id="getArtFeatureCountByArtId" resultType="com.smacul.demo.bean.ArtFeatureCount">
+        select *
+        from ArtFeatureCount
+        where afc_art_id = #{artId}
+    </select>
 </mapper>

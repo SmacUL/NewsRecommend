@@ -4,4 +4,6 @@ public interface ShapeService {
 
     Boolean updateCusArtTable(Integer behavior);
 
+    //Boolean updateCusArtReadBehavior(Integer cusId, Integer)
+
 }

@@ -1,7 +1,9 @@
 package com.smacul.demo.controller;
 
+import com.smacul.demo.bean.Customer;
 import com.smacul.demo.model.ArtFullMod;
 import com.smacul.demo.service.LoadService;
+import com.smacul.demo.service.SelfService;
 import com.smacul.demo.service.ShapeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,23 +21,31 @@ public class LoadController {
     @Autowired
     ShapeService shapeService;
     @Autowired
+    SelfService selfService;
+    @Autowired
     HttpSession session;
 
     /**
      * 获取新闻类别(英文)
-     *
+     * 20-04-19 创建方法 TODO 老用户的处理逻辑还没完成
      * @return
      */
     @RequestMapping("/type")
     public List<String> getArtTypes() {
-        return null;
+        Customer customer = (Customer) session.getAttribute("customer");
+        if (customer == null) {
+            return null;
+        }
+        if (selfService.checkIsNewUser(customer.getCusId())) {
+            return loadService.getArtTypesForNew();
+        } else {
+            return loadService.getArtTypesForOld(customer.getCusId());
+        }
     }
 
     /**
-     * 按照类别获取一页文章,
-     *
-     * todo 包含推荐逻辑
-     *
+     * 按照类别获取一页文章
+     * 20-04-19 创建方法 TODO 老用户的处理逻辑需要更换.
      * @param artType
      * @param page
      * @param pageSize
@@ -43,30 +53,48 @@ public class LoadController {
      */
     @RequestMapping("/tiny")
     public List<ArtFullMod> getTinyArtOnePageByType(String artType, Integer page, Integer pageSize) {
-        return null;
+        Customer customer = (Customer) session.getAttribute("customer");
+        if (customer == null) {
+            return null;
+        }
+        if (selfService.checkIsNewUser(customer.getCusId())) {
+            return loadService.getTinyArtOnePageByTypeForNew(artType, page, pageSize);
+        } else {
+            return loadService.getTinyArtOnePageByTypeForOld(artType, page, pageSize);
+        }
     }
 
     /**
      * 提供一页的热点新闻
-     *
+     * 20-04-19 创建方法
      * @param page
      * @param pageSize
      * @return
      */
     @RequestMapping("/hot")
     public List<ArtFullMod> getHotArtOnePage(Integer page, Integer pageSize) {
-        return null;
+        Customer customer = (Customer) session.getAttribute("customer");
+        if (customer == null) {
+            return null;
+        }
+        return loadService.getHotArtOnePage(page, pageSize);
     }
 
     /**
-     * 获取文章的主体内容, 包括文章内容与文章作者, 文章的特征以及当前用户与文章的关系.
+     * 获取文章的主体内容, 包括文章内容, 文章作者, 文章的特征信息, 当前用户与文章的关系.
      *
      * @param artId
      * @return
      */
     @RequestMapping("/main")
     public ArtFullMod getFullArt(Integer artId) {
-        return null;
+        Customer customer = (Customer) session.getAttribute("customer");
+        if (customer == null) {
+            return null;
+        }
+        ArtFullMod artFullMod = loadService.getFullArt(customer.getCusId(), artId);
+        //shapeService.updateCusArtTable()
+        return artFullMod;
     }
 
     /**

@@ -145,6 +145,7 @@ class CustomerDao:
         """ 更新用户统计数据
 
         # 20-04-17 修改完成
+        # 20-04-18 BUG 修改: 每调用一次此方法, 用户特征的增加应该与文章特征的增加保持一致, 即增加 2, 而非 1.
 
         :param category:
         :param cus_id:
@@ -157,10 +158,10 @@ class CustomerDao:
             if result[0] == 0:
                 logging.info("特征 用户 cus_id=%s 数据库查询 不存在" % (cus_id))
                 update_sql = "insert into CusFeatureCount(cfc_cus_id, {0}) values(%d, %d)" \
-                                 .format('cfc_' + category) % (cus_id, 1)
+                                 .format('cfc_' + category) % (cus_id, 2)
             else:
                 logging.info("特征 用户 cus_id=%s 数据库查询 存在" % (cus_id))
-                update_sql = "update CusFeatureCount set {0}={1}+1 where cfc_cus_id=%d" \
+                update_sql = "update CusFeatureCount set {0}={1}+2 where cfc_cus_id=%d" \
                                  .format('cfc_' + category, 'cfc_' + category) % cus_id
 
             self.__base.execute_sql(update_sql)
