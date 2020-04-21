@@ -9,10 +9,28 @@ import java.util.List;
 
 public interface DiscussService {
 
+    /**
+     * 获取完整的评论列表
+     * 20-04-20 创建方法
+     * @param artId
+     * @return
+     */
     List<ComFullMod> getComList(Integer artId);
 
+    /**
+     * 添加评论
+     * 20-04-20 创建方法
+     * @param comment
+     * @return
+     */
     String addNewCom(Comment comment);
 
+    /**
+     * 添加回复, 包括回复的回复
+     * 20-04-20 创建方法
+     * @param reply
+     * @return
+     */
     String addNewRep(Reply reply);
 
 }

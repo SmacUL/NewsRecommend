@@ -70,11 +70,36 @@ public interface CusBehaviorRecordDao {
      */
     Integer countTargetCusArtBehaviorTo(Integer cusIdFrom, Integer artId, Integer behavior);
 
-    ///**
-    // * 统计指定用户与指定新闻作者之间的关注行为记录.
-    // * @param cusId
-    // * @param artId
-    // * @return
-    // */
-    //Integer countCusWithArtCusFollowBehavior(Integer cusId, Integer artId);
+    /**
+     * 插入用户行为记录
+     * 本质上, 这个方法可以取代 addTargetCusFollowBehavior
+     * 20-04-19 创建方法
+     * @param cusIdFrom
+     * @param cusIdTo
+     * @param behavior
+     * @param artId
+     * @param type
+     * @param targetId
+     * @return
+     */
+    Integer addCusBehavior(
+            Integer cusIdFrom, Integer cusIdTo, Integer behavior, Integer artId, Integer type, Integer targetId);
+
+    /**
+     * 删除用户行为记录
+     * 本质上, 这个方法可以取代 deleteTargetCusFollowBehavior
+     * 20-04-19 创建方法
+     * @param cusIdFrom
+     * @param cusIdTo
+     * @param behavior
+     * @param artId
+     * @param type
+     * @param targetId
+     * @return
+     */
+    Integer deleteCusBehavior(
+            Integer cusIdFrom, Integer cusIdTo, Integer behavior, Integer artId, Integer type, Integer targetId);
+
+    CusBehaviorRecord getCusBehaviorRecordByCusId(Integer cusId);
+
 }

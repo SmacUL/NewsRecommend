@@ -10,9 +10,21 @@
         values (#{param1}, #{param2}, 11)
     </insert>
 
+    <insert id="addCusBehavior">
+        insert into CusBehaviorRecord(cbr_cus_id_from, cbr_cus_id_to, cbr_behavior, cbr_art_id, cbr_type, cbr_target_id)
+        values (#{cusIdFrom}, #{cusIdTo}, #{behavior}, #{artId}, #{type}, #{targetId})
+    </insert>
+
     <delete id="deleteTargetCusFollowBehavior">
         delete from CusBehaviorRecord
         where cbr_behavior = 11 and cbr_cus_id_from = #{param1} and cbr_cus_id_to = #{param2};
+    </delete>
+
+    <delete id="deleteCusBehavior">
+        delete from CusBehaviorRecord
+        where
+            cbr_cus_id_from = #{cusIdFrom} and cbr_cus_id_to = #{cusIdTo} and cbr_behavior = #{behavior} and
+            cbr_art_id = #{artId} and cbr_type = #{type} and cbr_target_id = #{targetId}
     </delete>
 
 
@@ -48,6 +60,12 @@
         where
             cbr_cus_id_to = #{cusId} and cbr_art_id = #{artId}
             and cbr_behavior = #{behavior} and cbr_type = 1 and cbr_target_id = #{artId}
+    </select>
+
+    <select id="getCusBehaviorRecordByCusId" resultType="com.smacul.demo.bean.CusBehaviorRecord">
+--         select *
+--         from CusBehaviorRecord
+--         where cbr_cus_id_from
     </select>
 
     <!--    <select id="countCusWithArtCusFollowBehavior" resultType="java.lang.Integer">-->

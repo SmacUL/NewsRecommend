@@ -1,6 +1,7 @@
 package com.smacul.demo.controller;
 
 import com.smacul.demo.bean.Comment;
+import com.smacul.demo.bean.Customer;
 import com.smacul.demo.bean.Reply;
 import com.smacul.demo.model.ComFullMod;
 import com.smacul.demo.service.DiscussService;
@@ -24,19 +25,53 @@ public class DiscussController {
     @Autowired
     HttpSession session;
 
+    /**
+     * 获取完整的评论列表
+     * 20-04-20 方法创建
+     * @param artId
+     * @return
+     */
     @RequestMapping("/page")
     public List<ComFullMod> getComList(Integer artId) {
-        return null;
+        Customer customer = (Customer) session.getAttribute("customer");
+        if (customer == null) {
+            return null;
+        }
+        return discussService.getComList(artId);
     }
 
+    /**
+     * 添加评论
+     * 20-04-20 添加方法
+     * @param comment
+     * @return
+     */
     @RequestMapping("/com")
     public String addNewCom(@RequestBody Comment comment) {
-        return null;
+        Customer customer = (Customer) session.getAttribute("customer");
+        if (customer == null) {
+            return "评论失败";
+        }
+        String result = discussService.addNewCom(comment);
+        shapeService.setCusBehaviorComEdit(customer.getCusId(), comment.getComArtId(), comment.getComId());
+        return result;
     }
 
+    /**
+     * 添加回复
+     * 20-04-20 添加方法
+     * @param reply
+     * @return
+     */
     @RequestMapping("/rep")
     public String addNewRep(@RequestBody Reply reply) {
-        return null;
+        Customer customer = (Customer) session.getAttribute("customer");
+        if (customer == null) {
+            return "评论失败";
+        }
+        String result = discussService.addNewRep(reply);
+        shapeService.setCusBehaviorRepEdit(customer.getCusId(), reply.getRepArtId(), reply.getRepId());
+        return result;
     }
 
 }

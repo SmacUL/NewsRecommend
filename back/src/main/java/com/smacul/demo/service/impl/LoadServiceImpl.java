@@ -3,6 +3,7 @@ package com.smacul.demo.service.impl;
 import com.smacul.demo.bean.Article;
 import com.smacul.demo.bean.CusBehaviorRecord;
 import com.smacul.demo.dao.ArtDao;
+import com.smacul.demo.dao.ArtFeatureCountDao;
 import com.smacul.demo.dao.CusBehaviorRecordDao;
 import com.smacul.demo.dao.CusFeatureCountDao;
 import com.smacul.demo.model.ArtFullMod;
@@ -23,6 +24,8 @@ public class LoadServiceImpl implements LoadService {
     @Autowired
     CusFeatureCountDao cusFeatureCountDao;
     @Autowired
+    ArtFeatureCountDao artFeatureCountDao;
+    @Autowired
     CusBehaviorRecordDao cusBehaviorRecordDao;
 
     @Override
@@ -33,8 +36,6 @@ public class LoadServiceImpl implements LoadService {
 
     @Override
     public List<String> getArtTypesForOld(Integer cusId) {
-        //List<Integer> nums = cusFeatureCountDao.getCusArtTypesBehaviorNums(cusId);
-        //return null;
         List<String> result = artDao.getArtTypesOrderByTypeNum();
         return TypeHandler.typeTransAllEnToCh(result);
     }
@@ -104,8 +105,4 @@ public class LoadServiceImpl implements LoadService {
         return artFullMod;
     }
 
-    @Override
-    public String setArtPreference(Integer artId, Integer type) {
-        return null;
-    }
 }

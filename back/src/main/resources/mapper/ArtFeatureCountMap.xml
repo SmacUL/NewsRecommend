@@ -5,6 +5,12 @@
 
 <mapper namespace="com.smacul.demo.dao.ArtFeatureCountDao">
 
+    <update id="updateArtFeature">
+        update ArtFeatureCount
+        set ${column} = ${column} + 1
+        where afc_art_id = #{artId}
+    </update>
+
     <select id="getArtFeatureCountByArtId" resultType="com.smacul.demo.bean.ArtFeatureCount">
         select *
         from ArtFeatureCount

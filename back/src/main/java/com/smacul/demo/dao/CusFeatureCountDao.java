@@ -31,4 +31,15 @@ public interface CusFeatureCountDao {
      * @return
      */
     List<Integer> getCusArtTypesBehaviorNums(Integer cusId);
+
+    /**
+     * 更新用户特征
+     * 20-04-19 创建方法
+     * @param cusId
+     * @param column    字段名, 先保证 cfc 前缀, 下划线
+     * @param num
+     * @return
+     */
+    Integer updateCusFeature(Integer cusId, String column, Integer num);
+
 }

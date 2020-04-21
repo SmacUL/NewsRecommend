@@ -1,5 +1,6 @@
 package com.smacul.demo.service.impl;
 
+import com.smacul.demo.bean.CusBehaviorRecord;
 import com.smacul.demo.bean.Customer;
 import com.smacul.demo.dao.CusBehaviorRecordDao;
 import com.smacul.demo.dao.CusDao;
@@ -8,6 +9,7 @@ import com.smacul.demo.model.CusDynamicMod;
 import com.smacul.demo.model.CusFeatureFullMod;
 import com.smacul.demo.service.SelfService;
 import com.smacul.demo.util.MD5;
+import com.smacul.demo.util.PageHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -110,6 +112,8 @@ public class SelfServiceImpl implements SelfService {
 
     @Override
     public List<CusDynamicMod> getCusDynamic(Integer cusId, Integer page, Integer pageSize) {
+        Integer start = PageHandler.calcuStartNO(page, pageSize);
+        //CusBehaviorRecord cusBehaviorRecord = cusBehaviorRecordDao.
         return null;
     }
 }

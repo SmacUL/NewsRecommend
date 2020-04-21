@@ -45,8 +45,35 @@ public interface ArtDao {
 
     /**
      * 获取一篇文章的信息, 包括文章基本信息(包含 content), 文章作者基本信息, 文章的特征统计信息
+     * 20-04-19 创建方法
      * @param artId
      * @return
      */
     ArtFullMod getArtFull(Integer artId);
+
+    /**
+     * 通过文章 ID 获取文章作者的 ID
+     * 20-04-19 创建方法
+     * @param artId
+     * @return
+     */
+    Integer getArtCusIdByArtId(Integer artId);
+
+    /**
+     * 通过文章 ID 获取文章类别
+     * 20-04-19 创建方法
+     * @param artId
+     * @return
+     */
+    String getArtTypeByArtId(Integer artId);
+
+    /**
+     * 简单的搜索功能
+     * 20-04-20 创建方法
+     * @param key
+     * @param start
+     * @param pageSize
+     * @return
+     */
+    List<ArtFullMod> searchContentSimple(String key, Integer start, Integer pageSize);
 }

@@ -59,6 +59,4 @@ public interface LoadService {
      */
     ArtFullMod getFullArt(Integer cusId, Integer artId);
 
-    String setArtPreference(Integer artId, Integer type);
-
 }

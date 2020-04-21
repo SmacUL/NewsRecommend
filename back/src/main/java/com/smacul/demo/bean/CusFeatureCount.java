@@ -4,29 +4,29 @@ public class CusFeatureCount {
     private Integer cfcId;
     private Integer cfcCusId;
 
-    private Integer news_society;
-    private Integer news_entertainment;
-    private Integer news_tech;
+    private Integer cfcNewsSociety;
+    private Integer cfcNewsEntertainment;
+    private Integer cfcNewsTech;
 
-    private Integer news_military;
-    private Integer news_sports;
-    private Integer news_finance;
+    private Integer cfcNewsMilitary;
+    private Integer cfcNewsSports;
+    private Integer cfcNewsFinance;
 
-    private Integer news_world;
-    private Integer news_fashion;
-    private Integer news_travel;
+    private Integer cfcNewsWorld;
+    private Integer cfcNewsFashion;
+    private Integer cfcNewsTravel;
 
-    private Integer news_discovery;
-    private Integer news_baby;
-    private Integer news_regimen;
+    private Integer cfcNewsDiscovery;
+    private Integer cfcNewsBaby;
+    private Integer cfcNewsRegimen;
 
-    private Integer news_story;
-    private Integer news_essay;
-    private Integer news_game;
+    private Integer cfcNewsStory;
+    private Integer cfcNewsEssay;
+    private Integer cfcNewsGame;
 
-    private Integer news_history;
-    private Integer news_food;
-    private Integer news_car;
+    private Integer cfcNewsHistory;
+    private Integer cfcNewsFood;
+    private Integer cfcNewsCar;
 
     public Integer getCfcId() {
         return cfcId;
@@ -44,147 +44,147 @@ public class CusFeatureCount {
         this.cfcCusId = cfcCusId;
     }
 
-    public Integer getNews_society() {
-        return news_society;
+    public Integer getCfcNewsSociety() {
+        return cfcNewsSociety;
     }
 
-    public void setNews_society(Integer news_society) {
-        this.news_society = news_society;
+    public void setCfcNewsSociety(Integer cfcNewsSociety) {
+        this.cfcNewsSociety = cfcNewsSociety;
     }
 
-    public Integer getNews_entertainment() {
-        return news_entertainment;
+    public Integer getCfcNewsEntertainment() {
+        return cfcNewsEntertainment;
     }
 
-    public void setNews_entertainment(Integer news_entertainment) {
-        this.news_entertainment = news_entertainment;
+    public void setCfcNewsEntertainment(Integer cfcNewsEntertainment) {
+        this.cfcNewsEntertainment = cfcNewsEntertainment;
     }
 
-    public Integer getNews_tech() {
-        return news_tech;
+    public Integer getCfcNewsTech() {
+        return cfcNewsTech;
     }
 
-    public void setNews_tech(Integer news_tech) {
-        this.news_tech = news_tech;
+    public void setCfcNewsTech(Integer cfcNewsTech) {
+        this.cfcNewsTech = cfcNewsTech;
     }
 
-    public Integer getNews_military() {
-        return news_military;
+    public Integer getCfcNewsMilitary() {
+        return cfcNewsMilitary;
     }
 
-    public void setNews_military(Integer news_military) {
-        this.news_military = news_military;
+    public void setCfcNewsMilitary(Integer cfcNewsMilitary) {
+        this.cfcNewsMilitary = cfcNewsMilitary;
     }
 
-    public Integer getNews_sports() {
-        return news_sports;
+    public Integer getCfcNewsSports() {
+        return cfcNewsSports;
     }
 
-    public void setNews_sports(Integer news_sports) {
-        this.news_sports = news_sports;
+    public void setCfcNewsSports(Integer cfcNewsSports) {
+        this.cfcNewsSports = cfcNewsSports;
     }
 
-    public Integer getNews_finance() {
-        return news_finance;
+    public Integer getCfcNewsFinance() {
+        return cfcNewsFinance;
     }
 
-    public void setNews_finance(Integer news_finance) {
-        this.news_finance = news_finance;
+    public void setCfcNewsFinance(Integer cfcNewsFinance) {
+        this.cfcNewsFinance = cfcNewsFinance;
     }
 
-    public Integer getNews_world() {
-        return news_world;
+    public Integer getCfcNewsWorld() {
+        return cfcNewsWorld;
     }
 
-    public void setNews_world(Integer news_world) {
-        this.news_world = news_world;
+    public void setCfcNewsWorld(Integer cfcNewsWorld) {
+        this.cfcNewsWorld = cfcNewsWorld;
     }
 
-    public Integer getNews_fashion() {
-        return news_fashion;
+    public Integer getCfcNewsFashion() {
+        return cfcNewsFashion;
     }
 
-    public void setNews_fashion(Integer news_fashion) {
-        this.news_fashion = news_fashion;
+    public void setCfcNewsFashion(Integer cfcNewsFashion) {
+        this.cfcNewsFashion = cfcNewsFashion;
     }
 
-    public Integer getNews_travel() {
-        return news_travel;
+    public Integer getCfcNewsTravel() {
+        return cfcNewsTravel;
     }
 
-    public void setNews_travel(Integer news_travel) {
-        this.news_travel = news_travel;
+    public void setCfcNewsTravel(Integer cfcNewsTravel) {
+        this.cfcNewsTravel = cfcNewsTravel;
     }
 
-    public Integer getNews_discovery() {
-        return news_discovery;
+    public Integer getCfcNewsDiscovery() {
+        return cfcNewsDiscovery;
     }
 
-    public void setNews_discovery(Integer news_discovery) {
-        this.news_discovery = news_discovery;
+    public void setCfcNewsDiscovery(Integer cfcNewsDiscovery) {
+        this.cfcNewsDiscovery = cfcNewsDiscovery;
     }
 
-    public Integer getNews_baby() {
-        return news_baby;
+    public Integer getCfcNewsBaby() {
+        return cfcNewsBaby;
     }
 
-    public void setNews_baby(Integer news_baby) {
-        this.news_baby = news_baby;
+    public void setCfcNewsBaby(Integer cfcNewsBaby) {
+        this.cfcNewsBaby = cfcNewsBaby;
     }
 
-    public Integer getNews_regimen() {
-        return news_regimen;
+    public Integer getCfcNewsRegimen() {
+        return cfcNewsRegimen;
     }
 
-    public void setNews_regimen(Integer news_regimen) {
-        this.news_regimen = news_regimen;
+    public void setCfcNewsRegimen(Integer cfcNewsRegimen) {
+        this.cfcNewsRegimen = cfcNewsRegimen;
     }
 
-    public Integer getNews_story() {
-        return news_story;
+    public Integer getCfcNewsStory() {
+        return cfcNewsStory;
     }
 
-    public void setNews_story(Integer news_story) {
-        this.news_story = news_story;
+    public void setCfcNewsStory(Integer cfcNewsStory) {
+        this.cfcNewsStory = cfcNewsStory;
     }
 
-    public Integer getNews_essay() {
-        return news_essay;
+    public Integer getCfcNewsEssay() {
+        return cfcNewsEssay;
     }
 
-    public void setNews_essay(Integer news_essay) {
-        this.news_essay = news_essay;
+    public void setCfcNewsEssay(Integer cfcNewsEssay) {
+        this.cfcNewsEssay = cfcNewsEssay;
     }
 
-    public Integer getNews_game() {
-        return news_game;
+    public Integer getCfcNewsGame() {
+        return cfcNewsGame;
     }
 
-    public void setNews_game(Integer news_game) {
-        this.news_game = news_game;
+    public void setCfcNewsGame(Integer cfcNewsGame) {
+        this.cfcNewsGame = cfcNewsGame;
     }
 
-    public Integer getNews_history() {
-        return news_history;
+    public Integer getCfcNewsHistory() {
+        return cfcNewsHistory;
     }
 
-    public void setNews_history(Integer news_history) {
-        this.news_history = news_history;
+    public void setCfcNewsHistory(Integer cfcNewsHistory) {
+        this.cfcNewsHistory = cfcNewsHistory;
     }
 
-    public Integer getNews_food() {
-        return news_food;
+    public Integer getCfcNewsFood() {
+        return cfcNewsFood;
     }
 
-    public void setNews_food(Integer news_food) {
-        this.news_food = news_food;
+    public void setCfcNewsFood(Integer cfcNewsFood) {
+        this.cfcNewsFood = cfcNewsFood;
     }
 
-    public Integer getNews_car() {
-        return news_car;
+    public Integer getCfcNewsCar() {
+        return cfcNewsCar;
     }
 
-    public void setNews_car(Integer news_car) {
-        this.news_car = news_car;
+    public void setCfcNewsCar(Integer cfcNewsCar) {
+        this.cfcNewsCar = cfcNewsCar;
     }
 }

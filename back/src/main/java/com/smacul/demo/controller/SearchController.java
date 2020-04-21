@@ -1,5 +1,6 @@
 package com.smacul.demo.controller;
 
+import com.smacul.demo.bean.Customer;
 import com.smacul.demo.model.ArtFullMod;
 import com.smacul.demo.service.SearchService;
 import com.smacul.demo.service.ShapeService;
@@ -23,6 +24,10 @@ public class SearchController {
 
     @RequestMapping("/simple")
     public List<ArtFullMod> searchContentSimple(String key, Integer page, Integer pageSize) {
-        return null;
+        Customer customer = (Customer) session.getAttribute("customer");
+        if (customer == null) {
+            return null;
+        }
+        return searchService.searchContentSimple(key, page, pageSize);
     }
 }

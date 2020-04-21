@@ -5,6 +5,12 @@
 
 <mapper namespace="com.smacul.demo.dao.CusFeatureCountDao">
 
+    <update id="updateCusFeature">
+        update CusFeatureCount
+        set ${column} = ${column} + #{num}
+        where cfc_cus_id = #{cusId}
+    </update>
+
     <select id="countBehaviorNum" resultType="java.lang.Integer">
         select
             cfc_news_society + cfc_news_entertainment + cfc_news_tech + cfc_news_military + cfc_news_sports + cfc_news_finance +
