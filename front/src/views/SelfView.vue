@@ -25,7 +25,7 @@
     import ShowPanel from "../components/self/EditorMain";
     import TinyCenter from "../components/self/TinyCenter"
     import RightMenu from "../components/self/RightMenu";
-    import {getCusBasicInfo, getCusCountInfo, getCusSelfDynamic, getCusSelfInfo} from "../control/Self";
+    import {getCusBasicInfo, getCusFeatureInfo, getCusSelfDynamic} from "../control/Self";
     import {jumpInCurPage} from "../util/PageJump";
     export default {
         name: "SelfView",
@@ -33,7 +33,7 @@
         mounted: function() {
             window.addEventListener('scroll', this.scrollHandler, false);
             let cusId = this.$route.params.cusId;
-            getCusSelfInfo()
+            getCusBasicInfo(0)
                 .then((response) => {
                     if (response.data) {
                         this.customer = response.data;
@@ -47,7 +47,7 @@
                 .then((response) => {
                     this.ownerCustomer = response.data;
                 });
-            getCusCountInfo(cusId)
+            getCusFeatureInfo(cusId)
                 .then((response) => {
                     this.cusCountInfo = response.data;
                 });

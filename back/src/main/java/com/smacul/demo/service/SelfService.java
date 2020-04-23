@@ -30,6 +30,7 @@ public interface SelfService {
     /**
      * 在用户注册时插入用户.
      * 20-04-18 创建方法
+     * 20-04-23 方法逻辑修改, 在添加用户时, 添加用户的特征统计数据记录.
      * @param cusName
      * @param cusPass
      * @return

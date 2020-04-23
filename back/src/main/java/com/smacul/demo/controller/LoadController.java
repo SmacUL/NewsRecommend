@@ -7,6 +7,7 @@ import com.smacul.demo.service.SelfService;
 import com.smacul.demo.service.ShapeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
@@ -52,7 +53,8 @@ public class LoadController {
      * @return
      */
     @RequestMapping("/tiny")
-    public List<ArtFullMod> getTinyArtOnePageByType(String artType, Integer page, Integer pageSize) {
+    public List<ArtFullMod> getTinyArtOnePageByType(
+            @RequestParam String artType, @RequestParam Integer page, @RequestParam Integer pageSize) {
         Customer customer = (Customer) session.getAttribute("customer");
         if (customer == null) {
             return null;
@@ -72,7 +74,7 @@ public class LoadController {
      * @return
      */
     @RequestMapping("/hot")
-    public List<ArtFullMod> getHotArtOnePage(Integer page, Integer pageSize) {
+    public List<ArtFullMod> getHotArtOnePage(@RequestParam Integer page, @RequestParam Integer pageSize) {
         Customer customer = (Customer) session.getAttribute("customer");
         if (customer == null) {
             return null;
@@ -87,7 +89,7 @@ public class LoadController {
      * @return
      */
     @RequestMapping("/main")
-    public ArtFullMod getFullArt(Integer artId) {
+    public ArtFullMod getFullArt(@RequestParam Integer artId) {
         Customer customer = (Customer) session.getAttribute("customer");
         if (customer == null) {
             return null;
@@ -105,7 +107,7 @@ public class LoadController {
      * @return
      */
     @RequestMapping("/prefer")
-    public String setArtPreference(Integer artId, Integer type) {
+    public String setArtPreference(@RequestParam Integer artId, @RequestParam Integer type) {
         Customer customer = (Customer) session.getAttribute("customer");
         if (customer == null) {
             return "操作失败";

@@ -27,7 +27,7 @@
                 jumpInNewPage('/self/' + this.customer.cusId)
             },
             searchArticles: function (message) {
-                jumpInNewPage('/search/' + message )
+                jumpInCurPage('/search/' + message )
                 // searchContentByKeyAndTagTypePage(message, 'global', 'test', 0, 10)
             },
             loginOut: function () {

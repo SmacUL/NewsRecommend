@@ -73,6 +73,7 @@ class Major:
                 try:
                     self.__cus_pro.set_art_cus(art_brief_json, art_cus_mod)
                     self.__cus_dao.insert_then_get_cus(art_cus_mod)
+                    self.__cus_dao.update_cus_feature(category, art_cus_mod.cus_id, flag=True)
                     logging.info("%s-%d art_cus 处理 成功" % (category, art_i))
                 except:
                     print("%s-%d art_cus 处理 失败" % (category, art_i))
@@ -139,6 +140,7 @@ class Major:
                     try:
                         self.__cus_pro.set_com_cus(com_json, com_cus_mod)
                         self.__cus_dao.insert_then_get_cus(com_cus_mod)
+                        self.__cus_dao.update_cus_feature(category, com_cus_mod.cus_id, flag=True)
                         logging.info("%s-%d-%d com_cus 处理 错误" % (category, art_i, com_i))
                     except:
                         print("\t%s-%d-%d com_cus 处理 错误" % (category, art_i, com_i))
@@ -202,6 +204,7 @@ class Major:
                         try:
                             self.__cus_pro.set_rep_cus(rep_json, rep_cus_mod)
                             self.__cus_dao.insert_then_get_cus(rep_cus_mod)
+                            self.__cus_dao.update_cus_feature(category, rep_cus_mod.cus_id, flag=True)
                             logging.info("%s-%d-%d-%d rep_cus 处理 成功" % (category, art_i, com_i, rep_i))
                         except:
                             print("\t\t%s-%d-%d-%d rep_cus 处理 失败" % (category, art_i, com_i, rep_i))

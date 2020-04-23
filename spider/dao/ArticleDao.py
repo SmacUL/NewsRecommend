@@ -44,6 +44,7 @@ class ArticleDao:
         """ 插入新闻数据
 
         # 20-04-17 修改完成
+        # 20-04-23 Rollback BUG Fix
 
         :param art_mod:
         :return:
@@ -61,7 +62,7 @@ class ArticleDao:
             self.__base.commit_transactions()
             logging.info("新闻 art_spider=%s 数据库插入 成功" % art_mod.art_spider)
         except:
-            self.__base.commit_rollback()
+            # self.__base.commit_rollback()
             logging.exception("新闻 art_spider=%s 数据库插入 失败" % art_mod.art_spider)
             raise
 
@@ -137,7 +138,7 @@ class ArticleDao:
             self.__base.commit_transactions()
             logging.info("update_art_com_number art=%s 评论数 数据库更新 成功" % art_id)
         except:
-            self.__base.commit_rollback()
+            # self.__base.commit_rollback()
             logging.info("update_art_com_number art=%s 评论数 数据库更新 失败" % art_id)
             raise
 
@@ -148,6 +149,7 @@ class ArticleDao:
         behavior 为 1 是一个比较特殊的情况, 它将设置 update_art_feature 表中的时间.
 
         # 20-04-17 修改完成
+        # 20-04-23 Rollback BUG Fix
 
         :param behavior: 这个行为和那个用户行为是两个东西.
         :param art_id:
@@ -174,7 +176,7 @@ class ArticleDao:
             self.__base.execute_sql(update_sql)
             logging.info("新闻 art_id=%s 特征 %s 数据库插入 成功" % (art_id, behavior))
         except:
-            self.__base.commit_rollback()
+            # self.__base.commit_rollback()
             logging.exception("新闻 art_id=%s 特征 %s 数据库插入 失败" % (art_id, behavior))
             raise
 

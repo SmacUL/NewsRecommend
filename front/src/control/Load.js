@@ -1,17 +1,48 @@
 import axios from 'axios'
 
-export function getArtTypes() {
-    return axios.get('/api/load/type')
-}
+let base = '/api/load/';
 
-export function getHotArtOnePage(hotPage, hotPageSize) {
-    return axios.get('/api/load/hot?page=' + hotPage + '&pageSize=' + hotPageSize)
+export function getArtTypes() {
+    return axios.get(base + 'type');
 }
 
 export function getTinyArtOnePageByType(artType, page, pageSize) {
-    return axios.get('/api/load/tiny?artType=' + artType + '&page=' + page + '&pageSize=' + pageSize)
+    let config = {
+        params: {
+            artType: artType,
+            page: page,
+            pageSize: pageSize
+        }
+    };
+    return axios.get(base + 'tiny', config);
 }
 
-export function getFullArtWithCus(artId) {
-    return axios.get('/api/load/main?artId=' + artId)
+export function getHotArtOnePage(page, pageSize) {
+    let config = {
+        params: {
+            page: page,
+            pageSize: pageSize
+        }
+    };
+
+    return axios.get(base + 'hot', config);
+}
+
+export function getFullArt(artId) {
+    let config = {
+        params: {
+            artId: artId
+        }
+    };
+    return axios.get(base + 'main', config);
+}
+
+export function setArtPreference(artId, type) {
+    let config = {
+        params: {
+            artId: artId,
+            type: type
+        }
+    };
+    return axios.get(base + 'prefer', config);
 }

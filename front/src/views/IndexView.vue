@@ -30,7 +30,7 @@
 
     import Logo from '../assets/image/Logo.png'
     import {getArtTypes, getHotArtOnePage, getTinyArtOnePageByType} from "../control/Load";
-    import {getCusSelfInfo} from "../control/Self";
+    import {getCusBasicInfo} from "../control/Self";
     import {jumpInCurPage, jumpInNewPage} from "../util/PageJump";
 
     export default {
@@ -38,7 +38,7 @@
         components: {HotArticle, EditEntrance, TinyArticle, TopBar, LeftMenu},
         mounted: function () {
             window.addEventListener('scroll', this.getMoreTinyArt, false);
-            getCusSelfInfo()
+            getCusBasicInfo(0)
                 .then((response) => {
                     if (response.data) {
                         this.customer = response.data;

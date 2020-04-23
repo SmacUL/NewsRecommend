@@ -6,6 +6,7 @@ import com.smacul.demo.service.SearchService;
 import com.smacul.demo.service.ShapeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
@@ -23,7 +24,8 @@ public class SearchController {
     HttpSession session;
 
     @RequestMapping("/simple")
-    public List<ArtFullMod> searchContentSimple(String key, Integer page, Integer pageSize) {
+    public List<ArtFullMod> searchContentSimple(
+            @RequestParam String key, @RequestParam Integer page, @RequestParam Integer pageSize) {
         Customer customer = (Customer) session.getAttribute("customer");
         if (customer == null) {
             return null;

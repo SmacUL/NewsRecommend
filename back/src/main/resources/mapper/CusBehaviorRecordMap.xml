@@ -50,7 +50,7 @@
         select count(*)
         from CusBehaviorRecord
         where
-            cbr_cus_id_from = #{cusId} and cbr_art_id = #{artId}
+            cbr_cus_id_from = #{cusIdFrom} and cbr_art_id = #{artId}
             and cbr_behavior = #{behavior} and cbr_type = 1 and cbr_target_id = #{artId}
     </select>
 
@@ -58,7 +58,7 @@
         select count(*)
         from CusBehaviorRecord
         where
-            cbr_cus_id_to = #{cusId} and cbr_art_id = #{artId}
+            cbr_cus_id_to = #{cusIdTo} and cbr_art_id = #{artId}
             and cbr_behavior = #{behavior} and cbr_type = 1 and cbr_target_id = #{artId}
     </select>
 

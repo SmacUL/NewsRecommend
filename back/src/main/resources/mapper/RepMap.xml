@@ -14,7 +14,7 @@
         select R.*,
             C.cus_avatar_url as 'customer.cusAvatarUrl',
             C.cus_id as 'customer.cusId',
-            C.cus_name as 'customer.cusName',
+            C.cus_name as 'customer.cusName'
         from Reply as R, Customer as C
         where R.rep_com_id = #{comId} and R.rep_cus_id = C.cus_id
         order by rep_time desc

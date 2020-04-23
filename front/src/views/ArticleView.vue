@@ -25,9 +25,9 @@
     import HotArticle from "../components/common/HotArticle";
 
     import Logo from '../assets/image/Logo.png'
-    import {getFullArtWithCus, getHotArtOnePage} from "../control/Load";
-    import {getCusSelfInfo} from "../control/Self";
-    import {getCommentList} from "../control/Discuss";
+    import {getFullArt, getHotArtOnePage} from "../control/Load";
+    import {getCusBasicInfo} from "../control/Self";
+    import {getComList} from "../control/Discuss";
     import {jumpInCurPage, jumpInNewPage} from "../util/PageJump";
 
     export default {
@@ -35,7 +35,7 @@
         components: {HotArticle, EditEntrance, EditorBrief, ArticleMain, CommentReplyMain, TopBar},
         mounted: function() {
             let artId = this.$route.params.artId;
-            getCusSelfInfo()
+            getCusBasicInfo(0)
                 .then((response) => {
                     if (response.data) {
                         this.customer = response.data;
@@ -44,7 +44,7 @@
                         jumpInCurPage('/port');
                     }
                 });
-            getFullArtWithCus(artId)
+            getFullArt(artId)
                 .then((response) => {
                     this.artMain = response.data;
                 });
@@ -52,7 +52,7 @@
                 .then((response) => {
                     this.hotArticles = response.data;
                 });
-            getCommentList(artId)
+            getComList(artId)
                 .then((response) => {
                     this.comments = response.data;
                 });
@@ -91,7 +91,7 @@
 
             quickShow: function () {
                 let artId = this.$route.params.artId;
-                getCommentList(artId)
+                getComList(artId)
                     .then((response) => {
                         this.comments = response.data;
                     })

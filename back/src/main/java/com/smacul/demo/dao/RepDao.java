@@ -12,6 +12,7 @@ public interface RepDao {
     /**
      * 通过评论 ID 来获取此评论下所有的回复
      * 20-04-19 创建方法
+     * 20-04-23 BUG 修复, SQL 逗号问题
      * @param comId
      * @return
      */

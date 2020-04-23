@@ -5,6 +5,10 @@
 
 <mapper namespace="com.smacul.demo.dao.CusFeatureCountDao">
 
+    <insert id="initialCusFeature">
+        insert into CusFeatureCount (cfc_cus_id) value(#{cusId})
+    </insert>
+
     <update id="updateCusFeature">
         update CusFeatureCount
         set ${column} = ${column} + #{num}

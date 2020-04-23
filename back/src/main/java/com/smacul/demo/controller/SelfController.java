@@ -8,9 +8,11 @@ import com.smacul.demo.service.SearchService;
 import com.smacul.demo.service.SelfService;
 import com.smacul.demo.service.ShapeService;
 import com.sun.org.apache.xpath.internal.operations.Bool;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
@@ -36,7 +38,7 @@ public class SelfController {
      * @return
      */
     @RequestMapping("/login")
-    public String cusLogin(String cusName, String cusPass) {
+    public String cusLogin(@RequestParam String cusName, @RequestParam String cusPass) {
         if (session.getAttribute("customer") != null) {
             return "您已登录";
         }
@@ -57,12 +59,14 @@ public class SelfController {
     /**
      * 用户注册
      * 20-04-18 创建方法
+     *
+     * todo 少了一段, 在注册用户的时候, 需要同时管理 CusFeatureCount.
      * @param cusName
      * @param cusPass
      * @return
      */
     @RequestMapping("/register")
-    public String cusRegister(String cusName, String cusPass) {
+    public String cusRegister(@RequestParam String cusName, @RequestParam String cusPass) {
         try {
             return selfService.setNewCus(cusName, cusPass);
         } catch (NoSuchAlgorithmException e) {
@@ -78,7 +82,7 @@ public class SelfController {
      * @return
      */
     @RequestMapping("/basic")
-    public Customer getCusBasicInfo(Integer cusId) {
+    public Customer getCusBasicInfo(@RequestParam Integer cusId) {
         if (session.getAttribute("customer") == null) {
             return null;
         }
@@ -118,7 +122,7 @@ public class SelfController {
      * @return
      */
     @RequestMapping("/follow")
-    public String setCusFollow(Integer cusId) {
+    public String setCusFollow(@RequestParam Integer cusId) {
         if (session.getAttribute("customer") == null) {
             return "关注失败";
         }
@@ -138,12 +142,13 @@ public class SelfController {
      * @return
      */
     @RequestMapping("/feature")
-    public CusFeatureFullMod getCusFeatureInfo(Integer cusId) {
+    public CusFeatureFullMod getCusFeatureInfo(@RequestParam Integer cusId) {
         return selfService.getCusFeatureInfo(cusId);
     }
 
     @RequestMapping("/dynamic")
-    public List<CusDynamicMod> getCusDynamic(Integer cusId, Integer page, Integer pageSize) {
+    public List<CusDynamicMod> getCusDynamic(
+            @RequestParam Integer cusId, @RequestParam Integer page, @RequestParam Integer pageSize) {
         return null;
     }
 

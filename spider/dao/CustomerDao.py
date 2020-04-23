@@ -90,6 +90,7 @@ class CustomerDao:
         """ 向数据库中插入用户数据
 
         # 20-04-17 检查 OK
+        # 20-04-23 Rollback BUG Fix
 
         :param cus_mod:
         :return:
@@ -104,7 +105,7 @@ class CustomerDao:
             self.__base.commit_transactions()
             logging.info("用户 cus_spider=%s 数据库插入 成功" % cus_mod.cus_spider)
         except:
-            self.__base.commit_rollback()
+            # self.__base.commit_rollback()
             logging.exception("用户 cus_spider=%s 数据库插入 失败" % cus_mod.cus_spider)
             raise
 
@@ -114,6 +115,7 @@ class CustomerDao:
 
         # 20-04-17 修改完成
         # 20-04-19 方法修改, 将第二个 insert 移除, 同时允许行为时间为空
+        # 20-04-23 Rollback BUG Fix
 
         :param cbr_cus_id_from:
         :param cbr_cus_id_to:
@@ -142,19 +144,24 @@ class CustomerDao:
             self.__base.commit_transactions()
             logging.info("用户 cus_id=%s 与用户 cus_id=%s 行为 %s 数据库插入 成功" % (cbr_cus_id_from, cbr_cus_id_to, cbr_behavior))
         except:
-            self.__base.commit_rollback()
+            # self.__base.commit_rollback()
             logging.exception("用户 cus_id=%s 与用户 cus_id=%s 行为 %s 数据库插入 失败" % (cbr_cus_id_from, cbr_cus_id_to, cbr_behavior))
             raise
 
 
-    def update_cus_feature(self, category, cus_id):
+    def update_cus_feature(self, category, cus_id, flag=False):
         """ 更新用户统计数据
 
         # 20-04-17 修改完成
         # 20-04-18 BUG 修改: 每调用一次此方法, 用户特征的增加应该与文章特征的增加保持一致, 即增加 2, 而非 1.
+        # 20-04-23 接口修改, 添加 flag 字段
+        # 20-04-23 Rollback BUG Fix
 
         :param category:
         :param cus_id:
+        :param flag:
+                            当 flag 为 True 且 cus_id 指向的用户已存在时, category 参数将失效,
+                            用于插入一个仅有 cfc_cus_id 的记录, 即初始化.
         :return:
         """
         try:
@@ -163,8 +170,11 @@ class CustomerDao:
             result = self.__base.get_result_one()
             if result[0] == 0:
                 logging.info("特征 用户 cus_id=%s 数据库查询 不存在" % (cus_id))
-                update_sql = "insert into CusFeatureCount(cfc_cus_id, {0}) values(%d, %d)" \
-                                 .format('cfc_' + category) % (cus_id, 2)
+                if flag:
+                    update_sql = "insert into CusFeatureCount(cfc_cus_id) value (%d)" % cus_id
+                else:
+                    update_sql = "insert into CusFeatureCount(cfc_cus_id, {0}) values(%d, %d)" \
+                                     .format('cfc_' + category) % (cus_id, 2)
             else:
                 logging.info("特征 用户 cus_id=%s 数据库查询 存在" % (cus_id))
                 update_sql = "update CusFeatureCount set {0}={1}+2 where cfc_cus_id=%d" \
@@ -173,7 +183,7 @@ class CustomerDao:
             self.__base.execute_sql(update_sql)
             logging.info("用户 cus_id=%s 类别 %s 特征 数据库插入 成功" % (cus_id, category))
         except:
-            self.__base.commit_rollback()
+            # self.__base.commit_rollback()
             logging.exception("用户 cus_id=%s 类别 %s 特征 数据库插入 失败" % (cus_id, category))
             raise
 

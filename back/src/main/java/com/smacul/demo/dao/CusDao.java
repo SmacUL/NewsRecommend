@@ -9,6 +9,7 @@ public interface CusDao {
     /**
      * 通过用户名获取用户基本信息
      * 20-04-18 创建方法
+     * 20-04-21 获取内容中添加密码
      * @param cusName
      * @return
      */
@@ -25,11 +26,12 @@ public interface CusDao {
     /**
      * 在用户注册时插入用户
      * 20-04-18 创建方法
+     * 20-04-21 参数名修改
      * @param cusName
-     * @param cryptString   MD5 加密后的密码
+     * @param cusPass   MD5 加密后的密码
      * @return
      */
-    Integer insertCusForRegister(String cusName, String cryptString);
+    Integer insertCusForRegister(String cusName, String cusPass);
 
     /**
      * 通过 ID 获取用户基本信息

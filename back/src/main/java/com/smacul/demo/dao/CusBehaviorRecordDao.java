@@ -54,6 +54,7 @@ public interface CusBehaviorRecordDao {
     /**
      * 统计指定 to 用户与指定文章之间指定行为的记录数量
      * 20-04-19 创建方法
+     * 20-04-23 BUG 修复 SQL 参数错误
      * @param cusIdFrom
      * @param artId
      * @param behavior
@@ -63,12 +64,14 @@ public interface CusBehaviorRecordDao {
 
     /**
      * 统计指定 from 用户与指定文章之间指定行为的记录数量
-     * @param cusIdFrom
+     * 20-04-19 成绩方法
+     * 20-04-23 BUG 修复 SQL 参数错误
+     * @param cusIdTo
      * @param artId
      * @param behavior
      * @return
      */
-    Integer countTargetCusArtBehaviorTo(Integer cusIdFrom, Integer artId, Integer behavior);
+    Integer countTargetCusArtBehaviorTo(Integer cusIdTo, Integer artId, Integer behavior);
 
     /**
      * 插入用户行为记录

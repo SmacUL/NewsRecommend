@@ -20,6 +20,8 @@
 </template>
 
 <script>
+    import {cusRegister} from "../../control/Self";
+
     export default {
         name: "RegisterPart.vue",
         methods: {
@@ -27,21 +29,20 @@
                 if (this.ruleForm.pass !== this.ruleForm.checkPass) {
                     return;
                 }
-                let data = new FormData();
-                data.append('cusName', this.ruleForm.name);
-                data.append('cusPass', this.ruleForm.pass);
-                this.$axios.post('/api/self/register', data)
-                    .then((response) => {
-                        if (response.data === 1) {
-                            this.$message.info('注册成功');
-                            this.$emit('changePanel');
 
+
+                //
+                // let data = new FormData();
+                // data.append('cusName', this.ruleForm.name);
+                // data.append('cusPass', this.ruleForm.pass);
+                // this.$axios.post('/api/self/register', data);
+                cusRegister(this.ruleForm.name, this.ruleForm.pass)
+                    .then((response) => {
+                        if (response.data === '注册成功') {
+                            this.$message.info(response.data);
+                            this.$emit('changePanel');
                         } else {
-                            if (response.data === 3) {
-                                this.$message.info('此用户名已存在, 请重新创建');
-                            } else {
-                                this.$message.info('注册失败, 请重新创建');
-                            }
+                            this.$message.info(response.data);
                             this.ruleForm.name = '';
                             this.ruleForm.pass = '';
                             this.ruleForm.checkPass = '';

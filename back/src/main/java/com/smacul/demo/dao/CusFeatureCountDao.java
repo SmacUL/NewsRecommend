@@ -42,4 +42,12 @@ public interface CusFeatureCountDao {
      */
     Integer updateCusFeature(Integer cusId, String column, Integer num);
 
+    /**
+     * 初始化指定用户的特征数据记录, 即所有种类统计归 0
+     * 20-04-23 创建方法
+     * @param cusId
+     * @return
+     */
+    Integer initialCusFeature(Integer cusId);
+
 }

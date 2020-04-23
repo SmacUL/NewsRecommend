@@ -48,7 +48,7 @@
     import CommentReplyInput from "./comment-reply-main/CommentReplyInput";
     import ReplyMain from "./comment-reply-main/ReplyMain";
     import {transUTCtoLocal} from "../../util/TimeHandler";
-    import {cusAddComment, cusAddReply} from "../../control/Discuss";
+    import {addNewCom, cusAddReply} from "../../control/Discuss";
 
     /**
      * /src/components/article/comment-reply-main/ 路径下包含了 CommentReplyMain 模块需要的子组件
@@ -62,7 +62,7 @@
                 this.control.add.id = -1;
             },
             addCancelReply(comId) {
-                if (this.control.add.type == 1 && this.control.add.id == comId) {
+                if (this.control.add.type === 1 && this.control.add.id === comId) {
                     this.control.add.type = -1;
                     this.control.add.id = -1;
                 } else {
@@ -84,12 +84,17 @@
              * @param message
              */
             addComment: function (message) {
+                // let comment = new FormData();
+                // comment.append('comContent', message);
+                // comment.append('comCustomerId', this.customer.cusId);
+                // comment.append('comArticleId', this.comments[0].comArticleId);
+
                 let comment = {
                     comContent: message,
-                    comCustomerId: this.customer.cusId,
-                    comArticleId: this.comments[0].comArticleId,
+                    comCusId: this.customer.cusId,
+                    comArtId: this.comments[0].comArtId,
                 };
-                cusAddComment(comment)
+                addNewCom(comment)
                     .then((response) => {
                         if(response.data) {
                             this.$message.info("评论成功");
@@ -107,13 +112,19 @@
              * @param message
              */
             addReply: function (message) {
+                // let reply = new FormData();
+                // reply.append('repContent', message);
+                // reply.append('repType', 0);
+                // reply.append('repCustomerId', this.customer.cusId);
+                // reply.append('repArticleId', this.comments[0].comArticleId);
+                // reply.append('repCommentId', this.control.add.id);
                 let reply = {
                     repContent: message,
                     repType: 0,
-                    repCustomerId: this.customer.cusId,
-                    repArticleId: this.comments[0].comArticleId,
+                    repCusId: this.customer.cusId,
+                    repArtId: this.comments[0].comArtId,
                     // 回复针对的评论的 id
-                    repCommentId: this.control.add.id,
+                    repComId: this.control.add.id,
                 };
                 cusAddReply(reply)
                     .then((response) => {

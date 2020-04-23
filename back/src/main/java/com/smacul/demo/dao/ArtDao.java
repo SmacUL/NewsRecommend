@@ -18,6 +18,7 @@ public interface ArtDao {
     /**
      * 全局获取一页文章缩略内容, 包括文章基本信息, 文章作者基本信息, 文章的特征统计信息
      * 20-04-19 创建方法
+     * 20-04-23 BUG 修改, SQL 多了一个逗号
      * @param start
      * @param pageSize
      * @return
@@ -27,16 +28,18 @@ public interface ArtDao {
     /**
      * 按照类别获取一页文章缩略内容, 包括文章基本信息, 文章作者基本信息, 文章的特征统计信息
      * 20-04-19 创建方法
-     * @param type
+     * 20-04-23 BUG 修改, SQL 多了一个逗号; 参数 type 修改为 artType
+     * @param artType
      * @param start
      * @param pageSize
      * @return
      */
-    List<ArtFullMod> getTinyArtOnePageByType(String type, Integer start, Integer pageSize);
+    List<ArtFullMod> getTinyArtOnePageByType(String artType, Integer start, Integer pageSize);
 
     /**
      * 获取一页热点新闻的文章缩略信息, 包括文章基本信息, 文章作者基本信息, 文章的特征统计信息
      * 20-04-19 创建方法
+     * 20-04-23 BUG 修改, SQL 多了一个逗号
      * @param start
      * @param pageSize
      * @return
@@ -70,6 +73,7 @@ public interface ArtDao {
     /**
      * 简单的搜索功能
      * 20-04-20 创建方法
+     * 20-04-23 BUG 修改, SQL 多了一个逗号; 删除了 SQL 中不必要的字段.
      * @param key
      * @param start
      * @param pageSize

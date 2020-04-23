@@ -44,6 +44,7 @@ class ReplyDao:
         """ 插入回复数据
 
         # 20-04-17 修改完成
+        # 20-04-23 Rollback BUG Fix
 
         :param rep_mod:
         :return:
@@ -70,7 +71,7 @@ class ReplyDao:
             self.__base.commit_transactions()
             logging.info("回复 rep_spider=%s 数据库插入 成功" % rep_mod.rep_spider)
         except:
-            self.__base.commit_rollback()
+            # self.__base.commit_rollback()
             logging.exception("回复 rep_spider=%s 数据库插入 失败" % rep_mod.rep_spider)
             raise
 

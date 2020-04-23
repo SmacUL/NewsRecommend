@@ -43,6 +43,7 @@ class CommentDao:
         """ 将评论插入到数据库中
 
         # 20-04-17 修改完成
+        # 20-04-23 Rollback BUG Fix
 
         :param com_mod:
         :return:
@@ -57,7 +58,7 @@ class CommentDao:
             self.__base.commit_transactions()
             logging.info("insert_com 评论 com_spider=%s 数据库插入 成功" % com_mod.com_spider)
         except:
-            self.__base.commit_rollback()
+            # self.__base.commit_rollback()
             logging.exception("insert_com 评论 com_spider=%s 数据库插入 失败" % com_mod.com_spider)
             raise
 

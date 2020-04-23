@@ -14,17 +14,23 @@
             <hr>
             <h2>个人成就</h2>
             <div class="achievement">
+                <i class="el-icon-star-on icon"></i>
+                <span>阅读了</span>
+                <span class="achievement-num">{{info.readNum}}</span>
+                <span>篇文章 </span>
+            </div>
+            <div class="achievement">
                 <i class="el-icon-edit icon"></i>
                 <span>发表了</span>
-                <span class="achievement-num">{{info.writeNum}}</span>
+                <span class="achievement-num">{{info.artEditNum}}</span>
                 <span>篇文章</span>
             </div>
-            <!--<div class="achievement">-->
-            <!--    <i class="el-icon-star-on icon"></i>-->
-            <!--    <span>总结获得了</span>-->
-            <!--    <span class="achievement-num">2222</span>-->
-            <!--    <span>次点赞 </span>-->
-            <!--</div>-->
+            <div class="achievement">
+                <i class="el-icon-star-on icon"></i>
+                <span>编辑了</span>
+                <span class="achievement-num">{{info.comEditNum + info.repEditNum}}</span>
+                <span>次评论 </span>
+            </div>
         </div>
     </div>
 </template>

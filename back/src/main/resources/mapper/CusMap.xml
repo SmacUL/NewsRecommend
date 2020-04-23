@@ -23,7 +23,7 @@
     </update>
 
     <select id="getCusByName" resultType="com.smacul.demo.bean.Customer">
-        select cus_id, cus_name, cus_spider, cus_avatar_url, cus_style, cus_gender, cus_time, cus_legal
+        select cus_id, cus_name, cus_spider, cus_avatar_url, cus_style, cus_gender, cus_time, cus_legal, cus_pass
         from Customer where cus_name = #{cusName};
     </select>
 

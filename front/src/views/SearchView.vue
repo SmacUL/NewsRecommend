@@ -26,8 +26,8 @@
 
     import Logo from '../assets/image/Logo.png'
     import {getHotArtOnePage} from "../control/Load";
-    import {searchContentByKeyAndTagTypePage} from "../control/Search";
-    import {getCusSelfInfo} from "../control/Self";
+    import {searchContentSimple} from "../control/Search";
+    import {getCusBasicInfo} from "../control/Self";
     import {jumpInCurPage, jumpInNewPage} from "../util/PageJump";
 
 
@@ -37,16 +37,15 @@
         mounted: function () {
             window.addEventListener('scroll', this.getMoreTinyArt, false);
             let key = this.$route.params.key;
-            searchContentByKeyAndTagTypePage(key, 'global', 'test', this.page.tinyPage, this.page.tinyPageSize)
+            searchContentSimple(key, this.page.tinyPage, this.page.tinyPageSize)
                 .then((response) => {
                    this.tinyArticles = response.data;
                 });
-            getCusSelfInfo()
+            getCusBasicInfo(0)
                 .then((response) => {
                     if (response.data) {
                         this.customer = response.data;
                     } else {
-                        // this.$router.push({path: '/port'});
                         jumpInCurPage('/port');
                     }
 
@@ -66,7 +65,7 @@
                 if (scrollHeight <= (document.documentElement.scrollTop + 5)) {
                     this.page.tinyPage += 1;
                     // let key = this.$route.params.key;
-                    searchContentByKeyAndTagTypePage(this.page.key, 'global', 'test', this.page.tinyPage, this.page.tinyPageSize)
+                    searchContentSimple(this.page.key, this.page.tinyPage, this.page.tinyPageSize)
                         .then((response) => {
                             for (let i = 0; i < response.data.length; i++) {
                                 this.tinyArticles.push(response.data[i]);

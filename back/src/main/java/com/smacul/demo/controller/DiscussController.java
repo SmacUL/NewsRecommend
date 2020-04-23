@@ -9,6 +9,7 @@ import com.smacul.demo.service.ShapeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
@@ -32,7 +33,7 @@ public class DiscussController {
      * @return
      */
     @RequestMapping("/page")
-    public List<ComFullMod> getComList(Integer artId) {
+    public List<ComFullMod> getComList(@RequestParam Integer artId) {
         Customer customer = (Customer) session.getAttribute("customer");
         if (customer == null) {
             return null;

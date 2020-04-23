@@ -53,7 +53,13 @@ public class SelfServiceImpl implements SelfService {
         if (cusDao.countCusByName(cusName) != 0) {
             return "当前用户名已被注册";
         }
-        if (cusDao.insertCusForRegister(cusName, cryptString) == 1) {
+        Integer cusResult = cusDao.insertCusForRegister(cusName, cryptString);
+        Customer customer = cusDao.getCusByName(cusName);
+        Integer cusFeature = 0;
+        if (customer != null) {
+            cusFeature = cusFeatureCountDao.initialCusFeature(customer.getCusId());
+        }
+        if (cusResult == 1 && cusFeature == 1) {
             return "注册成功";
         } else {
             return "注册失败";
