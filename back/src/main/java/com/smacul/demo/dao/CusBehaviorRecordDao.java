@@ -1,7 +1,10 @@
 package com.smacul.demo.dao;
 
 import com.smacul.demo.bean.CusBehaviorRecord;
+import com.smacul.demo.model.CusDynamicMod;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface CusBehaviorRecordDao {
@@ -103,6 +106,14 @@ public interface CusBehaviorRecordDao {
     Integer deleteCusBehavior(
             Integer cusIdFrom, Integer cusIdTo, Integer behavior, Integer artId, Integer type, Integer targetId);
 
-    CusBehaviorRecord getCusBehaviorRecordByCusId(Integer cusId);
+    /**
+     * 分页获取指定用户动态
+     * 20-04-24 创建方法
+     * @param cusId
+     * @param start
+     * @param pageSize
+     * @return
+     */
+    List<CusDynamicMod> getCusDynamicByCusId(Integer cusId, Integer start, Integer pageSize);
 
 }

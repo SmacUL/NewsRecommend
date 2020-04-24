@@ -10,7 +10,7 @@
             <!-- section 2 包含 左右两个部分, 左侧是用户自己的文章, 右侧是用户成就-->
             <section class="clear-float section-main">
                 <article class="self-view-article">
-                    <tiny-center :ownerCustomer="ownerCustomer" :CustomerDynamics="CustomerDynamics"></tiny-center>
+                    <tiny-center :ownerCustomer="ownerCustomer" :customerDynamics="customerDynamics"></tiny-center>
                 </article>
                 <aside :style="asideStyle" class="self-view-aside">
                     <right-menu :info="cusCountInfo"></right-menu>
@@ -53,7 +53,7 @@
                 });
             getCusSelfDynamic(cusId, 0, 10)
                 .then((response) => {
-                    this.CustomerDynamics = response.data;
+                    this.customerDynamics = response.data;
                 })
 
         },
@@ -83,7 +83,7 @@
                 cusCountInfo: {
 
                 },
-                CustomerDynamics: {
+                customerDynamics: {
 
                 }
             }

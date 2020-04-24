@@ -119,7 +119,6 @@ public class SelfServiceImpl implements SelfService {
     @Override
     public List<CusDynamicMod> getCusDynamic(Integer cusId, Integer page, Integer pageSize) {
         Integer start = PageHandler.calcuStartNO(page, pageSize);
-        //CusBehaviorRecord cusBehaviorRecord = cusBehaviorRecordDao.
-        return null;
+        return cusBehaviorRecordDao.getCusDynamicByCusId(cusId, start, pageSize);
     }
 }

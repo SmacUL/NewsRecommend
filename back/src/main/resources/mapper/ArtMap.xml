@@ -12,7 +12,7 @@
     <select id="getTinyArtOnePageFromGlobal" resultMap="artFullModRM">
         select art_id, art_title, art_spider, art_type, art_tags, art_image_url, art_time, art_legal, art_cus_id
         from Article left join artscorelist on Article.art_id = artscorelist.asl_art_id
-        order by art_time desc
+        order by artscorelist.asl_art_score desc
         limit #{start}, #{pageSize}
     </select>
 
@@ -20,14 +20,14 @@
         select art_id, art_title, art_spider, art_type, art_tags, art_image_url, art_time, art_legal, art_cus_id
         from Article left join artscorelist on Article.art_id = artscorelist.asl_art_id
         where art_type = #{artType}
-        order by art_time desc
+        order by artscorelist.asl_art_score desc
         limit #{start}, #{pageSize}
     </select>
 
     <select id="getHotArtOnePage" resultMap="artFullModRM">
         select art_id, art_title, art_spider, art_type, art_tags, art_image_url, art_time, art_legal, art_cus_id
         from Article left join ArtTimeList on Article.art_id = ArtTimeList.atl_art_id
-        order by art_time desc
+        order by ArtTimeList.atl_art_score desc
         limit #{start}, #{pageSize}
     </select>
 
@@ -49,8 +49,14 @@
         select art_id, art_title, art_spider, art_type, art_tags, art_image_url, art_time, art_legal, art_cus_id
         from Article left join artscorelist on Article.art_id = artscorelist.asl_art_id
         where art_title like concat('%', #{key}, '%') or art_content like concat('%', #{key}, '%')
-        order by art_time desc
+        order by artscorelist.asl_art_score desc
         limit #{start}, #{pageSize}
+    </select>
+
+    <select id="getSingleArt" resultType="com.smacul.demo.model.ArtFullMod">
+        select *
+        from Article
+        where 11 != #{flag} and art_id = #{artId}
     </select>
 
     <resultMap id="artFullModRM" type="com.smacul.demo.model.ArtFullMod">

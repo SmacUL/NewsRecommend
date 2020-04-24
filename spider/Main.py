@@ -170,7 +170,7 @@ class Major:
                     try:
                         if self.__com_dao.check_com_cus_relationship(art_mod.art_id, com_mod.com_id, com_cus_mod.cus_id):
                             self.__cus_dao.insert_cus_behavior(
-                                com_cus_mod.cus_id, com_cus_mod.cus_id, 5, art_mod.art_id, 2,
+                                com_cus_mod.cus_id, art_cus_mod.cus_id, 5, art_mod.art_id, 2,
                                 com_mod.com_id, cbr_time=com_mod.com_time
                             )
                             self.__cus_dao.insert_cus_behavior(
@@ -236,7 +236,7 @@ class Major:
                             if self.__rep_dao.check_rep_cus_relationship(art_mod.art_id, rep_mod.rep_id,
                                                                          rep_cus_mod.cus_id):
                                 self.__cus_dao.insert_cus_behavior(
-                                    rep_cus_mod.cus_id, rep_cus_mod.cus_id, 8, art_mod.art_id, 3,
+                                    rep_cus_mod.cus_id, art_cus_mod.cus_id, 8, art_mod.art_id, 3,
                                     rep_mod.rep_id, cbr_time=rep_mod.rep_time
                                 )
                                 self.__cus_dao.insert_cus_behavior(

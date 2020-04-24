@@ -19,8 +19,10 @@ public class ArtFullMod {
     private Integer artLegal;
     private Integer artCusId;
 
+    // 文章作者
     private Customer customer;
     private ArtFeatureCount artFeature;
+    // 浏览者-文章的行为
     private CusArtBehaviorMod cusArtBehavior;
 
     public Integer getArtId() {

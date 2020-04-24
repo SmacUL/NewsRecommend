@@ -1,9 +1,11 @@
 package com.smacul.demo.service.impl;
 
+import com.smacul.demo.bean.Customer;
 import com.smacul.demo.dao.ArtDao;
 import com.smacul.demo.dao.ArtFeatureCountDao;
 import com.smacul.demo.dao.CusBehaviorRecordDao;
 import com.smacul.demo.dao.CusFeatureCountDao;
+import com.smacul.demo.model.ArtFullMod;
 import com.smacul.demo.service.ShapeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -92,9 +94,10 @@ public class ShapeServiceImpl implements ShapeService {
 
     @Override
     public Boolean setCusBehaviorComEdit(Integer cusId, Integer artId, Integer comId) {
-        String artType = artDao.getArtTypeByArtId(artId);
-        Integer cbr = cbrDao.addCusBehavior(cusId, cusId, 5, artId, 2, comId);
-        Integer cfc = cusFeatureCountDao.updateCusFeature(cusId, "cfc_" + artType, 1);
+//        String artType = artDao.getArtTypeByArtId(artId);
+        ArtFullMod artFull = artDao.getArtFull(artId);
+        Integer cbr = cbrDao.addCusBehavior(cusId, artFull.getArtCusId(), 5, artId, 2, comId);
+        Integer cfc = cusFeatureCountDao.updateCusFeature(cusId, "cfc_" + artFull.getArtType(), 1);
         Integer afc = artFeatureCountDao.updateArtFeature(artId, "afc_com_num", 1);
         if (cbr == 1 && cfc == 1 && afc == 1) {
             return true;
@@ -115,9 +118,10 @@ public class ShapeServiceImpl implements ShapeService {
 
     @Override
     public Boolean setCusBehaviorRepEdit(Integer cusId, Integer artId, Integer repId) {
-        String artType = artDao.getArtTypeByArtId(artId);
-        Integer cbr = cbrDao.addCusBehavior(cusId, cusId, 8, artId, 3, repId);
-        Integer cfc = cusFeatureCountDao.updateCusFeature(cusId, "cfc_" + artType, 1);
+//        String artType = artDao.getArtTypeByArtId(artId);
+        ArtFullMod artFull = artDao.getArtFull(artId);
+        Integer cbr = cbrDao.addCusBehavior(cusId, artFull.getArtCusId(), 8, artId, 3, repId);
+        Integer cfc = cusFeatureCountDao.updateCusFeature(cusId, "cfc_" + artFull.getArtType(), 1);
         Integer afc = artFeatureCountDao.updateArtFeature(artId, "afc_rep_num", 1);
         if (cbr == 1 && cfc == 1 && afc == 1) {
             return true;

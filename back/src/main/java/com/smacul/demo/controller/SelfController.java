@@ -57,10 +57,20 @@ public class SelfController {
     }
 
     /**
+     * 用户退出登录
+     * 20-04-24 创建方法
+     * @return
+     */
+    @RequestMapping("/quit")
+    public String quitLogin() {
+        session.setAttribute("customer", null);
+        return "退出成功";
+    }
+
+    /**
      * 用户注册
      * 20-04-18 创建方法
-     *
-     * todo 少了一段, 在注册用户的时候, 需要同时管理 CusFeatureCount.
+     * 20-04-24 逻辑修改, 在注册时清空 session 中的用户
      * @param cusName
      * @param cusPass
      * @return
@@ -68,6 +78,7 @@ public class SelfController {
     @RequestMapping("/register")
     public String cusRegister(@RequestParam String cusName, @RequestParam String cusPass) {
         try {
+            session.setAttribute("customer", null);
             return selfService.setNewCus(cusName, cusPass);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
@@ -146,10 +157,21 @@ public class SelfController {
         return selfService.getCusFeatureInfo(cusId);
     }
 
+    /**
+     * 获取指定用户的动态
+     * 20-04-24 创建方法
+     * @param cusId
+     * @param page
+     * @param pageSize
+     * @return
+     */
     @RequestMapping("/dynamic")
     public List<CusDynamicMod> getCusDynamic(
             @RequestParam Integer cusId, @RequestParam Integer page, @RequestParam Integer pageSize) {
-        return null;
+        if (session.getAttribute("customer") == null) {
+            return null;
+        }
+        return selfService.getCusDynamic(cusId, page, pageSize);
     }
 
 }

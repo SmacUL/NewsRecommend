@@ -62,17 +62,33 @@
             and cbr_behavior = #{behavior} and cbr_type = 1 and cbr_target_id = #{artId}
     </select>
 
-    <select id="getCusBehaviorRecordByCusId" resultType="com.smacul.demo.bean.CusBehaviorRecord">
---         select *
---         from CusBehaviorRecord
---         where cbr_cus_id_from
+    <select id="getCusDynamicByCusId" resultMap="cusDynamicRM">
+        select *
+        from CusBehaviorRecord
+        where cbr_cus_id_from = #{cusId} and cbr_behavior != 2
+        order by cbr_time
+        limit #{start}, #{pageSize}
     </select>
 
-    <!--    <select id="countCusWithArtCusFollowBehavior" resultType="java.lang.Integer">-->
-<!--        select count(*)-->
-<!--        from CusBehaviorRecord left join (select art_id from Article where art_cus_id = #{cusId}) on cbr_art_id = art_id-->
-<!--        where cbr_cus_id_from = #{cusId}-->
-<!--    </select>-->
+    <resultMap id="cusDynamicRM" type="com.smacul.demo.model.CusDynamicMod">
+        <id property="cbrId" column="cbr_id"></id>
+        <result property="cbrCusIdFrom" column="cbr_cus_id_from"></result>
+        <result property="cbrCusIdTo" column="cbr_cus_id_to"></result>
+        <result property="cbrBehavior" column="cbr_behavior"></result>
+        <result property="cbrTime" column="cbr_time"></result>
+        <result property="cbrType" column="cbr_type"></result>
+        <result property="cbrArtId" column="cbr_art_id"></result>
+        <collection property="cusFrom" select="com.smacul.demo.dao.CusDao.getCusById"
+                    column="cusId=cbr_cus_id_from" javaType="com.smacul.demo.bean.Customer"></collection>
+        <collection property="cusTo" select="com.smacul.demo.dao.CusDao.getCusById"
+                    column="cusId=cbr_cus_id_to" javaType="com.smacul.demo.bean.Customer"></collection>
+        <collection property="article" select="com.smacul.demo.dao.ArtDao.getSingleArt"
+                    column="{flag=cbr_type, artId=cbr_art_id}" javaType="com.smacul.demo.model.ArtFullMod"></collection>
+        <collection property="comment" select="com.smacul.demo.dao.ComDao.getSingleCom"
+                    column="{flag=cbr_type, comId=cbr_target_id}" javaType="com.smacul.demo.model.ComFullMod"></collection>
+        <collection property="reply" select="com.smacul.demo.dao.RepDao.getSingleRep"
+                    column="{flag=cbr_type, repId=cbr_target_id}" javaType="com.smacul.demo.model.RepFullMod"></collection>
+    </resultMap>
 
 
 </mapper>

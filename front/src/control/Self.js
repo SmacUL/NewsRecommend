@@ -9,6 +9,10 @@ export function cusLogin(cusName, cusPass) {
     return axios.post(base + 'login', data);
 }
 
+export function quitLogin() {
+    return axios.get(base + 'quit');
+}
+
 export function cusRegister(cusName, cusPass) {
     let data = new FormData();
     data.append('cusName', cusName);

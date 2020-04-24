@@ -1,5 +1,7 @@
 package com.smacul.demo.model;
 
+import com.smacul.demo.bean.Customer;
+
 import java.sql.Timestamp;
 
 public class CusDynamicMod {
@@ -11,7 +13,10 @@ public class CusDynamicMod {
     private Timestamp cbrTime;
     // 行为发生的位置代号, 0: 默认, 1: 文章, 2: 评论, 3:回复
     private Integer cbrType;
+    private Integer cbrArtId;
 
+    private Customer cusFrom;
+    private Customer cusTo;
     private ArtFullMod article;
     private ComFullMod comment;
     private RepFullMod reply;
@@ -64,6 +69,22 @@ public class CusDynamicMod {
         this.cbrType = cbrType;
     }
 
+    public Customer getCusFrom() {
+        return cusFrom;
+    }
+
+    public void setCusFrom(Customer cusFrom) {
+        this.cusFrom = cusFrom;
+    }
+
+    public Customer getCusTo() {
+        return cusTo;
+    }
+
+    public void setCusTo(Customer cusTo) {
+        this.cusTo = cusTo;
+    }
+
     public ArtFullMod getArticle() {
         return article;
     }
@@ -86,5 +107,13 @@ public class CusDynamicMod {
 
     public void setReply(RepFullMod reply) {
         this.reply = reply;
+    }
+
+    public Integer getCbrArtId() {
+        return cbrArtId;
+    }
+
+    public void setCbrArtId(Integer cbrArtId) {
+        this.cbrArtId = cbrArtId;
     }
 }

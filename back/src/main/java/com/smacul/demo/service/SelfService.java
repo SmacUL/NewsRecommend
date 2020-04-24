@@ -72,6 +72,14 @@ public interface SelfService {
      */
     CusFeatureFullMod getCusFeatureInfo(Integer cusId);
 
+    /**
+     * 分页获取指定用户的动态
+     * 20-04-24 创建方法
+     * @param cusId
+     * @param page
+     * @param pageSize
+     * @return
+     */
     List<CusDynamicMod> getCusDynamic(Integer cusId, Integer page, Integer pageSize);
 
 }

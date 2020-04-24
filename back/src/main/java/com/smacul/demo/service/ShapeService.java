@@ -53,7 +53,7 @@ public interface ShapeService {
     /**
      * 评论编辑 5
      * cbrCusIdFrom | cbrCusIdTo | cbrBehavior |   cbrTime   | cbrArtId | cbrType | cbrTargetId
-     *    cusId     |    cusId   |       5     |   comTime   |   artId  |    2    |     comId
+     *    cusId     | artCusId   |       5     |   comTime   |   artId  |    2    |     comId
      * @param cusId
      * @param artId
      * @param comId
@@ -84,7 +84,7 @@ public interface ShapeService {
     /**
      * 回复编辑(包括回复与回复的回复) 8
      * cbrCusIdFrom | cbrCusIdTo | cbrBehavior |   cbrTime   | cbrArtId | cbrType | cbrTargetId
-     *    cusId     |    cusId   |       8     |   repTime   |   artId  |    3    |     repId
+     *    cusId     | artCusId   |       8     |   repTime   |   artId  |    3    |     repId
      * 20-04-19 创建方法
      * @param cusId
      * @param artId

@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.smacul.demo.dao.ComDao">
-    <insert id="addCom">
+    <insert id="addCom" useGeneratedKeys="true" keyProperty="comId" parameterType="com.smacul.demo.bean.Comment">
         insert into Comment(com_content, com_legal, com_cus_id, com_art_id)
         values(#{comContent}, #{comLegal}, #{comCusId}, #{comArtId})
     </insert>
@@ -14,6 +14,12 @@
         from Comment
         where com_art_id = #{artId}
         order by com_time desc
+    </select>
+
+    <select id="getSingleCom" resultType="com.smacul.demo.model.ComFullMod">
+        select *
+        from Comment
+        where 2 = #{flag} and com_id = #{comId}
     </select>
 
     <resultMap id="searchCommentsRM" type="com.smacul.demo.model.ComFullMod">

@@ -1,24 +1,58 @@
 <template>
     <div>
-        <float-card class="float-card clear-float" v-for="(CustomerDynamic, i) in CustomerDynamics" :key="i" >
+        <float-card class="float-card clear-float" v-for="(customerDynamic, i) in customerDynamics" :key="i" >
             <div class="span-div">
-                <span class="span-a">{{ownerCustomer.cusName}}</span>
-                <span class="span-b">{{transBehaviorCodeToWord(CustomerDynamic.acbBehavior)}}</span>
+                <span class="span-a">{{customerDynamic.cusFrom.cusName}}</span>
+                <span class="span-b">{{transBehaviorCodeToWord(customerDynamic.cbrBehavior)}}</span>
                 <!--<span class="span-c">此文章</span>-->
             </div>
             <!--<tiny-article :tinyArticle="CustomerDynamic.artWithCus" v-on:jump="jumpToArticle" v-on:editor="jumpToCustomer"></tiny-article>-->
-            <div>
-                <div class="image" v-if="CustomerDynamic.artWithCus.artImageUrl !== ''">
-                    <img :src="CustomerDynamic.artWithCus.artImageUrl" >
+
+
+            <div v-if="customerDynamic.cbrType === 1">
+                <div class="image" v-if="customerDynamic.cusTo.artImageUrl !== ''">
+                    <img :src="customerDynamic.cusTo.artImageUrl" >
                 </div>
                 <div class="word" :class="[wideSwitch ? tinyArt : tinyArtWide]">
-                    <div class="title" @click="jumpToArticle(CustomerDynamic.artWithCus.artId)">{{ CustomerDynamic.artWithCus.artTitle }}</div>
+                    <div class="title" @click="jumpToArticle(customerDynamic.article.artId)">{{ customerDynamic.article.artTitle }}</div>
                     <div class="info">
-                        <span class="customer" @click="jumpToCustomer(CustomerDynamic.artWithCus.customer.cusId)">{{ CustomerDynamic.artWithCus.customer.cusName }}</span>
-                        <span>{{ date(CustomerDynamic.artWithCus.artTime) }}</span>
+                        <span class="customer" @click="jumpToCustomer(customerDynamic.cusTo.cusId)">{{ customerDynamic.cusTo.cusName }}</span>
+                        <span>{{ date(customerDynamic.article.artTime) }}</span>
                     </div>
                 </div>
             </div>
+
+            <div v-if="customerDynamic.cbrType === 2">
+<!--                <div class="image" v-if="customerDynamic.cusTo.artImageUrl !== ''">-->
+<!--                    <img :src="customerDynamic.cusTo.artImageUrl" >-->
+<!--                </div>-->
+                <div class="word">
+                        <!-- todo 现在先放着 -->
+<!--                    <div class="title" @click="jumpToArticle(customerDynamic.article.artId)">{{ customerDynamic.article.artTitle }}</div>-->
+                    <div class="title" @click="jumpToArticle(customerDynamic.cbrArtId)">{{ customerDynamic.article.artTitle }}</div>
+                    <div class="com-content"  v-html="customerDynamic.comment.comContent"></div>
+                    <div class="info">
+                        <span class="customer" @click="jumpToCustomer(customerDynamic.cusTo.cusId)">{{ customerDynamic.cusTo.cusName }}</span>
+                        <span>{{ date(customerDynamic.comment.comTime) }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div v-if="customerDynamic.cbrType === 3">
+<!--                <div class="image" v-if="customerDynamic.cusTo.artImageUrl !== ''">-->
+<!--                    <img :src="customerDynamic.cusTo.artImageUrl" >-->
+<!--                </div>-->
+                <div class="word">
+<!--                    <div class="title" @click="jumpToArticle(customerDynamic.article.artId)">{{ customerDynamic.article.artTitle }}</div>-->
+                    <div class="title" @click="jumpToArticle(customerDynamic.cbrArtId)">{{ customerDynamic.article.artTitle }}</div>
+                    <div class="com-content" v-html="customerDynamic.reply.repContent"></div>
+                    <div class="info">
+                        <span class="customer" @click="jumpToCustomer(customerDynamic.cusTo.cusId)">{{ customerDynamic.cusTo.cusName }}</span>
+                        <span>{{ date(customerDynamic.reply.repTime) }}</span>
+                    </div>
+                </div>
+            </div>
+
         </float-card>>
 
         <span class="bottom-tip">我也是有底线哒 ~</span>
@@ -34,7 +68,7 @@
         name: "TinyCenter",
         components: {FloatCard},
         // components: {TinyArticle},
-        props: ['CustomerDynamics', 'ownerCustomer'],
+        props: ['customerDynamics', 'ownerCustomer'],
         methods: {
             /**
              * 跳转至文章页面
@@ -60,17 +94,15 @@
 
             transBehaviorCodeToWord: function (code) {
                 if (code === 1) {
-                    return '编辑了';
-                } else if (code === 2) {
-                    return '点赞了';
+                    return '编辑了文章';
                 } else if (code === 3) {
-                    return '点踩了';
+                    return '点赞了文章';
                 } else if (code === 4) {
-                    return '评论了';
-                } else if (code === 5) {
-                    return '回复了';
-                } else if (code === 6) {
-                    return '浏览了';
+                    return '点踩了文章';
+                } else if (code === 5 || code === 6) {
+                    return '评论了文章';
+                } else if (code === 11) {
+                    return '关注了用户'
                 }
             }
         },
@@ -183,5 +215,13 @@
     .customer:hover {
         color: #339999;
         cursor: pointer;
+    }
+
+    .com-content {
+        text-align: left;
+    }
+
+    .com-content >>> p {
+        margin: 10px 0 0 0;
     }
 </style>
