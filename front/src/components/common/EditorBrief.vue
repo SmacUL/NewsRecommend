@@ -4,7 +4,12 @@
             <img class="image" :src="articleAuthor.cusAvatarUrl"/>
             <div class="editor-follow">
                 <span class="editor" @click="jumpToCustomer(articleAuthor.cusId)"> {{articleAuthor.cusName}}</span>
-                <el-button class="follow" type="primary">+关注</el-button>
+                <el-button class="follow" type="primary" v-if="!artSelfStatus.follow"
+                           :disabled="customer.cusId === articleAuthor.cusId" @click="followCustomer">
+                    +关注</el-button>
+                <el-button class="follow" type="success" v-if="artSelfStatus.follow"
+                           :disabled="customer.cusId === articleAuthor.cusId" @click="followCustomer">
+                    +取消关注</el-button>
             </div>
         </div>
     </dark-card>
@@ -12,16 +17,33 @@
 
 <script>
     import DarkCard from './DarkCard'
+    import {setCusFollow} from "../../control/Self";
     export default {
         name: "EditorBrief",
         components: { DarkCard },
-        props: ['articleAuthor'],
+        // computed: {
+        //     func: function () {
+        //         return
+        //     }
+        // },
+        props: ['articleAuthor', 'customer', 'artSelfStatus'],
         methods: {
             // jumpToArticle: function (artId) {
             //     this.$emit('jump', artId);
             // },
             jumpToCustomer: function (cusId) {
                 this.$emit('editor', cusId);
+            },
+            followCustomer: function () {
+                setCusFollow(this.articleAuthor.cusId)
+                    .then((response) => {
+                        // alert(response.data);
+                        if (response.data === '关注失败') {
+                            this.artSelfStatus.follow = false;
+                        } else {
+                            this.artSelfStatus.follow = true;
+                        }
+                    })
             }
         },
         data: function () {

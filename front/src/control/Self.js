@@ -44,7 +44,7 @@ export function setCusFollow(cusId) {
             cusId: cusId
         }
     };
-    return axios.get(base + 'count', config);
+    return axios.get(base + 'follow', config);
 }
 
 

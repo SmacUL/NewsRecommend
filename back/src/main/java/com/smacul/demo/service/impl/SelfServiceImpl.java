@@ -92,7 +92,7 @@ public class SelfServiceImpl implements SelfService {
     public Boolean setCusFollow(Integer cusIdFrom, Integer cusIdTo) {
         if (cusBehaviorRecordDao.countTargetCusFollowBehavior(cusIdFrom, cusIdTo) == 1) {
             if (cusBehaviorRecordDao.deleteTargetCusFollowBehavior(cusIdFrom, cusIdTo) == 1) {
-                return true;
+                return false;
             }
         } else {
             if (cusBehaviorRecordDao.addTargetCusFollowBehavior(cusIdFrom, cusIdTo) == 1) {

@@ -53,6 +53,22 @@
                 </div>
             </div>
 
+            <div v-if="customerDynamic.cbrType === 0">
+                <!--                <div class="image" v-if="customerDynamic.cusTo.artImageUrl !== ''">-->
+                <!--                    <img :src="customerDynamic.cusTo.artImageUrl" >-->
+                <!--                </div>-->
+                <div class="word">
+                    <div class="title" @click="jumpToCustomer(customerDynamic.cusTo.cusId)">{{ customerDynamic.cusTo.cusName }}</div>
+                    <!--                    <div class="title" @click="jumpToArticle(customerDynamic.article.artId)">{{ customerDynamic.article.artTitle }}</div>-->
+<!--                    <div class="title" @click="jumpToArticle(customerDynamic.cbrArtId)">{{ customerDynamic.article.artTitle }}</div>-->
+<!--                    <div class="com-content" v-html="customerDynamic.reply.repContent"></div>-->
+                    <div class="info">
+<!--                        <span class="customer" @click="jumpToCustomer(customerDynamic.cusTo.cusId)">{{ customerDynamic.cusTo.cusName }}</span>-->
+                        <span>{{ date(customerDynamic.cbrTime) }}</span>
+                    </div>
+                </div>
+            </div>
+
         </float-card>>
 
         <span class="bottom-tip">我也是有底线哒 ~</span>

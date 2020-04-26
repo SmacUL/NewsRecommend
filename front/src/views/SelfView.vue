@@ -5,7 +5,7 @@
         <main>
             <!-- section 1 包含 用户的个人信息-->
             <section>
-                <show-panel :customer="ownerCustomer"></show-panel>
+                <show-panel :customer="ownerCustomer" :visitor="customer"></show-panel>
             </section>
             <!-- section 2 包含 左右两个部分, 左侧是用户自己的文章, 右侧是用户成就-->
             <section class="clear-float section-main">

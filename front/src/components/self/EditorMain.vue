@@ -9,7 +9,7 @@
                 <div class="customer-info">
                     <span class="customer-info-name">{{customer.cusName}}</span>
                     <span class="customer-info-style">{{ customer.cusStyle}}</span>
-                    <el-button class="follow" type="primary">+关注</el-button>
+                    <el-button class="follow" type="primary" :disabled="visitor.cusId === customer.cusId" @click="followCustomer">+关注</el-button>
                 </div>
             </div>
         </div>
@@ -18,10 +18,19 @@
 
 <script>
     import DarkCard from '../common/DarkCard'
+    import {setCusFollow} from "../../control/Self";
     export default {
         name: "EditorMain",
-        props: ['customer'],
+        props: ['customer', 'visitor'],
         components: { DarkCard },
+        methods: {
+            followCustomer: function () {
+                setCusFollow(this.customer.cusId)
+                    .then((response) => {
+                        alert(response.data);
+                    })
+            }
+        },
         data: function () {
             return {
                 note: {

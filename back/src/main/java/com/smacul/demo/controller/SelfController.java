@@ -129,6 +129,7 @@ public class SelfController {
     /**
      * 处理用户关注与取消关注
      * 20-04-18 创建方法
+     * 20-04-26 修改逻辑, 防止用户关注自己
      * @param cusId 关注或取消关注的用户的 ID
      * @return
      */
@@ -139,6 +140,9 @@ public class SelfController {
         }
         Customer cusFrom = (Customer) session.getAttribute("customer");
         Integer cusIdFrom = cusFrom.getCusId();
+        if (cusId.equals(cusIdFrom)) {
+            return "不能关注自己";
+        }
         if (selfService.setCusFollow(cusIdFrom, cusId)) {
             return "关注成功";
         } else {
