@@ -7,7 +7,7 @@
                 <comment-reply-main :comments="comments" :customer="customer" @quickShow="quickShow"></comment-reply-main>
             </article>
             <aside>
-                <editor-brief class="editor-brief" :articleAuthor="artMain.customer" v-on:editor="jumpToCustomer"></editor-brief>
+                <editor-brief class="editor-brief" :articleAuthor="artMain.customer" :artSelfStatus="artMain.cusArtBehavior" :customer="customer" v-on:editor="jumpToCustomer"></editor-brief>
                 <edit-entrance class="edit-entrance"></edit-entrance>
                 <hot-article :title="page.hotTitle" :hot-articles="hotArticles"
                              v-on:refresh="refreshHot" v-on:jump="jumpToArticle"></hot-article>

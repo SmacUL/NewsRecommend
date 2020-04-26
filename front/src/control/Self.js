@@ -44,7 +44,7 @@ export function setCusFollow(cusId) {
             cusId: cusId
         }
     };
-    return axios.get(base + 'count', config);
+    return axios.get(base + 'follow', config);
 }
 
 
@@ -66,4 +66,13 @@ export function getCusSelfDynamic(cusId, page, pageSize) {
         }
     };
     return axios.get(base + 'dynamic', config);
+}
+
+export function checkCusFollow(cusId) {
+    let config = {
+        params: {
+            cusId: cusId
+        }
+    };
+    return axios.get(base + 'chefollow', config)
 }

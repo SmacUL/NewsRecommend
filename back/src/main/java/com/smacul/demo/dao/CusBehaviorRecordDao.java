@@ -116,4 +116,12 @@ public interface CusBehaviorRecordDao {
      */
     List<CusDynamicMod> getCusDynamicByCusId(Integer cusId, Integer start, Integer pageSize);
 
+    ///**
+    // * 统计两个用户之间是否存在关注关系
+    // * 20-04-26 创建方法
+    // * @param cusIdFrom
+    // * @param cusIdTo
+    // * @return
+    // */
+    //Integer countCusFollow(Integer cusIdFrom, Integer cusIdTo);
 }

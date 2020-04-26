@@ -58,6 +58,7 @@ public interface SelfService {
     /**
      * 处理用户关注, 行为代码: 11
      * 20-04-18 创建方法
+     * 20-04-26 修改方法, 只有当用户关注关系创建时, 才返回 true.
      * @param cusIdFrom
      * @param cusIdTo
      * @return
@@ -82,4 +83,12 @@ public interface SelfService {
      */
     List<CusDynamicMod> getCusDynamic(Integer cusId, Integer page, Integer pageSize);
 
+    /**
+     * 检查用户之间是否存在关注关系
+     * 20-04-26 创建方法
+     * @param cusIdFrom
+     * @param cusIdTo
+     * @return
+     */
+    Boolean checkCusFollow(Integer cusIdFrom, Integer cusIdTo);
 }

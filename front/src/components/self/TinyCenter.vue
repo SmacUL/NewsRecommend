@@ -10,10 +10,11 @@
 
 
             <div v-if="customerDynamic.cbrType === 1">
-                <div class="image" v-if="customerDynamic.cusTo.artImageUrl !== ''">
-                    <img :src="customerDynamic.cusTo.artImageUrl" >
+                <div class="image" v-if="customerDynamic.article.artImageUrl !== ''">
+                    <img :src="customerDynamic.article.artImageUrl" >
                 </div>
-                <div class="word" :class="[wideSwitch ? tinyArt : tinyArtWide]">
+                <!--<div class="word" :class="[customerDynamic.article.artImageUrl !== '' ? tinyArt : tinyArtWide]">-->
+                <div class="word" :class="[customerDynamic.article.artImageUrl !== '' ? tinyArt : tinyArtWide]">
                     <div class="title" @click="jumpToArticle(customerDynamic.article.artId)">{{ customerDynamic.article.artTitle }}</div>
                     <div class="info">
                         <span class="customer" @click="jumpToCustomer(customerDynamic.cusTo.cusId)">{{ customerDynamic.cusTo.cusName }}</span>
@@ -53,6 +54,22 @@
                 </div>
             </div>
 
+            <div v-if="customerDynamic.cbrType === 0">
+                <!--                <div class="image" v-if="customerDynamic.cusTo.artImageUrl !== ''">-->
+                <!--                    <img :src="customerDynamic.cusTo.artImageUrl" >-->
+                <!--                </div>-->
+                <div class="word">
+                    <div class="title" @click="jumpToCustomer(customerDynamic.cusTo.cusId)">{{ customerDynamic.cusTo.cusName }}</div>
+                    <!--                    <div class="title" @click="jumpToArticle(customerDynamic.article.artId)">{{ customerDynamic.article.artTitle }}</div>-->
+<!--                    <div class="title" @click="jumpToArticle(customerDynamic.cbrArtId)">{{ customerDynamic.article.artTitle }}</div>-->
+<!--                    <div class="com-content" v-html="customerDynamic.reply.repContent"></div>-->
+                    <div class="info">
+<!--                        <span class="customer" @click="jumpToCustomer(customerDynamic.cusTo.cusId)">{{ customerDynamic.cusTo.cusName }}</span>-->
+                        <span>{{ date(customerDynamic.cbrTime) }}</span>
+                    </div>
+                </div>
+            </div>
+
         </float-card>>
 
         <span class="bottom-tip">我也是有底线哒 ~</span>
@@ -69,6 +86,12 @@
         components: {FloatCard},
         // components: {TinyArticle},
         props: ['customerDynamics', 'ownerCustomer'],
+        // computed: {
+        //     wideSwitch: function () {
+        //         return this.tinyArticle.artImageUrl !== '';
+        //     },
+        //
+        // },
         methods: {
             /**
              * 跳转至文章页面
@@ -99,7 +122,7 @@
                     return '点赞了文章';
                 } else if (code === 4) {
                     return '点踩了文章';
-                } else if (code === 5 || code === 6) {
+                } else if (code === 5 || code === 8) {
                     return '评论了文章';
                 } else if (code === 11) {
                     return '关注了用户'

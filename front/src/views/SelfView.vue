@@ -5,7 +5,7 @@
         <main>
             <!-- section 1 包含 用户的个人信息-->
             <section>
-                <show-panel :customer="ownerCustomer"></show-panel>
+                <show-panel :customer="ownerCustomer" :visitor="customer" :is-follow="control.isFollow"></show-panel>
             </section>
             <!-- section 2 包含 左右两个部分, 左侧是用户自己的文章, 右侧是用户成就-->
             <section class="clear-float section-main">
@@ -25,7 +25,7 @@
     import ShowPanel from "../components/self/EditorMain";
     import TinyCenter from "../components/self/TinyCenter"
     import RightMenu from "../components/self/RightMenu";
-    import {getCusBasicInfo, getCusFeatureInfo, getCusSelfDynamic} from "../control/Self";
+    import {checkCusFollow, getCusBasicInfo, getCusFeatureInfo, getCusSelfDynamic} from "../control/Self";
     import {jumpInCurPage} from "../util/PageJump";
     export default {
         name: "SelfView",
@@ -38,15 +38,19 @@
                     if (response.data) {
                         this.customer = response.data;
                     } else {
-                        // this.$router.push({path: '/port'});
                         jumpInCurPage('/port');
                     }
-
                 });
             getCusBasicInfo(cusId)
                 .then((response) => {
                     this.ownerCustomer = response.data;
-                });
+                })
+                .then(() => {
+                checkCusFollow(this.ownerCustomer.cusId)
+                    .then((response) => {
+                        this.control.isFollow = response.data;
+                    })
+            });
             getCusFeatureInfo(cusId)
                 .then((response) => {
                     this.cusCountInfo = response.data;
@@ -54,7 +58,8 @@
             getCusSelfDynamic(cusId, 0, 10)
                 .then((response) => {
                     this.customerDynamics = response.data;
-                })
+                });
+
 
         },
         methods: {
@@ -73,6 +78,7 @@
                 control: {
                     dnyPage: 0,
                     dnyPageSize: 10,
+                    isFollow: false
                 },
                 customer: {
 

@@ -92,7 +92,7 @@ public class SelfServiceImpl implements SelfService {
     public Boolean setCusFollow(Integer cusIdFrom, Integer cusIdTo) {
         if (cusBehaviorRecordDao.countTargetCusFollowBehavior(cusIdFrom, cusIdTo) == 1) {
             if (cusBehaviorRecordDao.deleteTargetCusFollowBehavior(cusIdFrom, cusIdTo) == 1) {
-                return true;
+                return false;
             }
         } else {
             if (cusBehaviorRecordDao.addTargetCusFollowBehavior(cusIdFrom, cusIdTo) == 1) {
@@ -120,5 +120,14 @@ public class SelfServiceImpl implements SelfService {
     public List<CusDynamicMod> getCusDynamic(Integer cusId, Integer page, Integer pageSize) {
         Integer start = PageHandler.calcuStartNO(page, pageSize);
         return cusBehaviorRecordDao.getCusDynamicByCusId(cusId, start, pageSize);
+    }
+
+    @Override
+    public Boolean checkCusFollow(Integer cusIdFrom, Integer cusIdTo) {
+        if (cusBehaviorRecordDao.countTargetCusFollowBehavior(cusIdFrom, cusIdTo) == 1) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
