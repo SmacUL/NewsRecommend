@@ -55,7 +55,7 @@ public interface CusBehaviorRecordDao {
     Integer countCusBehaviorTo(Integer cusIdTo, Integer behavior);
 
     /**
-     * 统计指定 to 用户与指定文章之间指定行为的记录数量
+     * 统计指定 from 用户与指定文章之间指定行为的记录数量
      * 20-04-19 创建方法
      * 20-04-23 BUG 修复 SQL 参数错误
      * @param cusIdFrom
@@ -66,7 +66,7 @@ public interface CusBehaviorRecordDao {
     Integer countTargetCusArtBehaviorFrom(Integer cusIdFrom, Integer artId, Integer behavior);
 
     /**
-     * 统计指定 from 用户与指定文章之间指定行为的记录数量
+     * 统计指定 to 用户与指定文章之间指定行为的记录数量
      * 20-04-19 成绩方法
      * 20-04-23 BUG 修复 SQL 参数错误
      * @param cusIdTo
@@ -116,12 +116,12 @@ public interface CusBehaviorRecordDao {
      */
     List<CusDynamicMod> getCusDynamicByCusId(Integer cusId, Integer start, Integer pageSize);
 
-    ///**
-    // * 统计两个用户之间是否存在关注关系
-    // * 20-04-26 创建方法
-    // * @param cusIdFrom
-    // * @param cusIdTo
-    // * @return
-    // */
-    //Integer countCusFollow(Integer cusIdFrom, Integer cusIdTo);
+
+    /**
+     * 获取指定用户所有的关注用户的列表
+     * 20-05-02 创建方法
+     * @param cusId
+     * @return
+     */
+    List<Integer> getFollowCus(Integer cusId);
 }

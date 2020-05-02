@@ -24,22 +24,28 @@ public interface LoadService {
     /**
      * 为新用户提供一页指定类别的新闻缩率信息
      * 20-04-19 创建方法
+     * 20-04-28 方法修改, 添加用户浏览内容去重
      * @param artType
      * @param page
      * @param pageSize
      * @return
      */
-    List<ArtFullMod> getTinyArtOnePageByTypeForNew(String artType, Integer page, Integer pageSize);
+    List<ArtFullMod> getTinyArtOnePageByTypeForNew(Integer cusId, String artType, Integer page, Integer pageSize);
 
     /**
      * 为老用户提供一页指定类别的新闻缩率信息
-     * 20-04-19 创建方法, TODO 功能上与 getTinyArtOnePageByTypeForNew 一样, 需要更换
+     * 如果相似用户的内容推荐完毕, 就切换到新用户的推荐逻辑上.
+     * 20-04-19 创建方法
+     * 20-04-28 方法修改, 添加用户浏览内容去重
+     * 20-05-02 添加对老用户的推荐
      * @param artType
+     * @param cusList   相似用户列表
      * @param page
      * @param pageSize
      * @return
      */
-    List<ArtFullMod> getTinyArtOnePageByTypeForOld(String artType, Integer page, Integer pageSize);
+    List<ArtFullMod> getTinyArtOnePageByTypeForOld(
+            Integer cusId, List<Integer> cusList, String artType, Integer page, Integer pageSize);
 
     /**
      * 提供一页的热点新闻的缩略信息

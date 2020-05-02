@@ -20,23 +20,27 @@ public interface ArtDao {
      * 20-04-19 创建方法
      * 20-04-23 BUG 修改, SQL 多了一个逗号
      * 20-04-24 方法修改, 替换了排序方式
+     * 20-04-28 方法修改, 添加了用户浏览内容去重
+     * 20-05-02 修改方法名称, 添加了 New 的后缀
      * @param start
      * @param pageSize
      * @return
      */
-    List<ArtFullMod> getTinyArtOnePageFromGlobal(Integer start, Integer pageSize);
+    List<ArtFullMod> getTinyArtOnePageFromGlobalNew(Integer cusId, Integer start, Integer pageSize);
 
     /**
      * 按照类别获取一页文章缩略内容, 包括文章基本信息, 文章作者基本信息, 文章的特征统计信息
      * 20-04-19 创建方法
      * 20-04-23 BUG 修改, SQL 多了一个逗号; 参数 type 修改为 artType
      * 20-04-24 方法修改, 替换了排序方式
+     * 20-04-28 方法修改, 添加了用户浏览内容去重
+     * 20-05-02 修改方法名称, 添加了 New 的后缀
      * @param artType
      * @param start
      * @param pageSize
      * @return
      */
-    List<ArtFullMod> getTinyArtOnePageByType(String artType, Integer start, Integer pageSize);
+    List<ArtFullMod> getTinyArtOnePageByTypeNew(String artType, Integer cusId, Integer start, Integer pageSize);
 
     /**
      * 获取一页热点新闻的文章缩略信息, 包括文章基本信息, 文章作者基本信息, 文章的特征统计信息
@@ -93,4 +97,29 @@ public interface ArtDao {
      * @return
      */
     ArtFullMod getSingleArt(Integer flag, Integer artId);
+
+    /**
+     * 通过相似用户获取推荐内容
+     * 20-05-02 创建方法
+     * @param cusId
+     * @param cusIdListStr
+     * @param start
+     * @param pageSize
+     * @return
+     */
+    List<ArtFullMod> getTinyArtOnePageFromGlobalOld
+            (Integer cusId, String cusIdListStr, Integer start, Integer pageSize);
+
+    /**
+     * 通过相似用户获取推荐内容, 按照类别
+     * 20-05-02 创建方法
+     * @param artType
+     * @param cusId
+     * @param cusIdListStr
+     * @param start
+     * @param pageSize
+     * @return
+     */
+    List<ArtFullMod> getTinyArtOnePageByTypeOld
+            (String artType, Integer cusId, String cusIdListStr, Integer start, Integer pageSize);
 }

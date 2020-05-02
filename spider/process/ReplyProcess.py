@@ -321,7 +321,7 @@ class ReplyProcess:
             logging.info("获取回复信息 %s 成功" % reply_url)
             return result
         except:
-            logging.exception("获取回复信息 失败")
+            # logging.exception("获取回复信息 失败")
             raise
 
 
@@ -348,9 +348,9 @@ class ReplyProcess:
             rep_mod.rep_art_id = rep_art_id
             rep_mod.rep_spider = str(rep_json['id'])
 
-            logging.info("设置回复信息 成功")
+            # logging.info("设置回复信息 成功")
         except:
-            logging.exception("获取回复信息 失败")
+            # logging.exception("获取回复信息 失败")
             raise
 
 

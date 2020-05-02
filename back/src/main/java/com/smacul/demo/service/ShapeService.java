@@ -20,6 +20,7 @@ public interface ShapeService {
      * cbrCusIdFrom | cbrCusIdTo | cbrBehavior |   cbrTime   | cbrArtId | cbrType | cbrTargetId
      *    cusId     |  artCusId  |       2     |   readTime  |   artId  |    1    |     artId
      * 20-04-19 创建方法
+     * 20-04-28 修改方法, 防止同一个用户重复阅读
      * @param cusId
      * @param artId
      * @return

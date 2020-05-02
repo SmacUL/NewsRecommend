@@ -1,7 +1,5 @@
 package com.smacul.demo.service.impl;
 
-import com.smacul.demo.bean.Article;
-import com.smacul.demo.bean.CusBehaviorRecord;
 import com.smacul.demo.dao.ArtDao;
 import com.smacul.demo.dao.ArtFeatureCountDao;
 import com.smacul.demo.dao.CusBehaviorRecordDao;
@@ -41,23 +39,39 @@ public class LoadServiceImpl implements LoadService {
     }
 
     @Override
-    public List<ArtFullMod> getTinyArtOnePageByTypeForNew(String artType, Integer page, Integer pageSize) {
+    public List<ArtFullMod> getTinyArtOnePageByTypeForNew(Integer cusId, String artType, Integer page, Integer pageSize) {
         Integer start = PageHandler.calcuStartNO(page, pageSize);
         if (artType.equals("综合")) {
-            return artDao.getTinyArtOnePageFromGlobal(start, pageSize);
+            return artDao.getTinyArtOnePageFromGlobalNew(cusId, start, pageSize);
         } else {
-            return artDao.getTinyArtOnePageByType(TypeHandler.typeTransSingleChToEn(artType), start, pageSize);
+            return artDao.getTinyArtOnePageByTypeNew(TypeHandler.typeTransSingleChToEn(artType), cusId, start, pageSize);
         }
     }
 
     @Override
-    public List<ArtFullMod> getTinyArtOnePageByTypeForOld(String artType, Integer page, Integer pageSize) {
+    public List<ArtFullMod> getTinyArtOnePageByTypeForOld(
+            Integer cusId, List<Integer> cusList, String artType, Integer page, Integer pageSize) {
         Integer start = PageHandler.calcuStartNO(page, pageSize);
-        if (artType.equals("综合")) {
-            return artDao.getTinyArtOnePageFromGlobal(start, pageSize);
-        } else {
-            return artDao.getTinyArtOnePageByType(TypeHandler.typeTransSingleChToEn(artType), start, pageSize);
+        // 这里用一种比较土的方式创建 SQL 查询的字符串, 存在 SQL 注入的风险.
+        String cusIdListStr = "";
+        for (int i = 0; i < cusList.size(); i++) {
+            if (i != (cusList.size() - 1)) {
+                cusIdListStr += cusList.get(i) + ", ";
+            } else {
+                cusIdListStr += cusList.get(i);
+            }
         }
+        List<ArtFullMod> result = null;
+        if (artType.equals("综合")) {
+            result = artDao.getTinyArtOnePageFromGlobalOld(cusId, cusIdListStr, start, pageSize);
+        } else {
+            result = artDao.getTinyArtOnePageByTypeOld(TypeHandler.typeTransSingleChToEn(artType), cusId, cusIdListStr, start, pageSize);
+        }
+        // 如果相似用户的推荐内容数量不足 10, 则切换到新用户推荐逻辑.
+        if (result.size() < 10) {
+            result = getTinyArtOnePageByTypeForNew(cusId, artType, page, pageSize);
+        }
+        return result;
     }
 
     @Override

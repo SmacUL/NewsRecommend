@@ -33,6 +33,7 @@ public class SelfController {
     /**
      * 用户登录
      * 20-04-18 创建方法
+     * 20-05-02 添加获取相似用户的逻辑
      * @param cusName
      * @param cusPass
      * @return
@@ -47,11 +48,12 @@ public class SelfController {
             if (customer != null) {
                 customer.setCusPass(null);
                 session.setAttribute("customer", customer);
+                List<Integer> cusList = selfService.getRelativeCusList(customer.getCusId(), 10);
+                session.setAttribute("relative", cusList);
                 return "登录成功";
             }
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
-
         }
         return "登录失败";
     }

@@ -70,6 +70,12 @@
         limit #{start}, #{pageSize}
     </select>
 
+    <select id="getFollowCus" resultType="java.lang.Integer">
+        select cbr_cus_id_to
+        from CusBehaviorRecord
+        where cbr_cus_id_from = #{cusId} and cbr_behavior = 11
+    </select>
+
     <resultMap id="cusDynamicRM" type="com.smacul.demo.model.CusDynamicMod">
         <id property="cbrId" column="cbr_id"></id>
         <result property="cbrCusIdFrom" column="cbr_cus_id_from"></result>

@@ -91,4 +91,16 @@ public interface SelfService {
      * @return
      */
     Boolean checkCusFollow(Integer cusIdFrom, Integer cusIdTo);
+
+    /**
+     * 获取指定用户的相似用户
+     * 如果用户是新用户则不计算相似用户, 直接返回空的 ArrayList;
+     * 如果用户是老用户, 优先考虑他关注的用户, 再计算相似用户.
+     * 返回 10 个吧先
+     * 20-05-02 创建方法
+     * @param cusId
+     * @param num
+     * @return
+     */
+    List<Integer> getRelativeCusList(Integer cusId, Integer num);
 }

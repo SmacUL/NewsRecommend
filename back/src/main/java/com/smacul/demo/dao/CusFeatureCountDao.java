@@ -50,4 +50,12 @@ public interface CusFeatureCountDao {
      */
     Integer initialCusFeature(Integer cusId);
 
+    /**
+     * 获取用户的相似用户
+     * 20-05-02 创建方法
+     * @param cusId
+     * @param num
+     * @return
+     */
+    List<Integer> getRelativeCusList(Integer cusId, Integer num);
 }

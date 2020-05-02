@@ -4,16 +4,12 @@
             <div class="span-div">
                 <span class="span-a">{{customerDynamic.cusFrom.cusName}}</span>
                 <span class="span-b">{{transBehaviorCodeToWord(customerDynamic.cbrBehavior)}}</span>
-                <!--<span class="span-c">此文章</span>-->
             </div>
-            <!--<tiny-article :tinyArticle="CustomerDynamic.artWithCus" v-on:jump="jumpToArticle" v-on:editor="jumpToCustomer"></tiny-article>-->
-
 
             <div v-if="customerDynamic.cbrType === 1">
                 <div class="image" v-if="customerDynamic.article.artImageUrl !== ''">
                     <img :src="customerDynamic.article.artImageUrl" >
                 </div>
-                <!--<div class="word" :class="[customerDynamic.article.artImageUrl !== '' ? tinyArt : tinyArtWide]">-->
                 <div class="word" :class="[customerDynamic.article.artImageUrl !== '' ? tinyArt : tinyArtWide]">
                     <div class="title" @click="jumpToArticle(customerDynamic.article.artId)">{{ customerDynamic.article.artTitle }}</div>
                     <div class="info">
@@ -24,15 +20,10 @@
             </div>
 
             <div v-if="customerDynamic.cbrType === 2">
-<!--                <div class="image" v-if="customerDynamic.cusTo.artImageUrl !== ''">-->
-<!--                    <img :src="customerDynamic.cusTo.artImageUrl" >-->
-<!--                </div>-->
-                <div class="word">
-                        <!-- todo 现在先放着 -->
-<!--                    <div class="title" @click="jumpToArticle(customerDynamic.article.artId)">{{ customerDynamic.article.artTitle }}</div>-->
+                <div class="com clear-float">
                     <div class="title" @click="jumpToArticle(customerDynamic.cbrArtId)">{{ customerDynamic.article.artTitle }}</div>
                     <div class="com-content"  v-html="customerDynamic.comment.comContent"></div>
-                    <div class="info">
+                    <div class="info clear-float">
                         <span class="customer" @click="jumpToCustomer(customerDynamic.cusTo.cusId)">{{ customerDynamic.cusTo.cusName }}</span>
                         <span>{{ date(customerDynamic.comment.comTime) }}</span>
                     </div>
@@ -40,14 +31,10 @@
             </div>
 
             <div v-if="customerDynamic.cbrType === 3">
-<!--                <div class="image" v-if="customerDynamic.cusTo.artImageUrl !== ''">-->
-<!--                    <img :src="customerDynamic.cusTo.artImageUrl" >-->
-<!--                </div>-->
-                <div class="word">
-<!--                    <div class="title" @click="jumpToArticle(customerDynamic.article.artId)">{{ customerDynamic.article.artTitle }}</div>-->
+                <div class="rep clear-float">
                     <div class="title" @click="jumpToArticle(customerDynamic.cbrArtId)">{{ customerDynamic.article.artTitle }}</div>
                     <div class="com-content" v-html="customerDynamic.reply.repContent"></div>
-                    <div class="info">
+                    <div class="info clear-float">
                         <span class="customer" @click="jumpToCustomer(customerDynamic.cusTo.cusId)">{{ customerDynamic.cusTo.cusName }}</span>
                         <span>{{ date(customerDynamic.reply.repTime) }}</span>
                     </div>
@@ -55,16 +42,9 @@
             </div>
 
             <div v-if="customerDynamic.cbrType === 0">
-                <!--                <div class="image" v-if="customerDynamic.cusTo.artImageUrl !== ''">-->
-                <!--                    <img :src="customerDynamic.cusTo.artImageUrl" >-->
-                <!--                </div>-->
                 <div class="word">
                     <div class="title" @click="jumpToCustomer(customerDynamic.cusTo.cusId)">{{ customerDynamic.cusTo.cusName }}</div>
-                    <!--                    <div class="title" @click="jumpToArticle(customerDynamic.article.artId)">{{ customerDynamic.article.artTitle }}</div>-->
-<!--                    <div class="title" @click="jumpToArticle(customerDynamic.cbrArtId)">{{ customerDynamic.article.artTitle }}</div>-->
-<!--                    <div class="com-content" v-html="customerDynamic.reply.repContent"></div>-->
                     <div class="info">
-<!--                        <span class="customer" @click="jumpToCustomer(customerDynamic.cusTo.cusId)">{{ customerDynamic.cusTo.cusName }}</span>-->
                         <span>{{ date(customerDynamic.cbrTime) }}</span>
                     </div>
                 </div>
@@ -183,6 +163,18 @@
     }
 
     .word {
+        float: left;
+        height: 120px;
+        position: relative;
+    }
+
+    .com {
+        float: left;
+        height: 120px;
+        position: relative;
+    }
+
+    .rep {
         float: left;
         height: 120px;
         position: relative;

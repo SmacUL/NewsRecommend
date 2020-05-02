@@ -17,6 +17,8 @@ class CommentProcess:
         """ 获取评论列表
 
         # 20-04-17 代码检查 OK
+        # 20-04-28 将单次获取评论的数量从 10 变成了 20
+        # 20-05-02 日志打印内容修改, 修改 URL 中的 aid 参数, 这个作用不明确, 先调小一点
 
         参考接口:
             https://www.toutiao.com/article/v2/tab_comments/?aid=24&app_name=toutiao-web&group_id=6732655510039822860&item_id=6732655510039822860&offset=0&count=5
@@ -98,14 +100,14 @@ class CommentProcess:
         """
         try:
             com_url = 'https://www.toutiao.com/api/pc/article/v4/tab_comments/?' \
-                          'aid=66&app_name=toutiao-web&group_id={0}&item_id={1}&offset=0&count={2}' \
-                        .format(art_brief_json['group_id'], art_brief_json['item_id'], 10)
+                          'aid=1&app_name=toutiao-web&group_id={0}&item_id={1}&offset=0&count={2}' \
+                        .format(art_brief_json['group_id'], art_brief_json['item_id'], 20)
             headers = {
                 "Host": "www.toutiao.com",
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36'
             }
             result = Request.Request(com_url, headers).more()['data']
-            logging.info("获取评论页数据 %s 失败" % com_url)
+            logging.info("获取评论页数据 %s 成功" % com_url)
             return result
         except:
             logging.exception("获取评论页数据 失败")

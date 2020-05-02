@@ -7,9 +7,10 @@
                 </div>
                 <div class="comment">
                     <div style="text-align: left; font-weight: 500; font-size: 18px;">
-                        <span>{{reply.customer.cusName}}</span>
+                        <!--<el-button type="text">文字按钮</el-button>-->
+                        <el-button type="text" @click="jumpToCus(reply.customer.cusId)">{{reply.customer.cusName}}</el-button>
                         <span style="font-weight:400; font-size:16px;" v-if="reply.repRepId !== null"> 回复 </span>
-                        <span v-if="reply.repRepId !== null">{{ findReplyTarget(reply.repRepId) }}</span>
+                        <el-button type="text" v-if="reply.repRepId !== null" @click="jumpToCus(findReplyTarget(reply.repRepId).cusId)">{{ findReplyTarget(reply.repRepId).cusName }}</el-button>
                     </div>
                     <!--<div class="content">{{reply.repContent}}</div>-->
                     <div class="content" v-html="reply.repContent"></div>
@@ -45,6 +46,7 @@
     import CommentReplyInput from "./CommentReplyInput";
     import {transUTCtoLocal} from "../../../util/TimeHandler";
     import {cusAddReply} from "../../../control/Discuss";
+    import {jumpInNewPage} from "../../../util/PageJump";
     export default {
         name: "ReplyMain",
         components: {CommentReplyInput},
@@ -72,7 +74,7 @@
                 let result = '';
                 this.replys.forEach((item) => {
                     if (item.repId === id) {
-                        result = item.customer.cusName;
+                        result = item.customer;
                     }
                 });
                 return result;
@@ -103,6 +105,9 @@
 
                 this.add.type = -1;
                 this.add.id = -1;
+            },
+            jumpToCus: function (cusId) {
+                jumpInNewPage('/self/' + cusId);
             }
         },
         data: function () {

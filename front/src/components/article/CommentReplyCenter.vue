@@ -8,7 +8,7 @@
                 </div>
                 <div class="comment">
                     <div style="text-align: left; font-weight: 500; font-size: 18px;">
-                        <span>{{comment.customer.cusName}}</span>
+                        <el-button type="text" @click="jumpToCus(comment.customer.cusId)">{{comment.customer.cusName}}</el-button>
                     </div>
                     <!--<div class="content">{{comment.comContent}}</div>-->
                     <div class="content" v-html="comment.comContent"></div>
@@ -32,13 +32,14 @@
                         @quickShow="$emit('quickShow')">
             </reply-main>
         </div>
-        <el-pagination v-if="comments.length > 4"
+        <el-pagination v-if="comments.length > control.com.pageSize"
                        background
                        layout="prev, pager, next"
                        @current-change="commentHandleCurrentChange"
                        :page-size="control.com.pageSize"
                        :current-page="control.com.page"
                        :total="comments.length"
+                       class="page-switcher"
         >
         </el-pagination>
     </div>
@@ -49,6 +50,7 @@
     import ReplyMain from "./comment-reply-main/ReplyMain";
     import {transUTCtoLocal} from "../../util/TimeHandler";
     import {addNewCom, cusAddReply} from "../../control/Discuss";
+    import {jumpInNewPage} from "../../util/PageJump";
 
     /**
      * /src/components/article/comment-reply-main/ 路径下包含了 CommentReplyMain 模块需要的子组件
@@ -74,6 +76,10 @@
                 this.control.com.page = val;
                 this.control.type = -1;
                 this.control.id = -1;
+                let artHeight = document.getElementsByClassName('article-main')[0].offsetHeight;
+                let otherHeight = 70 + 15;
+                let scrollHeight = artHeight + otherHeight;
+                window.scrollTo(0, scrollHeight);
             },
             date: function (time) {
                 return transUTCtoLocal(time);
@@ -138,6 +144,9 @@
                     });
                 this.control.add.type = -1;
                 this.control.add.id = -1;
+            },
+            jumpToCus: function (cusId) {
+                jumpInNewPage('/self/' + cusId);
             }
         },
         data: function() {
@@ -145,7 +154,7 @@
                 control: {
                     com: {
                         page: 1,
-                        pageSize: 4,
+                        pageSize: 8,
                     },
                     add: {
                         type: -1,
@@ -214,5 +223,10 @@
 
     .content >>> p {
         margin: 0;
+    }
+
+    .page-switcher {
+        float: left;
+        padding-bottom: 50px;
     }
 </style>

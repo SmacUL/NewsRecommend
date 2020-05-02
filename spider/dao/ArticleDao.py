@@ -174,10 +174,10 @@ class ArticleDao:
                                 .format(behavior_dict[behavior], behavior_dict[behavior]) % art_id
 
             self.__base.execute_sql(update_sql)
-            logging.info("新闻 art_id=%s 特征 %s 数据库插入 成功" % (art_id, behavior))
+            # logging.info("新闻 art_id=%s 特征 %s 数据库插入 成功" % (art_id, behavior))
         except:
             # self.__base.commit_rollback()
-            logging.exception("新闻 art_id=%s 特征 %s 数据库插入 失败" % (art_id, behavior))
+            # logging.exception("新闻 art_id=%s 特征 %s 数据库插入 失败" % (art_id, behavior))
             raise
 
 

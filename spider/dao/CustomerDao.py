@@ -169,22 +169,22 @@ class CustomerDao:
             self.__base.execute_sql(search_sql)
             result = self.__base.get_result_one()
             if result[0] == 0:
-                logging.info("特征 用户 cus_id=%s 数据库查询 不存在" % (cus_id))
+                # logging.info("特征 用户 cus_id=%s 数据库查询 不存在" % (cus_id))
                 if flag:
                     update_sql = "insert into CusFeatureCount(cfc_cus_id) value (%d)" % cus_id
                 else:
                     update_sql = "insert into CusFeatureCount(cfc_cus_id, {0}) values(%d, %d)" \
                                      .format('cfc_' + category) % (cus_id, 2)
             else:
-                logging.info("特征 用户 cus_id=%s 数据库查询 存在" % (cus_id))
+                # logging.info("特征 用户 cus_id=%s 数据库查询 存在" % (cus_id))
                 update_sql = "update CusFeatureCount set {0}={1}+2 where cfc_cus_id=%d" \
                                  .format('cfc_' + category, 'cfc_' + category) % cus_id
 
             self.__base.execute_sql(update_sql)
-            logging.info("用户 cus_id=%s 类别 %s 特征 数据库插入 成功" % (cus_id, category))
+            # logging.info("用户 cus_id=%s 类别 %s 特征 数据库插入 成功" % (cus_id, category))
         except:
             # self.__base.commit_rollback()
-            logging.exception("用户 cus_id=%s 类别 %s 特征 数据库插入 失败" % (cus_id, category))
+            # logging.exception("用户 cus_id=%s 类别 %s 特征 数据库插入 失败" % (cus_id, category))
             raise
 
 
@@ -200,13 +200,13 @@ class CustomerDao:
             self.__base.execute_sql(search_sql)
             result = self.__base.get_result_one()
             if result[0] == 0:
-                logging.info("用户 cus_spider=%s 数据库查询 不存在" % cus_spider)
+                # logging.info("用户 cus_spider=%s 数据库查询 不存在" % cus_spider)
                 return False
             else:
-                logging.info("用户 cus_spider=%s 数据库查询 已存在" % cus_spider)
+                # logging.info("用户 cus_spider=%s 数据库查询 已存在" % cus_spider)
                 return True
         except:
-            logging.exception("用户 cus_spider=%s 数据库查询 失败" % cus_spider)
+            # logging.exception("用户 cus_spider=%s 数据库查询 失败" % cus_spider)
             raise
 
 
@@ -221,10 +221,10 @@ class CustomerDao:
             search_sql = "select cus_id from Customer where cus_spider = '%s'" % cus_spider
             self.__base.execute_sql(search_sql)
             result = self.__base.get_result_one()
-            logging.info("用户 cus_spider=%s 数据库查询: cus_id 值: %s" % (cus_spider, result[0]))
+            # logging.info("用户 cus_spider=%s 数据库查询: cus_id 值: %s" % (cus_spider, result[0]))
             return result[0]
         except:
-            logging.info("用户 cus_spider=%s 数据库查询 cus_id 失败" % cus_spider)
+            # logging.info("用户 cus_spider=%s 数据库查询 cus_id 失败" % cus_spider)
             raise
 
 

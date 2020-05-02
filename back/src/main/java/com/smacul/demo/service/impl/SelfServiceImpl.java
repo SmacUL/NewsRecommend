@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -129,5 +130,22 @@ public class SelfServiceImpl implements SelfService {
         } else {
             return false;
         }
+    }
+
+    @Override
+    public List<Integer> getRelativeCusList(Integer cusId, Integer num) {
+        // 判断用户类型
+        if (checkIsNewUser(cusId)) {
+            return new ArrayList<>();
+        }
+        // 是老用户获取关注用户
+        List<Integer> followCusList = cusBehaviorRecordDao.getFollowCus(cusId);
+        if (followCusList.size() >= 10) {
+            return followCusList.subList(0, 10);
+        }
+        // 是老用户获取相似用户
+        Integer leftNum = num - followCusList.size();
+        followCusList.addAll(cusFeatureCountDao.getRelativeCusList(cusId, leftNum));
+        return followCusList;
     }
 }

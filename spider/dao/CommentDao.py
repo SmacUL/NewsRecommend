@@ -29,13 +29,13 @@ class CommentDao:
             self.__base.execute_sql(search_sql)
             result = self.__base.get_result_one()
             if result[0] == 0:
-                logging.info("is_com_exist 评论 com_spider=%s 数据库查询 不存在" % com_spider)
+                # logging.info("is_com_exist 评论 com_spider=%s 数据库查询 不存在" % com_spider)
                 return False
             else:
-                logging.info("is_com_exist 评论 com_spider=%s 数据库查询 已存在" % com_spider)
+                # logging.info("is_com_exist 评论 com_spider=%s 数据库查询 已存在" % com_spider)
                 return True
         except:
-            logging.exception("is_com_exist 评论 com_spider=%s 数据库查询 失败" % com_spider)
+            # logging.exception("is_com_exist 评论 com_spider=%s 数据库查询 失败" % com_spider)
             raise
 
 
@@ -56,10 +56,10 @@ class CommentDao:
                             com_mod.com_art_id,com_mod.com_time, com_mod.com_spider, com_mod.com_legal)
             self.__base.execute_sql(insert_sql)
             self.__base.commit_transactions()
-            logging.info("insert_com 评论 com_spider=%s 数据库插入 成功" % com_mod.com_spider)
+            # logging.info("insert_com 评论 com_spider=%s 数据库插入 成功" % com_mod.com_spider)
         except:
             # self.__base.commit_rollback()
-            logging.exception("insert_com 评论 com_spider=%s 数据库插入 失败" % com_mod.com_spider)
+            # logging.exception("insert_com 评论 com_spider=%s 数据库插入 失败" % com_mod.com_spider)
             raise
 
 
@@ -75,10 +75,10 @@ class CommentDao:
             search_sql = "select com_id from Comment where com_spider = '%s'" % com_spider
             self.__base.execute_sql(search_sql)
             result = self.__base.get_result_one()
-            logging.info("search_com_id_by_spider 评论 com_spider=%s 数据库查询: com_id 值: %s" % (com_spider, result[0]))
+            # logging.info("search_com_id_by_spider 评论 com_spider=%s 数据库查询: com_id 值: %s" % (com_spider, result[0]))
             return result[0]
         except:
-            logging.info("search_com_id_by_spider 评论 com_spider=%s 数据库查询: com_id 失败" % com_spider)
+            # logging.info("search_com_id_by_spider 评论 com_spider=%s 数据库查询: com_id 失败" % com_spider)
             raise
 
 
@@ -98,11 +98,11 @@ class CommentDao:
             self.__base.execute_sql(search_sql)
             result = self.__base.get_result_one()
             if result[0] == 0:
-                logging.info("评论关系 新闻 art_id=%s 用户 cus_id=%s 数据库查询 不存在" % (art_id, cus_id))
+                # logging.info("评论关系 新闻 art_id=%s 用户 cus_id=%s 数据库查询 不存在" % (art_id, cus_id))
                 return False
             else:
-                logging.info("评论关系 新闻 art_id=%s 用户 cus_id=%s 数据库查询 存在" % (art_id, cus_id))
+                # logging.info("评论关系 新闻 art_id=%s 用户 cus_id=%s 数据库查询 存在" % (art_id, cus_id))
                 return True
         except:
-            logging.exception("评论关系 新闻 art_id=%s 用户 cus_id=%s 数据库查询 错误" % (art_id, cus_id))
+            # logging.exception("评论关系 新闻 art_id=%s 用户 cus_id=%s 数据库查询 错误" % (art_id, cus_id))
             raise

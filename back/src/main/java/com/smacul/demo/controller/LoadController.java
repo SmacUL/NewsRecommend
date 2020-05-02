@@ -46,7 +46,8 @@ public class LoadController {
 
     /**
      * 按照类别获取一页文章
-     * 20-04-19 创建方法 TODO 老用户的处理逻辑需要更换.
+     * 20-04-19 创建方法
+     * 20-05-02 添加老用户推荐逻辑
      * @param artType
      * @param page
      * @param pageSize
@@ -56,13 +57,14 @@ public class LoadController {
     public List<ArtFullMod> getTinyArtOnePageByType(
             @RequestParam String artType, @RequestParam Integer page, @RequestParam Integer pageSize) {
         Customer customer = (Customer) session.getAttribute("customer");
-        if (customer == null) {
+        List<Integer> relativeCusList = (List<Integer>) session.getAttribute("relative");
+        if (customer == null || relativeCusList == null) {
             return null;
         }
         if (selfService.checkIsNewUser(customer.getCusId())) {
-            return loadService.getTinyArtOnePageByTypeForNew(artType, page, pageSize);
+            return loadService.getTinyArtOnePageByTypeForNew(customer.getCusId(), artType, page, pageSize);
         } else {
-            return loadService.getTinyArtOnePageByTypeForOld(artType, page, pageSize);
+            return loadService.getTinyArtOnePageByTypeForOld(customer.getCusId(), relativeCusList, artType, page, pageSize);
         }
     }
 

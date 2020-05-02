@@ -144,7 +144,7 @@ class ArticleProcess:
             logging.info("获取新闻缩率信息 %s 成功" % url)
             return result
         except:
-            logging.exception("获取新闻缩率信息 失败")
+            # logging.exception("获取新闻缩率信息 失败")
             return None
 
 
@@ -191,7 +191,7 @@ class ArticleProcess:
 
             logging.info("设置新闻数据 url=%s 成功" % url)
         except:
-            logging.exception("设置新闻数据 失败")
+            # logging.exception("设置新闻数据 失败")
 
             raise
         finally:
@@ -264,7 +264,7 @@ class ArticleProcess:
             logging.info("获取新闻内容数据 %s 成功" % art_url)
             return result
         except:
-            logging.exception("获取新闻内容数据 失败")
+            # logging.exception("获取新闻内容数据 失败")
             return None
 
 

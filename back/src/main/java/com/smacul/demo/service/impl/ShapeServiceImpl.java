@@ -38,10 +38,16 @@ public class ShapeServiceImpl implements ShapeService {
     public Boolean setCusBehaviorArtRead(Integer cusId, Integer artId) {
         String artType = artDao.getArtTypeByArtId(artId);
         Integer artCusId = artDao.getArtCusIdByArtId(artId);
-        Integer cbr = cbrDao.addCusBehavior(cusId, artCusId, 2, artId, 1, artId);
-        Integer cfc = cusFeatureCountDao.updateCusFeature(cusId, "cfc_" + artType, 1);
-        Integer afc = artFeatureCountDao.updateArtFeature(artId, "afc_read_num", 1);
-        if (cbr == 1 && cfc == 1 && afc == 1) {
+        Integer cbr = 0;
+        Integer cfc = 0;
+        Integer afc = 0;
+        Integer readNum = cbrDao.countTargetCusArtBehaviorFrom(cusId, artId, 2);
+        if (readNum < 1) {
+            cbr = cbrDao.addCusBehavior(cusId, artCusId, 2, artId, 1, artId);
+            cfc = cusFeatureCountDao.updateCusFeature(cusId, "cfc_" + artType, 1);
+            afc = artFeatureCountDao.updateArtFeature(artId, "afc_read_num", 1);
+        }
+        if (readNum >=1 || (cbr == 1 && cfc == 1 && afc == 1)) {
             return true;
         } else {
             return false;
