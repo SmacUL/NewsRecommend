@@ -44,6 +44,7 @@ public class DiscussController {
     /**
      * 添加评论
      * 20-04-20 添加方法
+     * 20-05-04 在插入用户行为数据之前, 对 result 的内容进行检查
      * @param comment
      * @return
      */
@@ -54,13 +55,16 @@ public class DiscussController {
             return "评论失败";
         }
         String result = discussService.addNewCom(comment);
-        shapeService.setCusBehaviorComEdit(customer.getCusId(), comment.getComArtId(), comment.getComId());
+        if (result.equals("评论成功")) {
+            shapeService.setCusBehaviorComEdit(customer.getCusId(), comment.getComArtId(), comment.getComId());
+        }
         return result;
     }
 
     /**
      * 添加回复
      * 20-04-20 添加方法
+     * 20-05-04 在插入用户行为数据之前, 对 result 的内容进行检查
      * @param reply
      * @return
      */
@@ -71,7 +75,9 @@ public class DiscussController {
             return "评论失败";
         }
         String result = discussService.addNewRep(reply);
-        shapeService.setCusBehaviorRepEdit(customer.getCusId(), reply.getRepArtId(), reply.getRepId());
+        if (result.equals("评论成功")) {
+            shapeService.setCusBehaviorRepEdit(customer.getCusId(), reply.getRepArtId(), reply.getRepId());
+        }
         return result;
     }
 

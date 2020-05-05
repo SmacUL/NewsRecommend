@@ -1,5 +1,6 @@
 package com.smacul.demo.dao;
 
+import com.smacul.demo.bean.Article;
 import com.smacul.demo.model.ArtFullMod;
 import org.springframework.stereotype.Repository;
 
@@ -122,4 +123,12 @@ public interface ArtDao {
      */
     List<ArtFullMod> getTinyArtOnePageByTypeOld
             (String artType, Integer cusId, String cusIdListStr, Integer start, Integer pageSize);
+
+    /**
+     * 添加新闻
+     * 20-05-04 创建方法
+     * @param article
+     * @return
+     */
+    Integer addArt(Article article);
 }

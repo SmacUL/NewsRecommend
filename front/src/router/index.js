@@ -8,6 +8,7 @@ import SearchView from '../views/SearchView'
 import ArticleView from "../views/ArticleView"
 import SelfView from '../views/SelfView'
 import PortView from "../views/PortView";
+import EditView from "../views/EditView";
 
 Vue.use(VueRouter);
 
@@ -41,6 +42,11 @@ const routes = [
     path: '/port',
     name: 'PortView',
     component: PortView
+  },
+  {
+    path: '/edit',
+    name: 'EditView',
+    component: EditView
   }
 
   // {

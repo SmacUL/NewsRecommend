@@ -5,6 +5,11 @@
 
 <mapper namespace="com.smacul.demo.dao.ArtDao">
 
+    <insert id="addArt" useGeneratedKeys="true" keyProperty="artId" parameterType="com.smacul.demo.bean.Article">
+        insert into Article(art_title, art_cus_id, art_content, art_image_url, art_type)
+        values(#{artTitle}, #{artCusId}, #{artContent}, #{artImageUrl}, #{artType})
+    </insert>
+
     <select id="getArtTypesOrderByTypeNum" resultType="java.lang.String">
         select art_type from Article group by art_type order by count(art_type) desc
     </select>
