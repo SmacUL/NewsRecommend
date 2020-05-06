@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.smacul.demo.dao.RepDao">
+
+    <insert id="addRep" useGeneratedKeys="true" keyProperty="repId" parameterType="com.smacul.demo.bean.Reply">
+        insert into Reply(rep_content, rep_type, rep_legal, rep_cus_id, rep_art_id, rep_com_id, rep_rep_id)
+        values (#{repContent}, #{repType}, #{repLegal}, #{repCusId}, #{repArtId}, #{repComId}, #{repRepId})
+    </insert>
+
+    <select id="getRepFullList" resultType="com.smacul.demo.model.RepFullMod">
+        select R.*,
+            C.cus_avatar_url as 'customer.cusAvatarUrl',
+            C.cus_id as 'customer.cusId',
+            C.cus_name as 'customer.cusName'
+        from Reply as R, Customer as C
+        where R.rep_com_id = #{comId} and R.rep_cus_id = C.cus_id
+        order by rep_time desc
+    </select>
+
+    <select id="getSingleRep" resultType="com.smacul.demo.model.RepFullMod">
+        select *
+        from Reply
+        where 3 = #{flag} and rep_id = #{repId}
+    </select>
+
+</mapper>

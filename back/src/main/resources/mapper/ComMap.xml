@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.smacul.demo.dao.ComDao">
+    <insert id="addCom" useGeneratedKeys="true" keyProperty="comId" parameterType="com.smacul.demo.bean.Comment">
+        insert into Comment(com_content, com_legal, com_cus_id, com_art_id)
+        values(#{comContent}, #{comLegal}, #{comCusId}, #{comArtId})
+    </insert>
+
+    <select id="getComFullList" resultMap="searchCommentsRM">
+        select *
+        from Comment
+        where com_art_id = #{artId}
+        order by com_time desc
+    </select>
+
+    <select id="getSingleCom" resultType="com.smacul.demo.model.ComFullMod">
+        select *
+        from Comment
+        where 2 = #{flag} and com_id = #{comId}
+    </select>
+
+    <resultMap id="searchCommentsRM" type="com.smacul.demo.model.ComFullMod">
+        <id property="comId" column="com_id"></id>
+        <result property="comArtId" column="com_art_id"></result>
+        <result property="comContent" column="com_content"></result>
+        <result property="comCusId" column="com_cus_id"></result>
+        <result property="comLegal" column="com_legal"></result>
+        <result property="comSpider" column="com_spider"></result>
+        <result property="comTime" column="com_time"></result>
+        <collection property="customer" select="com.smacul.demo.dao.CusDao.getCusById"
+                    column="cusId=com_cus_id" javaType="com.smacul.demo.bean.Customer"></collection>
+        <collection property="replys" select="com.smacul.demo.dao.RepDao.getRepFullList"
+                    column="comId=com_id" javaType="java.util.ArrayList"></collection>
+    </resultMap>
+
+</mapper>

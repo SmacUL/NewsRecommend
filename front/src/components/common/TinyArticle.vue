@@ -7,6 +7,7 @@
             <div class="title" @click="jumpToArticle(tinyArticle.artId)">{{ tinyArticle.artTitle }}</div>
             <!--<div>adsfasfdasdf</div>-->
             <div class="info">
+                <span class="type">{{ tinyArticle.artType}}</span>
                 <span class="customer" @click="jumpToCustomer(tinyArticle.customer.cusId)">{{ tinyArticle.customer.cusName }}</span>
                 <span>{{ date(tinyArticle.artTime) }}</span>
             </div>
@@ -107,12 +108,20 @@
         color: #888888;
     }
 
+    .info .type {
+        margin-right: 10px;
+        border: 1px;
+        border-style: solid;
+        border-radius: 3px;
+        color: darkred;
+    }
+
     .info :first-child {
         font-weight: 400;
     }
 
     .customer {
-        margin-right: 5px;
+        margin-right: 10px;
     }
 
     .customer:hover {

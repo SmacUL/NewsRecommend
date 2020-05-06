@@ -17,20 +17,25 @@
 </template>
 
 <script>
+    import {cusLogin} from "../../control/Self";
+    import {jumpInCurPage} from "../../util/PageJump";
+
     export default {
         name: "LoginPart.vue",
         methods: {
             cusLogin() {
-                let data = new FormData();
-                data.append('cusName', this.ruleForm.name);
-                data.append('cusPass', this.ruleForm.pass);
-                this.$axios.post('/api/self/login', data)
+                // let data = new FormData();
+                // data.append('cusName', this.ruleForm.name);
+                // data.append('cusPass', this.ruleForm.pass);
+                cusLogin(this.ruleForm.name, this.ruleForm.pass)
+                // this.$axios.post('/api/self/login', data)
                     .then((response) => {
-                        if (response.data) {
-                            this.$message.info('登录成功');
-                            this.$router.push({path: '/index'});
-                        } else {
-                            this.$message.info('登录失败, 请重新输入');
+                        if (response.data === '登录成功' || response.data === '您已登录') {
+                            this.$message.info(response.data);
+                            // this.$router.push({path: '/index'});
+                            jumpInCurPage('/index')
+                        } else if (response.data === '登录失败') {
+                            this.$message.info(response.data);
                             this.ruleForm.name = '';
                             this.ruleForm.pass = '';
                         }

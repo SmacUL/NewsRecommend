@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.smacul.demo.dao.CusBehaviorRecordDao">
+
+    <insert id="addTargetCusFollowBehavior">
+        insert into CusBehaviorRecord(cbr_cus_id_from, cbr_cus_id_to, cbr_behavior)
+        values (#{param1}, #{param2}, 11)
+    </insert>
+
+    <insert id="addCusBehavior">
+        insert into CusBehaviorRecord(cbr_cus_id_from, cbr_cus_id_to, cbr_behavior, cbr_art_id, cbr_type, cbr_target_id)
+        values (#{cusIdFrom}, #{cusIdTo}, #{behavior}, #{artId}, #{type}, #{targetId})
+    </insert>
+
+    <delete id="deleteTargetCusFollowBehavior">
+        delete from CusBehaviorRecord
+        where cbr_behavior = 11 and cbr_cus_id_from = #{param1} and cbr_cus_id_to = #{param2};
+    </delete>
+
+    <delete id="deleteCusBehavior">
+        delete from CusBehaviorRecord
+        where
+            cbr_cus_id_from = #{cusIdFrom} and cbr_cus_id_to = #{cusIdTo} and cbr_behavior = #{behavior} and
+            cbr_art_id = #{artId} and cbr_type = #{type} and cbr_target_id = #{targetId}
+    </delete>
+
+
+    <select id="countTargetCusFollowBehavior" resultType="java.lang.Integer">
+        select count(*)
+        from CusBehaviorRecord
+        where cbr_behavior = 11 and cbr_cus_id_from = #{param1} and cbr_cus_id_to = #{param2};
+    </select>
+
+    <select id="countCusBehaviorFrom" resultType="java.lang.Integer">
+        select count(*)
+        from CusBehaviorRecord
+        where cbr_cus_id_from = #{param1} and cbr_behavior = #{param2}
+    </select>
+
+    <select id="countCusBehaviorTo" resultType="java.lang.Integer">
+        select count(*)
+        from CusBehaviorRecord
+        where cbr_cus_id_to = #{param1} and cbr_behavior = #{param2}
+    </select>
+
+    <select id="countTargetCusArtBehaviorFrom" resultType="java.lang.Integer">
+        select count(*)
+        from CusBehaviorRecord
+        where
+            cbr_cus_id_from = #{cusIdFrom} and cbr_art_id = #{artId}
+            and cbr_behavior = #{behavior} and cbr_type = 1 and cbr_target_id = #{artId}
+    </select>
+
+    <select id="countTargetCusArtBehaviorTo" resultType="java.lang.Integer">
+        select count(*)
+        from CusBehaviorRecord
+        where
+            cbr_cus_id_to = #{cusIdTo} and cbr_art_id = #{artId}
+            and cbr_behavior = #{behavior} and cbr_type = 1 and cbr_target_id = #{artId}
+    </select>
+
+    <select id="getCusDynamicByCusId" resultMap="cusDynamicRM">
+        select *
+        from CusBehaviorRecord
+        where cbr_cus_id_from = #{cusId} and cbr_behavior != 2
+        order by cbr_time desc
+        limit #{start}, #{pageSize}
+    </select>
+
+    <select id="getFollowCus" resultType="java.lang.Integer">
+        select cbr_cus_id_to
+        from CusBehaviorRecord
+        where cbr_cus_id_from = #{cusId} and cbr_behavior = 11
+    </select>
+
+    <resultMap id="cusDynamicRM" type="com.smacul.demo.model.CusDynamicMod">
+        <id property="cbrId" column="cbr_id"></id>
+        <result property="cbrCusIdFrom" column="cbr_cus_id_from"></result>
+        <result property="cbrCusIdTo" column="cbr_cus_id_to"></result>
+        <result property="cbrBehavior" column="cbr_behavior"></result>
+        <result property="cbrTime" column="cbr_time"></result>
+        <result property="cbrType" column="cbr_type"></result>
+        <result property="cbrArtId" column="cbr_art_id"></result>
+        <collection property="cusFrom" select="com.smacul.demo.dao.CusDao.getCusById"
+                    column="cusId=cbr_cus_id_from" javaType="com.smacul.demo.bean.Customer"></collection>
+        <collection property="cusTo" select="com.smacul.demo.dao.CusDao.getCusById"
+                    column="cusId=cbr_cus_id_to" javaType="com.smacul.demo.bean.Customer"></collection>
+        <collection property="article" select="com.smacul.demo.dao.ArtDao.getSingleArt"
+                    column="{flag=cbr_type, artId=cbr_art_id}" javaType="com.smacul.demo.model.ArtFullMod"></collection>
+        <collection property="comment" select="com.smacul.demo.dao.ComDao.getSingleCom"
+                    column="{flag=cbr_type, comId=cbr_target_id}" javaType="com.smacul.demo.model.ComFullMod"></collection>
+        <collection property="reply" select="com.smacul.demo.dao.RepDao.getSingleRep"
+                    column="{flag=cbr_type, repId=cbr_target_id}" javaType="com.smacul.demo.model.RepFullMod"></collection>
+    </resultMap>
+
+
+</mapper>

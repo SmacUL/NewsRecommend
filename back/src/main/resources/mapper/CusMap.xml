@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.smacul.demo.dao.CusDao">
+
+    <insert id="insertCusForRegister">
+        insert into Customer(cus_name, cus_pass) values(#{cusName}, #{cusPass});
+    </insert>
+
+    <insert id="updateCusBasicInfo" parameterType="com.smacul.demo.bean.Customer">
+        update Customer
+        set cus_name = #{cusName}, cus_avatar_url = #{cusAvatarUrl}, cus_style = #{cusStyle}, cus_gender = #{cusGender}
+        where cus_id = #{cusId}
+    </insert>
+
+    <update id="updateCusBasicInfoWithPass">
+        update Customer
+        set cus_name = #{cusName}, cus_avatar_url = #{cusAvatarUrl}, cus_style = #{cusStyle}, cus_gender = #{cusGender},
+            cus_pass = #{cusPass}
+        where cus_id = #{cusId}
+    </update>
+
+    <select id="getCusByName" resultType="com.smacul.demo.bean.Customer">
+        select cus_id, cus_name, cus_spider, cus_avatar_url, cus_style, cus_gender, cus_time, cus_legal, cus_pass
+        from Customer where cus_name = #{cusName};
+    </select>
+
+    <select id="countCusByName" resultType="java.lang.Integer">
+        select count(*) from Customer where cus_name = #{cusName};
+    </select>
+
+    <select id="getCusById" resultType="com.smacul.demo.bean.Customer">
+        select cus_id, cus_name, cus_spider, cus_avatar_url, cus_style, cus_gender, cus_time, cus_legal
+        from Customer where cus_id = #{cusId};
+    </select>
+
+
+</mapper>

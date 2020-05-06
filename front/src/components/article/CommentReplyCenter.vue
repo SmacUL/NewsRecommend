@@ -8,7 +8,7 @@
                 </div>
                 <div class="comment">
                     <div style="text-align: left; font-weight: 500; font-size: 18px;">
-                        <span>{{comment.customer.cusName}}</span>
+                        <el-button type="text" @click="jumpToCus(comment.customer.cusId)">{{comment.customer.cusName}}</el-button>
                     </div>
                     <!--<div class="content">{{comment.comContent}}</div>-->
                     <div class="content" v-html="comment.comContent"></div>
@@ -32,13 +32,14 @@
                         @quickShow="$emit('quickShow')">
             </reply-main>
         </div>
-        <el-pagination v-if="comments.length > 4"
+        <el-pagination v-if="comments.length > control.com.pageSize"
                        background
                        layout="prev, pager, next"
                        @current-change="commentHandleCurrentChange"
                        :page-size="control.com.pageSize"
                        :current-page="control.com.page"
                        :total="comments.length"
+                       class="page-switcher"
         >
         </el-pagination>
     </div>
@@ -48,7 +49,8 @@
     import CommentReplyInput from "./comment-reply-main/CommentReplyInput";
     import ReplyMain from "./comment-reply-main/ReplyMain";
     import {transUTCtoLocal} from "../../util/TimeHandler";
-    import {cusAddComment, cusAddReply} from "../../control/Discuss";
+    import {addNewCom, cusAddReply} from "../../control/Discuss";
+    import {jumpInNewPage} from "../../util/PageJump";
 
     /**
      * /src/components/article/comment-reply-main/ 路径下包含了 CommentReplyMain 模块需要的子组件
@@ -62,7 +64,7 @@
                 this.control.add.id = -1;
             },
             addCancelReply(comId) {
-                if (this.control.add.type == 1 && this.control.add.id == comId) {
+                if (this.control.add.type === 1 && this.control.add.id === comId) {
                     this.control.add.type = -1;
                     this.control.add.id = -1;
                 } else {
@@ -74,6 +76,10 @@
                 this.control.com.page = val;
                 this.control.type = -1;
                 this.control.id = -1;
+                let artHeight = document.getElementsByClassName('article-main')[0].offsetHeight;
+                let otherHeight = 70 + 15;
+                let scrollHeight = artHeight + otherHeight;
+                window.scrollTo(0, scrollHeight);
             },
             date: function (time) {
                 return transUTCtoLocal(time);
@@ -84,12 +90,17 @@
              * @param message
              */
             addComment: function (message) {
+                // let comment = new FormData();
+                // comment.append('comContent', message);
+                // comment.append('comCustomerId', this.customer.cusId);
+                // comment.append('comArticleId', this.comments[0].comArticleId);
+
                 let comment = {
                     comContent: message,
-                    comCustomerId: this.customer.cusId,
-                    comArticleId: this.comments[0].comArticleId,
+                    comCusId: this.customer.cusId,
+                    comArtId: this.comments[0].comArtId,
                 };
-                cusAddComment(comment)
+                addNewCom(comment)
                     .then((response) => {
                         if(response.data) {
                             this.$message.info("评论成功");
@@ -107,13 +118,19 @@
              * @param message
              */
             addReply: function (message) {
+                // let reply = new FormData();
+                // reply.append('repContent', message);
+                // reply.append('repType', 0);
+                // reply.append('repCustomerId', this.customer.cusId);
+                // reply.append('repArticleId', this.comments[0].comArticleId);
+                // reply.append('repCommentId', this.control.add.id);
                 let reply = {
                     repContent: message,
                     repType: 0,
-                    repCustomerId: this.customer.cusId,
-                    repArticleId: this.comments[0].comArticleId,
+                    repCusId: this.customer.cusId,
+                    repArtId: this.comments[0].comArtId,
                     // 回复针对的评论的 id
-                    repCommentId: this.control.add.id,
+                    repComId: this.control.add.id,
                 };
                 cusAddReply(reply)
                     .then((response) => {
@@ -127,6 +144,9 @@
                     });
                 this.control.add.type = -1;
                 this.control.add.id = -1;
+            },
+            jumpToCus: function (cusId) {
+                jumpInNewPage('/self/' + cusId);
             }
         },
         data: function() {
@@ -134,7 +154,7 @@
                 control: {
                     com: {
                         page: 1,
-                        pageSize: 4,
+                        pageSize: 8,
                     },
                     add: {
                         type: -1,
@@ -203,5 +223,10 @@
 
     .content >>> p {
         margin: 0;
+    }
+
+    .page-switcher {
+        float: left;
+        padding-bottom: 50px;
     }
 </style>

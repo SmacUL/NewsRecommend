@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.smacul.demo.dao.ArtFeatureCountDao">
+
+    <update id="updateArtFeature">
+        update ArtFeatureCount
+        set ${column} = ${column} + 1
+        where afc_art_id = #{artId}
+    </update>
+
+    <select id="getArtFeatureCountByArtId" resultType="com.smacul.demo.bean.ArtFeatureCount">
+        select *
+        from ArtFeatureCount
+        where afc_art_id = #{artId}
+    </select>
+</mapper>

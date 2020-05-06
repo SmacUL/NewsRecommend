@@ -6,9 +6,17 @@ import logging
 
 
 class ReplyProcess:
+    """ 回复数据的获取与填充
+
+    # 20-17-04 依据新的 SQL 修改
+
+    """
+
 
     def get_reps_json(self, com_json):
         """ 获取 回复 包括 回复的回复 的数据
+
+        # 20-04-17 代码检查 OK
 
         数据接口参考:
             https://www.toutiao.com/2/comment/v2/reply_list/?aid=24&app_name=toutiao-web&id=6733175468666748931&offset=0&count=20&repost=0
@@ -313,25 +321,36 @@ class ReplyProcess:
             logging.info("获取回复信息 %s 成功" % reply_url)
             return result
         except:
-            logging.exception("获取回复信息 失败")
+            # logging.exception("获取回复信息 失败")
             raise
 
+
     def set_rep(self, rep_json, rep_art_id, rep_com_id, rep_cus_id, rep_mod: RepMod.ReplyModel):
+        """ 填充回复数据
+
+        # 20-04-17 修改完成
+
+        :param rep_json:
+        :param rep_art_id:
+        :param rep_com_id:
+        :param rep_cus_id:
+        :param rep_mod:
+        :return:
+        """
         try:
-            rep_mod.rep_reply_id = None
+            rep_mod.rep_rep_id = None
             rep_mod.rep_legal = 1
-            rep_mod.rep_customer_id = rep_cus_id
+            rep_mod.rep_cus_id = rep_cus_id
             rep_mod.rep_time = Time.Time.time_trans(rep_json['create_time'])
-            rep_mod.rep_like_num = rep_json['digg_count']
             rep_mod.rep_content = rep_json['text']
-            rep_mod.rep_comment_id = rep_com_id
+            rep_mod.rep_com_id = rep_com_id
             rep_mod.rep_id = None
-            rep_mod.rep_article_id = rep_art_id
+            rep_mod.rep_art_id = rep_art_id
             rep_mod.rep_spider = str(rep_json['id'])
 
-            logging.info("设置回复信息 成功")
+            # logging.info("设置回复信息 成功")
         except:
-            logging.exception("获取回复信息 失败")
+            # logging.exception("获取回复信息 失败")
             raise
 
 

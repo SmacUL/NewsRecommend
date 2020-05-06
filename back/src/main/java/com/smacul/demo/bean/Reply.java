@@ -6,20 +6,16 @@ public class Reply {
 
     private Integer repId;
     private String repContent;
-    // repType 回复的类型, 0 是对评论的回复, 1 是对回复的回复
+
     private Integer repType;
     private Timestamp repTime;
-    private Integer repLikeNum;
-    private Integer repDislikeNum;
-    // repReplyNum Abandon
-    private Integer repReplyNum;
-    private Integer repScope;
     private Integer repLegal;
     private String repSpider;
-    private Integer repCustomerId;
-    private Integer repArticleId;
-    private Integer repCommentId;
-    private Integer repReplyId;
+
+    private Integer repCusId;
+    private Integer repArtId;
+    private Integer repComId;
+    private Integer repRepId;
 
     public Integer getRepId() {
         return repId;
@@ -53,38 +49,6 @@ public class Reply {
         this.repTime = repTime;
     }
 
-    public Integer getRepLikeNum() {
-        return repLikeNum;
-    }
-
-    public void setRepLikeNum(Integer repLikeNum) {
-        this.repLikeNum = repLikeNum;
-    }
-
-    public Integer getRepDislikeNum() {
-        return repDislikeNum;
-    }
-
-    public void setRepDislikeNum(Integer repDislikeNum) {
-        this.repDislikeNum = repDislikeNum;
-    }
-
-    public Integer getRepReplyNum() {
-        return repReplyNum;
-    }
-
-    public void setRepReplyNum(Integer repReplyNum) {
-        this.repReplyNum = repReplyNum;
-    }
-
-    public Integer getRepScope() {
-        return repScope;
-    }
-
-    public void setRepScope(Integer repScope) {
-        this.repScope = repScope;
-    }
-
     public Integer getRepLegal() {
         return repLegal;
     }
@@ -101,56 +65,35 @@ public class Reply {
         this.repSpider = repSpider;
     }
 
-    public Integer getRepCustomerId() {
-        return repCustomerId;
+    public Integer getRepCusId() {
+        return repCusId;
     }
 
-    public void setRepCustomerId(Integer repCustomerId) {
-        this.repCustomerId = repCustomerId;
+    public void setRepCusId(Integer repCusId) {
+        this.repCusId = repCusId;
     }
 
-    public Integer getRepArticleId() {
-        return repArticleId;
+    public Integer getRepArtId() {
+        return repArtId;
     }
 
-    public void setRepArticleId(Integer repArticleId) {
-        this.repArticleId = repArticleId;
+    public void setRepArtId(Integer repArtId) {
+        this.repArtId = repArtId;
     }
 
-    public Integer getRepCommentId() {
-        return repCommentId;
+    public Integer getRepComId() {
+        return repComId;
     }
 
-    public void setRepCommentId(Integer repCommentId) {
-        this.repCommentId = repCommentId;
+    public void setRepComId(Integer repComId) {
+        this.repComId = repComId;
     }
 
-    public Integer getRepReplyId() {
-        return repReplyId;
+    public Integer getRepRepId() {
+        return repRepId;
     }
 
-    public void setRepReplyId(Integer repReplyId) {
-        this.repReplyId = repReplyId;
+    public void setRepRepId(Integer repRepId) {
+        this.repRepId = repRepId;
     }
-
-    @Override
-    public String toString() {
-        return "Reply{" +
-                "repId=" + repId +
-                ", repContent='" + repContent + '\'' +
-                ", repType=" + repType +
-                ", repTime=" + repTime +
-                ", repLikeNum=" + repLikeNum +
-                ", repDislikeNum=" + repDislikeNum +
-                ", repReplyNum=" + repReplyNum +
-                ", repScope=" + repScope +
-                ", repLegal=" + repLegal +
-                ", repSpider='" + repSpider + '\'' +
-                ", repCustomerId=" + repCustomerId +
-                ", repArticleId=" + repArticleId +
-                ", repCommentId=" + repCommentId +
-                ", repReplyId=" + repReplyId +
-                '}';
-    }
-
 }

@@ -1,11 +1,10 @@
 package com.smacul.demo.controller;
 
-
-import com.oracle.tools.packager.Log;
-import com.smacul.demo.bean.Article;
 import com.smacul.demo.bean.Customer;
-import com.smacul.demo.model.ArticleCustomerModel;
+import com.smacul.demo.model.ArtFullMod;
 import com.smacul.demo.service.LoadService;
+import com.smacul.demo.service.SelfService;
+import com.smacul.demo.service.ShapeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,71 +20,120 @@ public class LoadController {
     @Autowired
     LoadService loadService;
     @Autowired
+    ShapeService shapeService;
+    @Autowired
+    SelfService selfService;
+    @Autowired
     HttpSession session;
 
     /**
-     * 获取所有的文章类别
-     * localhost:8080/load/type
-     *
+     * 获取新闻类别(英文)
+     * 20-04-19 创建方法 TODO 老用户的处理逻辑还没完成
      * @return
      */
     @RequestMapping("/type")
     public List<String> getArtTypes() {
-        return loadService.getArtTypes();
+        Customer customer = (Customer) session.getAttribute("customer");
+        if (customer == null) {
+            return null;
+        }
+        if (selfService.checkIsNewUser(customer.getCusId())) {
+            return loadService.getArtTypesForNew();
+        } else {
+            return loadService.getArtTypesForOld(customer.getCusId());
+        }
     }
 
     /**
-     * 按照类别获取一页数量的文章.
-     * localhost:8080/load/tiny?artType=news_global&page=0&pageSize=10
-     * localhost:8080/load/tiny?artType=news_car&page=0&pageSize=10
-     *
+     * 按照类别获取一页文章
+     * 20-04-19 创建方法
+     * 20-05-02 添加老用户推荐逻辑
      * @param artType
      * @param page
      * @param pageSize
      * @return
      */
     @RequestMapping("/tiny")
-    public List<ArticleCustomerModel> getTinyArtOnePageByType(
+    public List<ArtFullMod> getTinyArtOnePageByType(
             @RequestParam String artType, @RequestParam Integer page, @RequestParam Integer pageSize) {
-        return loadService.getTinyArtOnePageByType(artType, page, pageSize);
+        Customer customer = (Customer) session.getAttribute("customer");
+        List<Integer> relativeCusList = (List<Integer>) session.getAttribute("relative");
+        if (customer == null || relativeCusList == null) {
+            return null;
+        }
+        if (selfService.checkIsNewUser(customer.getCusId())) {
+            return loadService.getTinyArtOnePageByTypeForNew(customer.getCusId(), artType, page, pageSize);
+        } else {
+            return loadService.getTinyArtOnePageByTypeForOld(customer.getCusId(), relativeCusList, artType, page, pageSize);
+        }
     }
 
     /**
-     * 获取一页热点内容
-     * localhost:8080/load/hot?page=0&pageSize=6
-     *
+     * 提供一页的热点新闻
+     * 20-04-19 创建方法
      * @param page
      * @param pageSize
      * @return
      */
     @RequestMapping("/hot")
-    public List<ArticleCustomerModel> getHotArtOnePage(@RequestParam Integer page, @RequestParam Integer pageSize) {
+    public List<ArtFullMod> getHotArtOnePage(@RequestParam Integer page, @RequestParam Integer pageSize) {
+        Customer customer = (Customer) session.getAttribute("customer");
+        if (customer == null) {
+            return null;
+        }
         return loadService.getHotArtOnePage(page, pageSize);
     }
 
     /**
-     * 获取文章的主要内容, 包括作者的基本信息
-     * localhost:8080/load/main?artId=1
-     *
+     * 获取文章的主体内容, 包括文章内容, 文章作者, 文章的特征信息, 当前用户与文章的关系.
+     * 20-04-19 创建方法
      * @param artId
      * @return
      */
     @RequestMapping("/main")
-    public ArticleCustomerModel getFullArtWithCus(@RequestParam Integer artId) {
-        return loadService.getFullArtWithCus(artId);
+    public ArtFullMod getFullArt(@RequestParam Integer artId) {
+        Customer customer = (Customer) session.getAttribute("customer");
+        if (customer == null) {
+            return null;
+        }
+        ArtFullMod artFullMod = loadService.getFullArt(customer.getCusId(), artId);
+        shapeService.setCusBehaviorArtRead(customer.getCusId(), artId);
+        return artFullMod;
     }
 
     /**
-     * 用户点赞或点踩文章时触发此方法
-     *
-     *
+     * 文章点赞/点踩控制, 包括取消
+     * 20-04-19 创建方法
      * @param artId
-     * @param preference
+     * @param type  1: 点赞, 2: 点踩, -1: 取消点赞, -2: 取消点踩
      * @return
      */
     @RequestMapping("/prefer")
-    public Boolean cusArtPreference(Integer artId, Boolean preference) {
-        return loadService.cusArtPreference(artId, preference);
+    public String setArtPreference(@RequestParam Integer artId, @RequestParam Integer type) {
+        Customer customer = (Customer) session.getAttribute("customer");
+        if (customer == null) {
+            return "操作失败";
+        }
+        Boolean result = false;
+        switch (type){
+            case 1:
+                result = shapeService.setCusBehaviorArtLike(customer.getCusId(), artId, true);
+                break;
+            case 2:
+                result = shapeService.setCusBehaviorArtDislike(customer.getCusId(), artId, true);
+                break;
+            case -1:
+                result = shapeService.setCusBehaviorArtLike(customer.getCusId(), artId, false);
+                break;
+            case -2:
+                result = shapeService.setCusBehaviorArtDislike(customer.getCusId(), artId, false);
+                break;
+        }
+        if (result) {
+            return "操作成功";
+        } else {
+            return "操作失败";
+        }
     }
 
 }

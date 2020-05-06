@@ -1,12 +1,12 @@
 <template>
     <div class="clear-float">
-        <div class="body-image" v-on:click="jumpToSelf">
+        <div class="body-image" v-on:click="jumpToIndex">
             <img src="@/assets/image/Logo.png"/>
         </div>
         <search-panel :tip="tip" v-on:search="searchArticles"></search-panel>
         <div class="manage">
-            <img v-if="customer.cusAvatarUrl !== ''" :src="customer.cusAvatarUrl"/>
-            <img v-if="customer.cusAvatarUrl === ''" :src="manSrc"/>
+            <img v-if="customer.cusAvatarUrl !== ''" :src="customer.cusAvatarUrl" v-on:click="jumpToSelf"/>
+            <img v-if="customer.cusAvatarUrl === ''" :src="manSrc" v-on:click="jumpToSelf"/>
             <el-button type="text" @click="loginOut">退出登录</el-button>
         </div>
     </div>
@@ -17,22 +17,31 @@
 
     import Man from '../../assets/image/Man.png'
     import {jumpInCurPage, jumpInNewPage} from "../../util/PageJump";
+    import {quitLogin} from "../../control/Self";
 
     export default {
         name: 'TopBar',
         props: ['customer'],
         components: {SearchPanel},
         methods: {
+            jumpToIndex: function() {
+                jumpInCurPage('/index/');
+            },
             jumpToSelf: function() {
                 jumpInNewPage('/self/' + this.customer.cusId)
             },
             searchArticles: function (message) {
-                jumpInNewPage('/search/' + message )
+                jumpInCurPage('/search/' + message )
                 // searchContentByKeyAndTagTypePage(message, 'global', 'test', 0, 10)
             },
             loginOut: function () {
                 // this.$router.push({path: '/port'});
-                jumpInCurPage('/port');
+                quitLogin()
+                    .then((response) => {
+                        if (response.data === '退出成功') {
+                            this.$router.push({path: '/port'});
+                        }
+                    })
             }
 
         },

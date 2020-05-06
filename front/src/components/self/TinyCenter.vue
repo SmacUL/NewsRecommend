@@ -1,24 +1,58 @@
 <template>
     <div>
-        <float-card class="float-card clear-float" v-for="(CustomerDynamic, i) in CustomerDynamics" :key="i" >
+        <float-card class="float-card clear-float" v-for="(customerDynamic, i) in customerDynamics" :key="i" >
             <div class="span-div">
-                <span class="span-a">{{ownerCustomer.cusName}}</span>
-                <span class="span-b">{{transBehaviorCodeToWord(CustomerDynamic.acbBehavior)}}</span>
-                <!--<span class="span-c">此文章</span>-->
+                <span class="span-a">{{customerDynamic.cusFrom.cusName}}</span>
+                <span class="span-b">{{transBehaviorCodeToWord(customerDynamic.cbrBehavior)}}</span>
             </div>
-            <!--<tiny-article :tinyArticle="CustomerDynamic.artWithCus" v-on:jump="jumpToArticle" v-on:editor="jumpToCustomer"></tiny-article>-->
-            <div>
-                <div class="image" v-if="CustomerDynamic.artWithCus.artImageUrl !== ''">
-                    <img :src="CustomerDynamic.artWithCus.artImageUrl" >
+            <!-- 文章处理 -->
+            <div v-if="customerDynamic.cbrType === 1" class="art-han">
+                <div class="image" v-if="customerDynamic.article.artImageUrl !== ''">
+                    <img :src="customerDynamic.article.artImageUrl" >
                 </div>
-                <div class="word" :class="[wideSwitch ? tinyArt : tinyArtWide]">
-                    <div class="title" @click="jumpToArticle(CustomerDynamic.artWithCus.artId)">{{ CustomerDynamic.artWithCus.artTitle }}</div>
+                <div class="word" :class="[customerDynamic.article.artImageUrl !== '' ? tinyArt : tinyArtWide]">
+                    <div class="title" @click="jumpToArticle(customerDynamic.article.artId)">{{ customerDynamic.article.artTitle }}</div>
                     <div class="info">
-                        <span class="customer" @click="jumpToCustomer(CustomerDynamic.artWithCus.customer.cusId)">{{ CustomerDynamic.artWithCus.customer.cusName }}</span>
-                        <span>{{ date(CustomerDynamic.artWithCus.artTime) }}</span>
+                        <span class="type">{{ customerDynamic.article.artType}}</span>
+                        <span class="customer" @click="jumpToCustomer(customerDynamic.cusTo.cusId)">{{ customerDynamic.cusTo.cusName }}</span>
+                        <span>{{ date(customerDynamic.article.artTime) }}</span>
                     </div>
                 </div>
             </div>
+            <!-- 评论处理 -->
+            <div v-if="customerDynamic.cbrType === 2" class="com-han">
+                <div class="com clear-float">
+                    <div class="title" @click="jumpToArticle(customerDynamic.cbrArtId)">{{ customerDynamic.article.artTitle }}</div>
+                    <div class="com-content"  v-html="customerDynamic.comment.comContent"></div>
+                    <div class="info">
+                        <span class="type">{{ customerDynamic.article.artType}}</span>
+                        <span class="customer" @click="jumpToCustomer(customerDynamic.cusTo.cusId)">{{ customerDynamic.cusTo.cusName }}</span>
+                        <span>{{ date(customerDynamic.comment.comTime) }}</span>
+                    </div>
+                </div>
+            </div>
+            <!-- 回复处理 -->
+            <div v-if="customerDynamic.cbrType === 3" class="rep-han">
+                <div class="rep clear-float">
+                    <div class="title" @click="jumpToArticle(customerDynamic.cbrArtId)">{{ customerDynamic.article.artTitle }}</div>
+                    <div class="com-content" v-html="customerDynamic.reply.repContent"></div>
+                    <div class="info">
+                        <span class="type">{{ customerDynamic.article.artType}}</span>
+                        <span class="customer" @click="jumpToCustomer(customerDynamic.cusTo.cusId)">{{ customerDynamic.cusTo.cusName }}</span>
+                        <span>{{ date(customerDynamic.reply.repTime) }}</span>
+                    </div>
+                </div>
+            </div>
+            <!-- 用户关注 -->
+            <div v-if="customerDynamic.cbrType === 0" class="fol-han">
+                <div class="name-time">
+                    <div class="title" @click="jumpToCustomer(customerDynamic.cusTo.cusId)">{{ customerDynamic.cusTo.cusName }}</div>
+                    <div class="info">
+                        <span>{{ date(customerDynamic.cbrTime) }}</span>
+                    </div>
+                </div>
+            </div>
+
         </float-card>>
 
         <span class="bottom-tip">我也是有底线哒 ~</span>
@@ -34,14 +68,13 @@
         name: "TinyCenter",
         components: {FloatCard},
         // components: {TinyArticle},
-        props: ['CustomerDynamics', 'ownerCustomer'],
+        props: ['customerDynamics', 'ownerCustomer'],
         methods: {
             /**
              * 跳转至文章页面
              * @param artId
              */
             jumpToArticle: function (artId) {
-                // this.$router.push('/article/' + artId)
                 jumpInNewPage('/article/' + artId);
             },
 
@@ -50,7 +83,6 @@
              * @param cusId
              */
             jumpToCustomer: function (cusId) {
-                // this.$router.push('/self/' + cusId);
                 jumpInNewPage('/self/' + cusId);
             },
 
@@ -60,34 +92,20 @@
 
             transBehaviorCodeToWord: function (code) {
                 if (code === 1) {
-                    return '编辑了';
-                } else if (code === 2) {
-                    return '点赞了';
+                    return '编辑了文章';
                 } else if (code === 3) {
-                    return '点踩了';
+                    return '点赞了文章';
                 } else if (code === 4) {
-                    return '评论了';
-                } else if (code === 5) {
-                    return '回复了';
-                } else if (code === 6) {
-                    return '浏览了';
+                    return '点踩了文章';
+                } else if (code === 5 || code === 8) {
+                    return '评论了文章';
+                } else if (code === 11) {
+                    return '关注了用户'
                 }
             }
         },
         data: function () {
             return {
-                // tinyArticles: [
-                //     {   artId: 1, artTitle: "即将开启降温模式",
-                //         artAbstract:"降温降雨天气预报预计今晚到明天我州东北部地区阴天普遍有小雨，高山有雨夹雪和大雾，日平均气温下降4～6℃；州西南部晴转多云，局地间有阴天和零星小雨，气温下降2～4℃。请注意相关防御措施。未来24小时内，各县最低气温1℃～10℃，最高气温10～22℃。",
-                //         artTime:"2019-11-25T08:35:55.000+0000", cusName:"光明网",
-                //         artImage:"http://p1.pstatp.com/large/pgc-image/Reyxsbp6He2NU3"
-                //     },
-                //     {   artId: 2, artTitle: "即将开启升温模式",
-                //         artAbstract:"降温降雨天气预报预计今晚到明天我州东北部地区阴天普遍有小雨，高山有雨夹雪和大雾，日平均气温下降4～6℃；州西南部晴转多云，局地间有阴天和零星小雨，气温下降2～4℃。请注意相关防御措施。未来24小时内，各县最低气温1℃～10℃，最高气温10～22℃。",
-                //         artTime:"2019-11-25T08:35:55.000+0000", cusName:"光明网",
-                //         artImage:""
-                //     },
-                // ],
                 tinyArt: 'tiny-art',
                 tinyArtWide: 'tiny-art-wide',
             }
@@ -130,6 +148,18 @@
     .word {
         float: left;
         height: 120px;
+        position: relative;
+    }
+
+    .com {
+        float: left;
+        /*height: 120px;*/
+        position: relative;
+    }
+
+    .rep {
+        float: left;
+        /*height: 120px;*/
         position: relative;
     }
 
@@ -176,6 +206,43 @@
         font-weight: 400;
     }
 
+    .com-han .info {
+        text-align: left;
+        font-size: 14px;
+        position: static;
+        /*bottom: 0;*/
+        color: #888888;
+        margin-top: 10px;
+    }
+
+    .rep-han .info {
+        text-align: left;
+        font-size: 14px;
+        position: static;
+        /*bottom: 0;*/
+        color: #888888;
+        margin-top: 10px;
+    }
+
+    .fol-han .info {
+        text-align: left;
+        font-size: 14px;
+        position: static;
+        /*bottom: 0;*/
+        color: #888888;
+    }
+
+    .fol-han .title {
+        height: 30px;
+        line-height: 30px;
+        font-size: 18pt;
+        overflow: hidden;
+        text-align: left;
+        margin-bottom: 5px;
+        font-weight: 800;
+    }
+
+
     .customer {
         margin-right: 5px;
     }
@@ -183,5 +250,25 @@
     .customer:hover {
         color: #339999;
         cursor: pointer;
+    }
+
+    .com-content {
+        text-align: left;
+        /*height: 30px;*/
+        /*overflow: hidden;*/
+    }
+
+    .com-content >>> p {
+        /*margin: 0px 0 0 0;*/
+        margin: 0;
+        /*line-height: 30px;*/
+    }
+
+    .type {
+        margin-right: 10px;
+        border: 1px;
+        border-style: solid;
+        border-radius: 3px;
+        color: darkred;
     }
 </style>

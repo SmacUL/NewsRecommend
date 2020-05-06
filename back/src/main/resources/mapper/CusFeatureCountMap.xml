@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.smacul.demo.dao.CusFeatureCountDao">
+
+    <insert id="initialCusFeature">
+        insert into CusFeatureCount (cfc_cus_id) value(#{cusId})
+    </insert>
+
+    <update id="updateCusFeature">
+        update CusFeatureCount
+        set ${column} = ${column} + #{num}
+        where cfc_cus_id = #{cusId}
+    </update>
+
+    <select id="countBehaviorNum" resultType="java.lang.Integer">
+        select
+            cfc_news_society + cfc_news_entertainment + cfc_news_tech + cfc_news_military + cfc_news_sports + cfc_news_finance +
+            cfc_news_world + cfc_news_fashion + cfc_news_travel + cfc_news_discovery + cfc_news_baby + cfc_news_regimen +
+            cfc_news_story + cfc_news_essay + cfc_news_game + cfc_news_history + cfc_news_food + cfc_news_car
+        from CusFeatureCount
+        where cfc_cus_id = #{cusId}
+    </select>
+
+    <select id="getCusFeatureCountByCusId" resultType="com.smacul.demo.bean.CusFeatureCount">
+        select *
+        from CusFeatureCount
+        where cfc_cus_id = #{cusId}
+    </select>
+
+    <select id="getCusArtTypesBehaviorNums" resultType="java.lang.Integer">
+        select
+--             cfc_news_society + cfc_news_entertainment + cfc_news_tech + cfc_news_military + cfc_news_sports + cfc_news_finance +
+--             cfc_news_world + cfc_news_fashion + cfc_news_travel + cfc_news_discovery + cfc_news_baby + cfc_news_regimen +
+--             cfc_news_story + cfc_news_essay + cfc_news_game + cfc_news_history + cfc_news_food + cfc_news_car as cfc_news_global,
+            cfc_news_society, cfc_news_entertainment, cfc_news_tech, cfc_news_military, cfc_news_sports, cfc_news_car,
+            cfc_news_finance, cfc_news_world, cfc_news_fashion, cfc_news_travel, cfc_news_discovery, cfc_news_baby,
+            cfc_news_regimen, cfc_news_story, cfc_news_essay, cfc_news_game, cfc_news_history, cfc_news_food,
+        from CusFeatureCount
+        where cfc_cus_id = #{cusId}
+    </select>
+
+    <select id="getRelativeCusList" resultType="java.lang.Integer">
+        select
+            a.cfc_cus_id
+        from CusFeatureCount as a,
+             (select
+                  cfc_news_society, cfc_news_entertainment, cfc_news_tech, cfc_news_military, cfc_news_sports, cfc_news_finance,
+                  cfc_news_world, cfc_news_fashion, cfc_news_travel, cfc_news_discovery, cfc_news_baby, cfc_news_regimen,
+                  cfc_news_story, cfc_news_essay, cfc_news_game, cfc_news_history, cfc_news_food, cfc_news_car
+              from CusFeatureCount where cfc_cus_id = #{cusId}) as b
+        where a.cfc_cus_id != #{cusId}
+        order by
+            SQRT(
+                        POW((cast(a.cfc_news_society as signed) - cast(b.cfc_news_society as signed)), 2) +
+                        POW((cast(a.cfc_news_entertainment as signed) - cast(b.cfc_news_entertainment as signed)), 2) +
+                        POW((cast(a.cfc_news_tech as signed) - cast(b.cfc_news_tech as signed)), 2) +
+                        POW((cast(a.cfc_news_military as signed) - cast(b.cfc_news_military as signed)), 2) +
+                        POW((cast(a.cfc_news_sports as signed) - cast(b.cfc_news_sports as signed)), 2) +
+                        POW((cast(a.cfc_news_finance as signed) - cast(b.cfc_news_finance as signed)), 2) +
+
+                        POW((cast(a.cfc_news_world as signed) - cast(b.cfc_news_world as signed)), 2) +
+                        POW((cast(a.cfc_news_fashion as signed) - cast(b.cfc_news_fashion as signed)), 2) +
+                        POW((cast(a.cfc_news_travel as signed) - cast(b.cfc_news_travel as signed)), 2) +
+                        POW((cast(a.cfc_news_discovery as signed) - cast(b.cfc_news_discovery as signed)), 2) +
+                        POW((cast(a.cfc_news_baby as signed) - cast(b.cfc_news_baby as signed)), 2) +
+                        POW((cast(a.cfc_news_regimen as signed) - cast(b.cfc_news_regimen as signed)), 2) +
+
+                        POW((cast(a.cfc_news_story as signed) - cast(b.cfc_news_story as signed)), 2) +
+                        POW((cast(a.cfc_news_essay as signed) - cast(b.cfc_news_essay as signed)), 2) +
+                        POW((cast(a.cfc_news_game as signed) - cast(b.cfc_news_game as signed)), 2) +
+                        POW((cast(a.cfc_news_history as signed) - cast(b.cfc_news_history as signed)), 2) +
+                        POW((cast(a.cfc_news_food as signed) - cast(b.cfc_news_food as signed)), 2) +
+                        POW((cast(a.cfc_news_car as signed) - cast(b.cfc_news_car as signed)), 2)
+                )
+        limit #{num};
+    </select>
+
+</mapper>

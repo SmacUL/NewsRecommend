@@ -8,9 +8,17 @@ import logging
 
 
 class ArticleProcess:
+    """ 文章数据的获取与填充填充
+
+    # 20-17-04 依据新的 SQL 修改
+
+    """
+
 
     def get_arts_brief_json_by_category(self, category):
-        """ 这是万恶之源?
+        """ 获取文章缩率信息, 不包括文章内容
+
+        # 20-04-17 方法检查 OK
 
         参考接口:
             http://m.toutiao.com/list/?tag=__all__&ac=wap&count=20&format=json_raw&as=A17538D54D106FF&cp=585DF0A65F0F1E1&min_behot_time=1482491618
@@ -112,6 +120,8 @@ class ArticleProcess:
                 Object{...}
             ]
 
+        :param category:
+        :return:
         """
         try:
             url = 'http://m.toutiao.com/list/?tag={0}&ac=wap&count=20&format=json_raw&as=A17538D54D106FF&cp=585DF0A65F0F1E1&min_behot_time=1482491618'.format(category)
@@ -134,8 +144,59 @@ class ArticleProcess:
             logging.info("获取新闻缩率信息 %s 成功" % url)
             return result
         except:
-            logging.exception("获取新闻缩率信息 失败")
+            # logging.exception("获取新闻缩率信息 失败")
             return None
+
+
+    def set_art(self, art_brief_json, category, art_cus_id, art_mod: ArtMod.ArticleModel):
+        """ 插入新闻内容
+
+        # 20-04-17 修改完成
+
+        :param art_brief_json:
+        :param category:
+        :param art_cus_id:
+        :param art_mod:
+        :return:
+        """
+        driver = Driver.Driver.get_chrome_driver()
+
+        try:
+            url = "https://www.toutiao.com/a{0}/".format(art_brief_json['item_id'])
+            driver.implicitly_wait(3)
+            driver.get(url)
+
+            art_mod.art_spider = art_brief_json['item_id']
+            try:
+                if len(art_brief_json['image_list']) == 0:
+                    art_mod.art_image_url = ''
+                else:
+                    for tar in art_brief_json['image_list']:
+                        art_mod.art_image_url = tar['url']
+                        break
+            except:
+                art_mod.art_image_url = ''
+            art_mod.art_legal = 1
+            art_mod.art_time = Time.Time.time_trans(art_brief_json['publish_time'])
+            art_mod.art_cus_id = art_cus_id
+            art_mod.art_id = None
+            try:
+                art_mod.art_tags = art_brief_json['keywords']
+            except:
+                art_mod.art_tags = ''
+            art_mod.art_type = category
+            art_mod.art_title = art_brief_json['title']
+
+            art_mod.art_content = driver.find_element_by_class_name("article-content").get_attribute('innerHTML')
+
+            logging.info("设置新闻数据 url=%s 成功" % url)
+        except:
+            # logging.exception("设置新闻数据 失败")
+
+            raise
+        finally:
+            driver.close()
+
 
     @DeprecationWarning
     def get_art_json(self, art_brief_json):
@@ -203,50 +264,10 @@ class ArticleProcess:
             logging.info("获取新闻内容数据 %s 成功" % art_url)
             return result
         except:
-            logging.exception("获取新闻内容数据 失败")
+            # logging.exception("获取新闻内容数据 失败")
             return None
 
-    def set_art(self, art_brief_json, category, art_cus_id, art_mod: ArtMod.ArticleModel):
-        driver = Driver.Driver.get_chrome_driver()
 
-        try:
-            url = "https://www.toutiao.com/a{0}/".format(art_brief_json['item_id'])
-            driver.implicitly_wait(3)
-            driver.get(url)
-
-            art_mod.art_spider = art_brief_json['item_id']
-            art_mod.art_comment_num = 0
-
-            try:
-                if len(art_brief_json['image_list']) == 0:
-                    art_mod.art_image_url = ''
-                else:
-                    for tar in art_brief_json['image_list']:
-                        art_mod.art_image_url = tar['url']
-                        break
-            except:
-                art_mod.art_image_url = ''
-
-            art_mod.art_legal = 1
-            art_mod.art_time = Time.Time.time_trans(art_brief_json['publish_time'])
-            art_mod.art_customer_id = art_cus_id
-            art_mod.art_id = None
-            try:
-                art_mod.art_tags = art_brief_json['keywords']
-            except:
-                art_mod.art_tags = ''
-            art_mod.art_type = category
-            art_mod.art_title = art_brief_json['title']
-
-            art_mod.art_content = driver.find_element_by_class_name("article-content").get_attribute('innerHTML')
-
-            logging.info("设置新闻数据 url=%s 成功" % url)
-        except:
-            logging.exception("设置新闻数据 失败")
-
-            raise
-        finally:
-            driver.close()
 
 
 

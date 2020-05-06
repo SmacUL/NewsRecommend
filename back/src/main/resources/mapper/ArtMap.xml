@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.smacul.demo.dao.ArtDao">
+
+    <insert id="addArt" useGeneratedKeys="true" keyProperty="artId" parameterType="com.smacul.demo.bean.Article">
+        insert into Article(art_title, art_cus_id, art_content, art_image_url, art_type)
+        values(#{artTitle}, #{artCusId}, #{artContent}, #{artImageUrl}, #{artType})
+    </insert>
+
+    <select id="getArtTypesOrderByTypeNum" resultType="java.lang.String">
+        select art_type from Article group by art_type order by count(art_type) desc
+    </select>
+
+    <select id="getTinyArtOnePageFromGlobalNew" resultMap="artFullModRM">
+        select art_id, art_title, art_spider, art_type, art_tags, art_image_url, art_time, art_legal, art_cus_id
+        from Article left join artscorelist on Article.art_id = artscorelist.asl_art_id
+        where art_id not in (select cbr_art_id from CusBehaviorRecord where cbr_cus_id_from = #{cusId} and cbr_behavior = 2)
+        order by artscorelist.asl_art_score desc
+        limit #{start}, #{pageSize}
+    </select>
+
+    <select id="getTinyArtOnePageByTypeNew" resultMap="artFullModRM">
+        select art_id, art_title, art_spider, art_type, art_tags, art_image_url, art_time, art_legal, art_cus_id
+        from Article left join artscorelist on Article.art_id = artscorelist.asl_art_id
+        where art_type = #{artType} and art_id not in (select cbr_art_id from CusBehaviorRecord where cbr_cus_id_from = #{cusId} and cbr_behavior = 2)
+        order by artscorelist.asl_art_score desc
+        limit #{start}, #{pageSize}
+    </select>
+
+    <select id="getHotArtOnePage" resultMap="artFullModRM">
+        select art_id, art_title, art_spider, art_type, art_tags, art_image_url, art_time, art_legal, art_cus_id
+        from Article left join ArtTimeList on Article.art_id = ArtTimeList.atl_art_id
+        order by ArtTimeList.atl_art_score desc
+        limit #{start}, #{pageSize}
+    </select>
+
+    <select id="getArtFull" resultMap="artFullModRM">
+        select *
+        from Article
+        where art_id = #{artId}
+    </select>
+
+    <select id="getArtCusIdByArtId" resultType="java.lang.Integer">
+        select art_cus_id from Article where art_id = #{artId}
+    </select>
+
+    <select id="getArtTypeByArtId" resultType="java.lang.String">
+        select art_type from Article where art_id = #{artId}
+    </select>
+
+    <select id="searchContentSimple" resultMap="artFullModRM">
+        select art_id, art_title, art_spider, art_type, art_tags, art_image_url, art_time, art_legal, art_cus_id
+        from Article left join artscorelist on Article.art_id = artscorelist.asl_art_id
+        where art_title like concat('%', #{key}, '%') or art_content like concat('%', #{key}, '%')
+        order by artscorelist.asl_art_score desc
+        limit #{start}, #{pageSize}
+    </select>
+
+    <select id="getSingleArt" resultType="com.smacul.demo.model.ArtFullMod">
+        select *
+        from Article
+        where 11 != #{flag} and art_id = #{artId}
+    </select>
+
+    <select id="getTinyArtOnePageFromGlobalOld" resultMap="artFullModRM">
+        select art_id, art_title, art_spider, art_type, art_tags, art_image_url, art_time, art_legal, art_cus_id
+        from Article left join artscorelist on Article.art_id = artscorelist.asl_art_id
+        where
+            art_id not in (select cbr_art_id from CusBehaviorRecord where cbr_cus_id_from = #{cusId} and cbr_behavior = 2)
+            and art_id in (select cbr_art_id from CusBehaviorRecord where cbr_behavior = 2 and cbr_cus_id_from in (${cusIdListStr}))
+        order by artscorelist.asl_art_score desc
+        limit #{start}, #{pageSize}
+    </select>
+
+    <select id="getTinyArtOnePageByTypeOld" resultMap="artFullModRM">
+        select art_id, art_title, art_spider, art_type, art_tags, art_image_url, art_time, art_legal, art_cus_id
+        from Article left join artscorelist on Article.art_id = artscorelist.asl_art_id
+        where
+            art_type = #{artType}
+            and art_id not in (select cbr_art_id from CusBehaviorRecord where cbr_cus_id_from = #{cusId} and cbr_behavior = 2)
+            and art_id in (select cbr_art_id from CusBehaviorRecord where cbr_behavior = 2 and cbr_cus_id_from in (${cusIdListStr}))
+        order by artscorelist.asl_art_score desc
+        limit #{start}, #{pageSize}
+    </select>
+
+    <resultMap id="artFullModRM" type="com.smacul.demo.model.ArtFullMod">
+        <id property="artId" column="art_id"></id>
+        <result property="artTitle" column="art_title"></result>
+        <result property="artTime" column="art_time"></result>
+        <result property="artImageUrl" column="art_image_url"></result>
+        <result property="artCusId" column="art_cus_id"></result>
+        <result property="artContent" column="art_content"></result>
+        <result property="artSpider" column="art_spider"></result>
+        <result property="artLegal" column="art_legal"></result>
+        <result property="artTags" column="art_tags"></result>
+        <result property="artType" column="art_type"></result>
+        <collection property="customer" select="com.smacul.demo.dao.CusDao.getCusById"
+                    column="cusId=art_cus_id" javaType="com.smacul.demo.bean.Customer"></collection>
+        <collection property="artFeature" select="com.smacul.demo.dao.ArtFeatureCountDao.getArtFeatureCountByArtId"
+                    column="artId=art_id" javaType="com.smacul.demo.bean.ArtFeatureCount"></collection>
+    </resultMap>
+</mapper>

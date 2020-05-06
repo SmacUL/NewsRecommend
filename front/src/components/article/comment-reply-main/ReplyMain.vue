@@ -7,23 +7,24 @@
                 </div>
                 <div class="comment">
                     <div style="text-align: left; font-weight: 500; font-size: 18px;">
-                        <span>{{reply.customer.cusName}}</span>
-                        <span style="font-weight:400; font-size:16px;" v-if="reply.repReplyId !== null"> 回复 </span>
-                        <span v-if="reply.repReplyId !== null">{{ findReplyTarget(reply.repReplyId) }}</span>
+                        <!--<el-button type="text">文字按钮</el-button>-->
+                        <el-button type="text" @click="jumpToCus(reply.customer.cusId)">{{reply.customer.cusName}}</el-button>
+                        <span style="font-weight:400; font-size:16px;" v-if="reply.repRepId !== null"> 回复 </span>
+                        <el-button type="text" v-if="reply.repRepId !== null" @click="jumpToCus(findReplyTarget(reply.repRepId).cusId)">{{ findReplyTarget(reply.repRepId).cusName }}</el-button>
                     </div>
                     <!--<div class="content">{{reply.repContent}}</div>-->
                     <div class="content" v-html="reply.repContent"></div>
                     <div class="info">
                         <span>{{ date(reply.repTime) }}</span>
                         <el-button type="text" @click="addCancelReply(reply.repId)">
-                            <span v-show="add.type == 2 && add.id == reply.repId">收起</span>
-                            <span v-show="add.type != 2 || add.id != reply.repId">评论</span>
+                            <span v-show="add.type === 2 && add.id === reply.repId">收起</span>
+                            <span v-show="add.type !== 2 || add.id !== reply.repId">评论</span>
                         </el-button>
                     </div>
                 </div>
                 <!-- 评论回复输入框 -->
                 <comment-reply-input @readycancel="cancelMessage" @messageHandler="addReply"
-                                     v-if="add.type == 2 && add.id == reply.repId"
+                                     v-if="add.type === 2 && add.id === reply.repId"
                                      :heightKey=false :customer="customer">
                 </comment-reply-input>
             </div>
@@ -45,10 +46,11 @@
     import CommentReplyInput from "./CommentReplyInput";
     import {transUTCtoLocal} from "../../../util/TimeHandler";
     import {cusAddReply} from "../../../control/Discuss";
+    import {jumpInNewPage} from "../../../util/PageJump";
     export default {
         name: "ReplyMain",
         components: {CommentReplyInput},
-        props: ['replys', 'commentId', 'add', 'customer'],
+        props: ['replys', 'comId', 'add', 'customer'],
         methods: {
             replyHandleCurrentChange(val) {
                 this.control.rep.page = val;
@@ -72,7 +74,7 @@
                 let result = '';
                 this.replys.forEach((item) => {
                     if (item.repId === id) {
-                        result = item.customer.cusName;
+                        result = item.customer;
                     }
                 });
                 return result;
@@ -84,11 +86,11 @@
                 let reply = {
                     repContent: message,
                     repType: 1,
-                    repCustomerId: this.customer.cusId,
-                    repArticleId: this.replys[0].repArticleId,
+                    repCusId: this.customer.cusId,
+                    repArtId: this.replys[0].repArtId,
                     // 回复针对的评论的 id
-                    repCommentId: this.replys[0].repCommentId,
-                    repReplyId: this.add.id,
+                    repComId: this.replys[0].repComId,
+                    repRepId: this.add.id,
                 };
                 cusAddReply(reply)
                     .then((response) => {
@@ -103,6 +105,9 @@
 
                 this.add.type = -1;
                 this.add.id = -1;
+            },
+            jumpToCus: function (cusId) {
+                jumpInNewPage('/self/' + cusId);
             }
         },
         data: function () {

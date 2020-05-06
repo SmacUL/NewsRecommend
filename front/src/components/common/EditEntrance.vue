@@ -3,7 +3,7 @@
         <img class="body-image" :src="logoSrc"/>
         <div class="body-title">
             <!--<span>点击</span>-->
-            <el-button type="text">点击</el-button>
+            <el-button type="text" @click="jumpToEdit">点击</el-button>
             <span>开始书写自己的新闻</span>
         </div>
     </card-panel>
@@ -12,9 +12,15 @@
 <script>
     import Logo from '../../assets/image/Pen.png'
     import CardPanel from './DarkCard'
+    import {jumpInNewPage} from "../../util/PageJump";
     export default {
         name: 'EditEntrance',
         components: {CardPanel},
+        methods: {
+            jumpToEdit: function () {
+                jumpInNewPage('/edit');
+            }
+        },
         data: function() {
             return {
                 logoSrc: Logo
