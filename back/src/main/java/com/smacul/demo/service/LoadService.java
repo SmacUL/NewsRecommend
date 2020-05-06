@@ -25,6 +25,7 @@ public interface LoadService {
      * 为新用户提供一页指定类别的新闻缩率信息
      * 20-04-19 创建方法
      * 20-04-28 方法修改, 添加用户浏览内容去重
+     * 20-05-06 方法修改, 返回时将文章类别从英文翻译成中文
      * @param artType
      * @param page
      * @param pageSize
@@ -38,6 +39,7 @@ public interface LoadService {
      * 20-04-19 创建方法
      * 20-04-28 方法修改, 添加用户浏览内容去重
      * 20-05-02 添加对老用户的推荐
+     * 20-05-06 方法修改, 返回时将文章类别从英文翻译成中文
      * @param artType
      * @param cusList   相似用户列表
      * @param page
@@ -59,6 +61,7 @@ public interface LoadService {
     /**
      * 获取一篇文章的完整信息, 包括文章, 文章作者, 文章特征统计数据, 当前用户与文章的关系
      * 20-04-19 创建方法
+     * 20-05-06 修改方法, 获取文章时返回文章的中文类别
      * @param cusId
      * @param artId
      * @return

@@ -2,20 +2,21 @@
     <div class="article-main">
         <div class="title">{{articleMain.artTitle}}</div>
         <div class="article-info">
+            <span class="type"> {{ articleMain.artType }}</span>
             <span style="margin-right: 5px;">{{ articleMain.cusName }}</span>
             <span>{{ dataTransfer }}</span>
         </div>
         <div class="content" v-html="articleMain.artContent"></div>
-        <div class="up-down clear-float">
-            <div class="up">
-                <img :src='control.art.up' @click="cusLikeArt"/>
-                <span>{{ articleMain.artLikeNum }}</span>
-            </div>
-            <div class="down">
-                <img :src="control.art.down" @click="cusDislikeArt"/>
-                <span>{{ articleMain.artDislikeNum }}</span>
-            </div>
-        </div>
+        <!--<div class="up-down clear-float">-->
+        <!--    <div class="up">-->
+        <!--        <img :src='control.art.up' @click="cusLikeArt"/>-->
+        <!--        <span>{{ articleMain.artLikeNum }}</span>-->
+        <!--    </div>-->
+        <!--    <div class="down">-->
+        <!--        <img :src="control.art.down" @click="cusDislikeArt"/>-->
+        <!--        <span>{{ articleMain.artDislikeNum }}</span>-->
+        <!--    </div>-->
+        <!--</div>-->
     </div>
 </template>
 
@@ -88,6 +89,10 @@
         text-align: center;
     }
 
+    .content {
+        margin-bottom: 30px;
+    }
+
     .up-down {
         width: 200px;
         margin: 0 auto;
@@ -137,4 +142,12 @@
     /*.el-icon-error {*/
     /*    margin-right: 10px;*/
     /*}*/
+
+    .article-info .type {
+        margin-right: 10px;
+        border: 1px;
+        border-style: solid;
+        border-radius: 3px;
+        color: darkred;
+    }
 </style>

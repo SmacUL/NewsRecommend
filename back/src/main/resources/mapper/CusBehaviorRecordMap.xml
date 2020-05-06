@@ -66,7 +66,7 @@
         select *
         from CusBehaviorRecord
         where cbr_cus_id_from = #{cusId} and cbr_behavior != 2
-        order by cbr_time
+        order by cbr_time desc
         limit #{start}, #{pageSize}
     </select>
 

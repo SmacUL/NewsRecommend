@@ -12,7 +12,9 @@ import com.smacul.demo.util.TypeHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.swing.*;
 import java.util.List;
+import java.util.concurrent.TransferQueue;
 
 @Service
 public class LoadServiceImpl implements LoadService {
@@ -41,11 +43,16 @@ public class LoadServiceImpl implements LoadService {
     @Override
     public List<ArtFullMod> getTinyArtOnePageByTypeForNew(Integer cusId, String artType, Integer page, Integer pageSize) {
         Integer start = PageHandler.calcuStartNO(page, pageSize);
+        List<ArtFullMod> resultList = null;
         if (artType.equals("综合")) {
-            return artDao.getTinyArtOnePageFromGlobalNew(cusId, start, pageSize);
+            resultList = artDao.getTinyArtOnePageFromGlobalNew(cusId, start, pageSize);
         } else {
-            return artDao.getTinyArtOnePageByTypeNew(TypeHandler.typeTransSingleChToEn(artType), cusId, start, pageSize);
+            resultList = artDao.getTinyArtOnePageByTypeNew(TypeHandler.typeTransSingleChToEn(artType), cusId, start, pageSize);
         }
+        for (ArtFullMod result: resultList) {
+            result.setArtType(TypeHandler.typeTransSingleEnToCh(result.getArtType()));
+        }
+        return resultList;
     }
 
     @Override
@@ -61,17 +68,21 @@ public class LoadServiceImpl implements LoadService {
                 cusIdListStr += cusList.get(i);
             }
         }
-        List<ArtFullMod> result = null;
+        List<ArtFullMod> resultList = null;
         if (artType.equals("综合")) {
-            result = artDao.getTinyArtOnePageFromGlobalOld(cusId, cusIdListStr, start, pageSize);
+            resultList = artDao.getTinyArtOnePageFromGlobalOld(cusId, cusIdListStr, start, pageSize);
         } else {
-            result = artDao.getTinyArtOnePageByTypeOld(TypeHandler.typeTransSingleChToEn(artType), cusId, cusIdListStr, start, pageSize);
+            resultList = artDao.getTinyArtOnePageByTypeOld(TypeHandler.typeTransSingleChToEn(artType), cusId, cusIdListStr, start, pageSize);
         }
         // 如果相似用户的推荐内容数量不足 10, 则切换到新用户推荐逻辑.
-        if (result.size() < 10) {
-            result = getTinyArtOnePageByTypeForNew(cusId, artType, page, pageSize);
+        if (resultList.size() < 10) {
+            resultList = getTinyArtOnePageByTypeForNew(cusId, artType, page, pageSize);
+        } else {
+            for (ArtFullMod result: resultList) {
+                result.setArtType(TypeHandler.typeTransSingleEnToCh(result.getArtType()));
+            }
         }
-        return result;
+        return resultList;
     }
 
     @Override
@@ -86,6 +97,7 @@ public class LoadServiceImpl implements LoadService {
     @Override
     public ArtFullMod getFullArt(Integer cusId, Integer artId) {
         ArtFullMod artFullMod = artDao.getArtFull(artId);
+        artFullMod.setArtType(TypeHandler.typeTransSingleEnToCh(artFullMod.getArtType()));
         CusArtBehaviorMod behaviorMod = new CusArtBehaviorMod();
         behaviorMod.setArtId(artId);
         behaviorMod.setCusId(cusId);
