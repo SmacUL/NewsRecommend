@@ -10,6 +10,7 @@ import com.smacul.demo.model.CusFeatureFullMod;
 import com.smacul.demo.service.SelfService;
 import com.smacul.demo.util.MD5;
 import com.smacul.demo.util.PageHandler;
+import com.smacul.demo.util.TypeHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -120,7 +121,13 @@ public class SelfServiceImpl implements SelfService {
     @Override
     public List<CusDynamicMod> getCusDynamic(Integer cusId, Integer page, Integer pageSize) {
         Integer start = PageHandler.calcuStartNO(page, pageSize);
-        return cusBehaviorRecordDao.getCusDynamicByCusId(cusId, start, pageSize);
+        List<CusDynamicMod> resultList = cusBehaviorRecordDao.getCusDynamicByCusId(cusId, start, pageSize);
+        for (CusDynamicMod result: resultList) {
+            if (result.getCbrType() != 0) {
+                result.getArticle().setArtType(TypeHandler.typeTransSingleEnToCh(result.getArticle().getArtType()));
+            }
+        }
+        return resultList;
     }
 
     @Override

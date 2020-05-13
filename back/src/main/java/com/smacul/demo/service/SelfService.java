@@ -76,6 +76,7 @@ public interface SelfService {
     /**
      * 分页获取指定用户的动态
      * 20-04-24 创建方法
+     * 20-05-06 修改方法, 用户动态如果有文章, 则将文章的类别由英文改为中文
      * @param cusId
      * @param page
      * @param pageSize

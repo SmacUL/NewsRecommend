@@ -109,6 +109,7 @@ public interface CusBehaviorRecordDao {
     /**
      * 分页获取指定用户动态
      * 20-04-24 创建方法
+     * 20-05-06 修改排序时间
      * @param cusId
      * @param start
      * @param pageSize

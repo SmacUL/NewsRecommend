@@ -64,11 +64,27 @@
         },
         methods: {
             scrollHandler: function () {
+                // 侧面栏目悬停
                 let scrollDis = document.documentElement.scrollTop || document.body.scrollTop || window.pageYOffset || 0;
                 if (scrollDis > 192) {
                     this.asideStyle = 'margin-top: 0px';
                 } else {
                     this.asideStyle = 'position: static;';
+                }
+                // 滚动加载
+                let artHeight = document.getElementsByTagName('article')[0].offsetHeight;
+                let innerHeight = window.innerHeight;
+                let otherHeight = 70 + 182 + 10;
+                let scrollHeight = artHeight - innerHeight + otherHeight;
+                if (scrollHeight <= (document.documentElement.scrollTop + 5)) {
+                    this.control.dnyPage += 1;
+                    getCusSelfDynamic(this.cusId, this.control.dnyPage, this.control.dnyPageSize)
+                        .then((response) => {
+                            // this.customerDynamics = response.data;
+                            for (let i = 0; i < response.data.length; i++) {
+                                this.customerDynamics.push(response.data[i]);
+                            }
+                        });
                 }
             }
         },
@@ -80,6 +96,7 @@
                     dnyPageSize: 10,
                     isFollow: false
                 },
+                cusId: this.$route.params.cusId,
                 customer: {
 
                 },

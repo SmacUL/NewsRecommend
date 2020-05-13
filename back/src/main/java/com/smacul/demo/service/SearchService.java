@@ -9,6 +9,7 @@ public interface SearchService {
     /**
      * 简单的搜索 % %
      * 20-04-20 创建方法
+     * 20-05-06
      * @param key
      * @param page
      * @param pageSize

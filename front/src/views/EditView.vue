@@ -94,7 +94,8 @@
                     artTitle: this.form.name,
                     artContent: this.message,
                     artCusId: this.customer.cusId,
-                    artType: this.form.type
+                    artType: this.form.type,
+                    artImageUrl: ''
                 };
                 // this.$message.info(article.artTitle)
                 addNewArt(article)
