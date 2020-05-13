@@ -86,6 +86,60 @@
         limit #{start}, #{pageSize}
     </select>
 
+    <select id="getTinyNewArtFromGlobalForNew" resultMap="artFullModRM">
+        select art_id, art_title, art_spider, art_type, art_tags, art_image_url, art_time, art_legal, art_cus_id
+        from Article
+        where
+            art_id not in (select cbr_art_id from CusBehaviorRecord where cbr_cus_id_from = #{cusId} and cbr_behavior = 2)
+        order by art_time
+        limit #{start}, #{pageSize}
+    </select>
+
+    <select id="getTinyHotArtFromGlobalForNew" resultMap="artFullModRM">
+        select art_id, art_title, art_spider, art_type, art_tags, art_image_url, art_time, art_legal, art_cus_id
+        from Article left join artscorelist on Article.art_id = artscorelist.asl_art_id
+        where
+            art_id not in (select cbr_art_id from CusBehaviorRecord where cbr_cus_id_from = #{cusId} and cbr_behavior = 2) and
+            art_type not in ('news_travel', 'news_regimen', 'news_story', 'news_history', 'news_baby' 'news_essay', 'news_food')
+        order by artscorelist.asl_art_score desc
+        limit #{start}, #{pageSize}
+    </select>
+
+    <select id="getTinyInfoArtFromGlobalForNew" resultMap="artFullModRM">
+        select art_id, art_title, art_spider, art_type, art_tags, art_image_url, art_time, art_legal, art_cus_id
+        from Article left join artscorelist on Article.art_id = artscorelist.asl_art_id
+        where
+            art_id not in (select cbr_art_id from CusBehaviorRecord where cbr_cus_id_from = #{cusId} and cbr_behavior = 2) and
+            art_type in ('news_travel', 'news_regimen', 'news_story', 'news_history', 'news_baby' 'news_essay', 'news_food')
+        order by artscorelist.asl_art_score desc
+        limit #{start}, #{pageSize}
+    </select>
+
+    <select id="getTinyNewArtByTypeForNew" resultMap="artFullModRM">
+        select art_id, art_title, art_spider, art_type, art_tags, art_image_url, art_time, art_legal, art_cus_id
+        from Article
+        where art_type = #{artType} and art_id not in (select cbr_art_id from CusBehaviorRecord where cbr_cus_id_from = #{cusId} and cbr_behavior = 2)
+        order by art_time
+        limit #{start}, #{pageSize}
+    </select>
+
+    <select id="getTinyNewArtFromGlobalForNew" resultMap="artFullModRM">
+        select art_id, art_title, art_spider, art_type, art_tags, art_image_url, art_time, art_legal, art_cus_id
+        from Article
+        where
+            art_id not in (select cbr_art_id from CusBehaviorRecord where cbr_cus_id_from = #{cusId} and cbr_behavior = 2)
+        order by art_time
+        limit #{start}, #{pageSize}
+    </select>
+
+    <select id="getTinyNewArtByTypeForNew" resultMap="artFullModRM">
+        select art_id, art_title, art_spider, art_type, art_tags, art_image_url, art_time, art_legal, art_cus_id
+        from Article
+        where art_type = #{artType} and art_id not in (select cbr_art_id from CusBehaviorRecord where cbr_cus_id_from = #{cusId} and cbr_behavior = 2)
+        order by art_time
+        limit #{start}, #{pageSize}
+    </select>
+
     <resultMap id="artFullModRM" type="com.smacul.demo.model.ArtFullMod">
         <id property="artId" column="art_id"></id>
         <result property="artTitle" column="art_title"></result>
