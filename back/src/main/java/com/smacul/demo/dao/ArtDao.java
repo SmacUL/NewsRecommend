@@ -4,6 +4,7 @@ import com.smacul.demo.bean.Article;
 import com.smacul.demo.model.ArtFullMod;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.List;
 
 @Repository
@@ -27,6 +28,7 @@ public interface ArtDao {
      * @param pageSize
      * @return
      */
+    @Deprecated
     List<ArtFullMod> getTinyArtOnePageFromGlobalNew(Integer cusId, Integer start, Integer pageSize);
 
     /**
@@ -127,8 +129,75 @@ public interface ArtDao {
     /**
      * 添加新闻
      * 20-05-04 创建方法
+     * 20-05-11 Bug 修改, 添加插入 artLegal
      * @param article
      * @return
      */
     Integer addArt(Article article);
+
+    /**
+     * 全局获取一页新(new)文章缩略内容, 包括文章基本信息, 文章作者基本信息, 文章的特征统计信息
+     * 直接依据新闻的发布时间排序推荐.
+     * 20-05-13 创建方法
+     * @param cusId
+     * @param start
+     * @param pageSize
+     * @return
+     */
+    List<ArtFullMod> getTinyNewArtFromGlobalForNew(Integer cusId, Integer start, Integer pageSize);
+
+    /**
+     * 全局获取一页核心(hot)文章缩略内容, 包括文章基本信息, 文章作者基本信息, 文章的特征统计信息
+     * 通过文章类别来判断是否属于核心文章
+     * 20-05-13 创建方法
+     * @param cusId
+     * @param start
+     * @param pageSize
+     * @return
+     */
+    List<ArtFullMod> getTinyHotArtFromGlobalForNew(Integer cusId, Integer start, Integer pageSize);
+
+    /**
+     * 全局获取一页咨询类(info)文章缩略内容, 包括文章基本信息, 文章作者基本信息, 文章的特征统计信息
+     * 通过文章类别来判断是否属于核心文章
+     * 20-05-13 创建方法
+     * @param cusId
+     * @param start
+     * @param pageSize
+     * @return
+     */
+    List<ArtFullMod> getTinyInfoArtFromGlobalForNew(Integer cusId, Integer start, Integer pageSize);
+
+    /**
+     * 按照类别获取一页新(new)文章缩略内容, 包括文章基本信息, 文章作者基本信息, 文章的特征统计信息
+     * 直接按照新闻发布的时间排序, 推荐最新的文章
+     * 20-05-13 创建方法
+     * @param artType
+     * @param cusId
+     * @param start
+     * @param pageSize
+     * @return
+     */
+    List<ArtFullMod> getTinyNewArtByTypeForNew(String artType, Integer cusId, Integer start, Integer pageSize);
+
+    /**
+     * 此方法功能和 getTinyNewArtFromGlobalForNew 一致, 只是名字不同
+     * 20-05-13 创建方法
+     * @param cusId
+     * @param start
+     * @param pageSize
+     * @return
+     */
+    List<ArtFullMod> getTinyNewArtFromGlobalForOld(Integer cusId, Integer start, Integer pageSize);
+
+    /**
+     * 此方法功能和 getTinyNewArtByTypeForNew 一致, 只是名字不同
+     * 20-05-13 创建方法
+     * @param artType
+     * @param cusId
+     * @param start
+     * @param pageSize
+     * @return
+     */
+    List<ArtFullMod> getTinyNewArtByTypeForOld(String artType, Integer cusId, Integer start, Integer pageSize);
 }

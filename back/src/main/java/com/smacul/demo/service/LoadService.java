@@ -26,6 +26,7 @@ public interface LoadService {
      * 20-04-19 创建方法
      * 20-04-28 方法修改, 添加用户浏览内容去重
      * 20-05-06 方法修改, 返回时将文章类别从英文翻译成中文
+     * 20-05-13 修改文章推荐方式, 核心文章 pageSize-3: 资讯文章 2: 新生文章 1
      * @param artType
      * @param page
      * @param pageSize
@@ -40,6 +41,7 @@ public interface LoadService {
      * 20-04-28 方法修改, 添加用户浏览内容去重
      * 20-05-02 添加对老用户的推荐
      * 20-05-06 方法修改, 返回时将文章类别从英文翻译成中文
+     * 20-05-13 修改文章推荐方式, 协同推荐文章 pageSize-1: 新生文章 1
      * @param artType
      * @param cusList   相似用户列表
      * @param page

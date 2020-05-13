@@ -17,6 +17,7 @@ class ReplyProcess:
         """ 获取 回复 包括 回复的回复 的数据
 
         # 20-04-17 代码检查 OK
+        # 20-05-07 代码修改, 当获取的内容为 None 时, raise Exception
 
         数据接口参考:
             https://www.toutiao.com/2/comment/v2/reply_list/?aid=24&app_name=toutiao-web&id=6733175468666748931&offset=0&count=20&repost=0
@@ -318,6 +319,8 @@ class ReplyProcess:
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36'
             }
             result = Request.Request(reply_url, headers).more()['data']['data']
+            if result is None:
+                raise
             logging.info("获取回复信息 %s 成功" % reply_url)
             return result
         except:

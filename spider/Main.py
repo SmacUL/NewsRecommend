@@ -92,10 +92,10 @@ class Major:
                         print("art 已存在")
                         continue
                     art_mod.art_id = self.__art_dao.search_art_id_by_spider(art_mod.art_spider)
-                    art_mod.art_time = self.__art_dao.search_art_time_by_spider(art_mod.art_spider)
+                    # art_mod.art_time = self.__art_dao.search_art_time_by_spider(art_mod.art_spider)
                     logging.info("%s-%d art 操作 成功" % (category, art_i))
                 except:
-                    print("%s-%d art 操作 失败"  % (category, art_i))
+                    print("%s-%d art 操作 失败" % (category, art_i))
                     logging.exception("%s-%d art 操作 失败" % (category, art_i))
                     continue
 
