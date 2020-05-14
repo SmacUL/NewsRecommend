@@ -17,6 +17,7 @@ public class EditServiceImpl implements EditService {
     public String addNewArt(Article article) {
         String type = article.getArtType();
         article.setArtType(TypeHandler.typeTransSingleChToEn(type));
+        article.setArtLegal(1);
         if (artDao.addArt(article) == 1) {
             return "文章添加成功";
         } else {

@@ -45,12 +45,12 @@ public class LoadServiceImpl implements LoadService {
         Integer start = PageHandler.calcuStartNO(page, pageSize);
         List<ArtFullMod> resultList = null;
         if (artType.equals("综合")) {
-            resultList = artDao.getTinyNewArtFromGlobalForNew(cusId, start, 1);
-            resultList.addAll(artDao.getTinyHotArtFromGlobalForNew(cusId, start, 2));
-            resultList.addAll(artDao.getTinyInfoArtFromGlobalForNew(cusId, start, pageSize-1-2));
+            resultList = artDao.getTinyInfoArtFromGlobalForNew(cusId, start, 2);
+            resultList.addAll(artDao.getTinyHotArtFromGlobalForNew(cusId, start, pageSize-1-2));
+            resultList.addAll(artDao.getTinyNewArtFromGlobalForNew(cusId, start, 1));
         } else {
-            resultList = artDao.getTinyArtOnePageByTypeNew(TypeHandler.typeTransSingleChToEn(artType), cusId, start, pageSize-1);
-            resultList.addAll(artDao.getTinyNewArtByTypeForNew(cusId, start, 1));
+            resultList = artDao.getTinyNewArtByTypeForNew(TypeHandler.typeTransSingleChToEn(artType), cusId, start, 1);
+            resultList.addAll(artDao.getTinyArtOnePageByTypeNew(TypeHandler.typeTransSingleChToEn(artType), cusId, start, pageSize-1));
         }
         for (ArtFullMod result: resultList) {
             result.setArtType(TypeHandler.typeTransSingleEnToCh(result.getArtType()));
@@ -77,7 +77,7 @@ public class LoadServiceImpl implements LoadService {
             resultList.addAll(artDao.getTinyNewArtFromGlobalForOld(cusId, start, 1));
         } else {
             resultList = artDao.getTinyArtOnePageByTypeOld(TypeHandler.typeTransSingleChToEn(artType), cusId, cusIdListStr, start, pageSize-1);
-            resultList.addAll(artDao.getTinyNewArtByTypeForOld(cusId, start, 1));
+            resultList.addAll(artDao.getTinyNewArtByTypeForOld(TypeHandler.typeTransSingleChToEn(artType), cusId, start, 1));
         }
         // 如果相似用户的推荐内容数量不足 10, 则切换到新用户推荐逻辑.
         if (resultList.size() < 10) {

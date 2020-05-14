@@ -250,8 +250,12 @@ create view NR.ArtScoreList(asl_art_id, asl_art_score) as
 -- 新闻 分数 for hot 列表 atl
 DROP VIEW IF EXISTS NR.ArtTimeList;
 create view NR.ArtTimeList(atl_art_id, atl_art_score) as 
-    SELECT 
-        afc_art_id, 
+    SELECT
+        afc_art_id,
         timestampdiff(HOUR,now(),afc_art_time)*8+cast(afc_like_num as signed)*4+cast(afc_dislike_num as signed)*(-6)+cast(afc_com_num as signed)*3+cast(afc_read_num as signed )*1+cast(afc_rep_num as signed )*2 as atl_art_score
-    from NR.ArtFeatureCount
+    from NR.ArtFeatureCount left join NR.Article on NR.ArtFeatureCount.afc_art_id = NR.Article.art_id
+    where
+        NR.Article.art_type in ("news_society", "news_military", "news_finance", "news_entertainment",
+                                "news_game", "news_sports", "news_world", "news_tech", "news_car", "news_fashion") and
+        abs(timestampdiff(HOUR,now(),afc_art_time)) < 48
     order by atl_art_score desc;

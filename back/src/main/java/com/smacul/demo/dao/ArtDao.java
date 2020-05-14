@@ -129,6 +129,7 @@ public interface ArtDao {
     /**
      * 添加新闻
      * 20-05-04 创建方法
+     * 20-05-11 Bug 修改, 添加插入 artLegal
      * @param article
      * @return
      */
@@ -171,12 +172,13 @@ public interface ArtDao {
      * 按照类别获取一页新(new)文章缩略内容, 包括文章基本信息, 文章作者基本信息, 文章的特征统计信息
      * 直接按照新闻发布的时间排序, 推荐最新的文章
      * 20-05-13 创建方法
+     * @param artType
      * @param cusId
      * @param start
      * @param pageSize
      * @return
      */
-    List<ArtFullMod> getTinyNewArtByTypeForNew(Integer cusId, Integer start, Integer pageSize);
+    List<ArtFullMod> getTinyNewArtByTypeForNew(String artType, Integer cusId, Integer start, Integer pageSize);
 
     /**
      * 此方法功能和 getTinyNewArtFromGlobalForNew 一致, 只是名字不同
@@ -191,10 +193,11 @@ public interface ArtDao {
     /**
      * 此方法功能和 getTinyNewArtByTypeForNew 一致, 只是名字不同
      * 20-05-13 创建方法
+     * @param artType
      * @param cusId
      * @param start
      * @param pageSize
      * @return
      */
-    List<ArtFullMod> getTinyNewArtByTypeForOld(Integer cusId, Integer start, Integer pageSize);
+    List<ArtFullMod> getTinyNewArtByTypeForOld(String artType, Integer cusId, Integer start, Integer pageSize);
 }
