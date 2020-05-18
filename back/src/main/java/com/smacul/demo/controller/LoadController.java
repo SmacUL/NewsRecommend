@@ -48,6 +48,7 @@ public class LoadController {
      * 按照类别获取一页文章
      * 20-04-19 创建方法
      * 20-05-02 添加老用户推荐逻辑
+     * 20-05-19 修改逻辑, 在新用户切换成老用户时添加计算相似用户的逻辑
      * @param artType
      * @param page
      * @param pageSize
@@ -57,13 +58,19 @@ public class LoadController {
     public List<ArtFullMod> getTinyArtOnePageByType(
             @RequestParam String artType, @RequestParam Integer page, @RequestParam Integer pageSize) {
         Customer customer = (Customer) session.getAttribute("customer");
-        List<Integer> relativeCusList = (List<Integer>) session.getAttribute("relative");
-        if (customer == null || relativeCusList == null) {
+        if (customer == null) {
             return null;
         }
         if (selfService.checkIsNewUser(customer.getCusId())) {
             return loadService.getTinyArtOnePageByTypeForNew(customer.getCusId(), artType, page, pageSize);
         } else {
+            // TODO 删除
+            System.out.println("============ 老用户推按 =============");
+            List<Integer> relativeCusList = (List<Integer>) session.getAttribute("relative");
+            if (relativeCusList == null || relativeCusList.size() == 0) {
+                relativeCusList = selfService.getRelativeCusList(customer.getCusId(), 10);
+                session.setAttribute("relative", relativeCusList);
+            }
             return loadService.getTinyArtOnePageByTypeForOld(customer.getCusId(), relativeCusList, artType, page, pageSize);
         }
     }

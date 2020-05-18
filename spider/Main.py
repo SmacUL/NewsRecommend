@@ -18,6 +18,7 @@ import util.Json as Json
 import util.Time as Time
 import os.path
 import logging
+import random
 
 log_file_name = os.path.join('log', '%s.txt' % Time.Time.get_local_time())
 logger = logging.getLogger()
@@ -49,6 +50,7 @@ class Major:
         categories = ['news_society', 'news_entertainment', 'news_tech', 'news_military', 'news_sports', 'news_car',
                       'news_finance', 'news_world', 'news_fashion', 'news_travel', 'news_discovery', 'news_baby',
                       'news_regimen', 'news_story', 'news_essay', 'news_game', 'news_history', 'news_food']
+        # categories = ['news_society']
 
         for category in categories:
             print("当前类别: %s" % category)
@@ -125,6 +127,8 @@ class Major:
                 """
                 try:
                     coms_json = self.__com_pro.get_coms_json(art_brief_json)
+                    if coms_json is None:
+                        continue
                     logging.info("%s-%d coms_json 获取 成功" % (category, art_i))
                 except:
                     print("\t%s-%d coms_json 获取 失败" % (category, art_i))
@@ -141,6 +145,7 @@ class Major:
                         self.__cus_pro.set_com_cus(com_json, com_cus_mod)
                         self.__cus_dao.insert_then_get_cus(com_cus_mod)
                         self.__cus_dao.update_cus_feature(category, com_cus_mod.cus_id, flag=True)
+                        # self.__cus_dao.cus_watch_other_same_category_art(com_cus_mod.cus_id, art_mod.art_id, category)
                         logging.info("%s-%d-%d com_cus 处理 错误" % (category, art_i, com_i))
                     except:
                         print("\t%s-%d-%d com_cus 处理 错误" % (category, art_i, com_i))
@@ -187,10 +192,36 @@ class Major:
                         logging.exception("%s-%d-%d art-cus 行为 4 数据库操作 失败" % (category, art_i, com_i))
                         continue
 
+                    """ 评论用户 模拟浏览
+                    """
+                    try:
+                        result_list = None
+                        rand_category_num = random.randint(0, 18)
+                        rand_cates = random.sample(categories, rand_category_num)
+                        for rand_cate in rand_cates:
+                            result_list = self.__art_dao.get_same_category_art(art_mod.art_id, rand_cate)
+                            if result_list is not None:
+                                for back_art in result_list:
+                                    try:
+                                        self.__cus_dao.insert_cus_behavior(
+                                            com_cus_mod.cus_id, back_art[1], 2, back_art[0], 1, back_art[0]
+                                        )
+                                        self.__cus_dao.update_cus_feature(rand_cate, com_cus_mod.cus_id, update_num=1)
+                                        self.__art_dao.update_art_feature(6, back_art[0])
+                                    except:
+                                        continue
+                                print("\t%d 用户模拟浏览操作 数量 %d 完成" % (com_cus_mod.cus_id, len(result_list)))
+                                logging.info("%d 模拟浏览操作 数量 %d 完成" % (com_cus_mod.cus_id, len(result_list)))
+                    except:
+                        print("\t%d 用户模拟浏览操作 失败" % com_cus_mod.cus_id)
+                        logging.exception("%d 用户模拟浏览操作 失败" % com_cus_mod.cus_id)
+
                     """ 回复处理
                     """
                     try:
                         reps_json = self.__rep_pro.get_reps_json(com_json)
+                        if reps_json is None:
+                            continue
                         logging.info("%s-%d-%d reps_json 获取 成功" % (category, art_i, com_i))
                     except:
                         print("\t\t%s-%d-%d reps_json 获取 失败" % (category, art_i, com_i))
@@ -252,6 +283,30 @@ class Major:
                             print("\t\t%s-%d-%d-%d art-cus 行为 5 数据库操作 失败" % (category, art_i, com_i, rep_i))
                             logging.exception("%s-%d-%d-%d art-cus 行为 5 数据库操作 失败" % (category, art_i, com_i, rep_i))
                             continue
+
+                        """ 回复用户 模拟浏览
+                        """
+                        try:
+                            result_list = None
+                            rand_category_num = random.randint(0, 18)
+                            rand_cates = random.sample(categories, rand_category_num)
+                            for rand_cate in rand_cates:
+                                result_list = self.__art_dao.get_same_category_art(art_mod.art_id, rand_cate)
+                                if result_list is not None:
+                                    for back_art in result_list:
+                                        try:
+                                            self.__cus_dao.insert_cus_behavior(
+                                                rep_cus_mod.cus_id, back_art[1], 2, back_art[0], 1, back_art[0]
+                                            )
+                                            self.__cus_dao.update_cus_feature(rand_cate, rep_cus_mod.cus_id, update_num=1)
+                                            self.__art_dao.update_art_feature(6, back_art[0])
+                                        except:
+                                            continue
+                                    print("\t\t%d 用户模拟浏览操作 数量 %d 完成" % (rep_cus_mod.cus_id, len(result_list)))
+                                    logging.info("%d 用户模拟浏览操作 数量 %d 完成" % (rep_cus_mod.cus_id, len(result_list)))
+                        except:
+                            print("\t\t%d 用户模拟浏览操作 失败" % rep_cus_mod.cus_id)
+                            logging.exception("%d 用户模拟浏览操作 失败" % rep_cus_mod.cus_id)
 
 
 if __name__ == '__main__':

@@ -115,7 +115,7 @@ public interface ShapeService {
     Boolean setCusBehaviorRepDislike(Integer cusId, Integer repCusId, Integer artId, Integer repId);
 
     /**
-     * 用户 follow 10
+     * 用户 follow 11
      * cbrCusIdFrom | cbrCusIdTo | cbrBehavior |   cbrTime   | cbrArtId | cbrType | cbrTargetId
      *   cusIdFrom  |   cusIdTo  |      11     | followTime  |    null  |    0    |     null
      * 20-04-19 创建方法

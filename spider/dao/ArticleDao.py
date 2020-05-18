@@ -1,5 +1,6 @@
 import util.MySql as MySql
 import model.ArticleModel as ArtMod
+import random
 
 import logging
 
@@ -150,6 +151,7 @@ class ArticleDao:
 
         # 20-04-17 修改完成
         # 20-04-23 Rollback BUG Fix
+        # 20-05-15 修改方法逻辑, 当行为为 6 时, 只将新闻阅读数量加 1
 
         :param behavior: 这个行为和那个用户行为是两个东西.
         :param art_id:
@@ -168,10 +170,14 @@ class ArticleDao:
 
             if behavior == 1:
                 update_sql = "insert into ArtFeatureCount(afc_art_id, afc_art_time) values(%d, '%s')" % (art_id, art_time)
-            else:
+            elif behavior != 1 or behavior != 6:
                 update_sql = "update ArtFeatureCount set {0}={1}+1, afc_read_num=afc_read_num+1" \
                              " where afc_art_id=%d"\
                                 .format(behavior_dict[behavior], behavior_dict[behavior]) % art_id
+            else:
+                update_sql = "update ArtFeatureCount set afc_read_num=afc_read_num+1" \
+                             " where afc_art_id=%d"\
+                                % art_id
 
             self.__base.execute_sql(update_sql)
             # logging.info("新闻 art_id=%s 特征 %s 数据库插入 成功" % (art_id, behavior))
@@ -181,4 +187,24 @@ class ArticleDao:
             raise
 
 
+    def get_same_category_art(self, cur_art_id, category):
+        """ 随机选择一定数量的同类文章
+
+        此方法的作用主要是为了帮组增加用户的行为数据.
+        用户随机浏览发生在两个方面: 一是浏览数量的随机 [1, 40], 二是同类别下浏览文章的随机.
+
+        20-05-15 创建方法
+
+        :param cur_art_id:  当前文章 id
+        :param category:    新闻类别
+        :return:
+        """
+        try:
+            rand_num = random.randint(1, 40)
+            select_sql = "select art_id, art_cus_id from Article where art_type = '%s' and art_id != %d limit %d" % \
+                         (category, cur_art_id, rand_num)
+            self.__base.execute_sql(select_sql)
+            return self.__base.get_result_all()
+        except:
+            raise
 

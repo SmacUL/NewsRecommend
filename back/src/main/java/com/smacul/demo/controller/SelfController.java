@@ -49,6 +49,12 @@ public class SelfController {
                 customer.setCusPass(null);
                 session.setAttribute("customer", customer);
                 List<Integer> cusList = selfService.getRelativeCusList(customer.getCusId(), 10);
+                // TODO 删除
+                System.out.println("=========== 相似用户 =========");
+                for (Integer cus: cusList) {
+                    System.out.println(cus);
+                }
+                System.out.println("=========== 相似用户 end =========");
                 session.setAttribute("relative", cusList);
                 return "登录成功";
             }
@@ -132,6 +138,7 @@ public class SelfController {
      * 处理用户关注与取消关注
      * 20-04-18 创建方法
      * 20-04-26 修改逻辑, 防止用户关注自己
+     * 20-05-17 补上用户关注后, 更新后台三个表信息.
      * @param cusId 关注或取消关注的用户的 ID
      * @return
      */
@@ -146,6 +153,7 @@ public class SelfController {
             return "不能关注自己";
         }
         if (selfService.setCusFollow(cusIdFrom, cusId)) {
+            shapeService.setCusBehaviorCusFollow(cusIdFrom, cusId);
             return "关注成功";
         } else {
             return "关注失败";
