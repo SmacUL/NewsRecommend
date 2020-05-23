@@ -42,6 +42,7 @@ public interface LoadService {
      * 20-05-02 添加对老用户的推荐
      * 20-05-06 方法修改, 返回时将文章类别从英文翻译成中文
      * 20-05-13 修改文章推荐方式, 协同推荐文章 pageSize-1: 新生文章 1
+     * 20-05-19 方法修改, 当相似用户推荐低于 10 的时候, 返回长度为 0 的列表
      * @param artType
      * @param cusList   相似用户列表
      * @param page

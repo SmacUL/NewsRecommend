@@ -194,6 +194,7 @@ class ArticleDao:
         用户随机浏览发生在两个方面: 一是浏览数量的随机 [1, 40], 二是同类别下浏览文章的随机.
 
         20-05-15 创建方法
+        20-05-19 Bug 修改, 随机逻辑添加
 
         :param cur_art_id:  当前文章 id
         :param category:    新闻类别
@@ -201,7 +202,7 @@ class ArticleDao:
         """
         try:
             rand_num = random.randint(1, 40)
-            select_sql = "select art_id, art_cus_id from Article where art_type = '%s' and art_id != %d limit %d" % \
+            select_sql = "select art_id, art_cus_id from Article where art_type = '%s' and art_id != %d order by rand() limit %d" % \
                          (category, cur_art_id, rand_num)
             self.__base.execute_sql(select_sql)
             return self.__base.get_result_all()

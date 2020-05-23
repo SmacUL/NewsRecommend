@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.swing.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TransferQueue;
 
@@ -41,7 +42,8 @@ public class LoadServiceImpl implements LoadService {
     }
 
     @Override
-    public List<ArtFullMod> getTinyArtOnePageByTypeForNew(Integer cusId, String artType, Integer page, Integer pageSize) {
+    public List<ArtFullMod> getTinyArtOnePageByTypeForNew(
+            Integer cusId, String artType, Integer page, Integer pageSize) {
         Integer start = PageHandler.calcuStartNO(page, pageSize);
         List<ArtFullMod> resultList = null;
         if (artType.equals("综合")) {
@@ -49,8 +51,10 @@ public class LoadServiceImpl implements LoadService {
             resultList.addAll(artDao.getTinyHotArtFromGlobalForNew(cusId, start, pageSize-1-2));
             resultList.addAll(artDao.getTinyNewArtFromGlobalForNew(cusId, start, 1));
         } else {
-            resultList = artDao.getTinyNewArtByTypeForNew(TypeHandler.typeTransSingleChToEn(artType), cusId, start, 1);
-            resultList.addAll(artDao.getTinyArtOnePageByTypeNew(TypeHandler.typeTransSingleChToEn(artType), cusId, start, pageSize-1));
+            resultList = artDao.getTinyNewArtByTypeForNew(
+                    TypeHandler.typeTransSingleChToEn(artType), cusId, start, 1);
+            resultList.addAll(artDao.getTinyArtOnePageByTypeNew(
+                    TypeHandler.typeTransSingleChToEn(artType), cusId, start, pageSize-1));
         }
         for (ArtFullMod result: resultList) {
             result.setArtType(TypeHandler.typeTransSingleEnToCh(result.getArtType()));
@@ -62,7 +66,6 @@ public class LoadServiceImpl implements LoadService {
     public List<ArtFullMod> getTinyArtOnePageByTypeForOld(
             Integer cusId, List<Integer> cusList, String artType, Integer page, Integer pageSize) {
         Integer start = PageHandler.calcuStartNO(page, pageSize);
-        // 这里用一种比较土的方式创建 SQL 查询的字符串, 存在 SQL 注入的风险.
         String cusIdListStr = "";
         for (int i = 0; i < cusList.size(); i++) {
             if (i != (cusList.size() - 1)) {
@@ -73,21 +76,26 @@ public class LoadServiceImpl implements LoadService {
         }
         List<ArtFullMod> resultList = null;
         if (artType.equals("综合")) {
-            resultList = artDao.getTinyArtOnePageFromGlobalOld(cusId, cusIdListStr, start, pageSize-1);
-            resultList.addAll(artDao.getTinyNewArtFromGlobalForOld(cusId, start, 1));
+            resultList = artDao.getTinyHotArtFromGlobalForNew(cusId, start, 3);
+            resultList.addAll(
+                    artDao.getTinyArtOnePageFromGlobalOld(cusId, cusIdListStr, start, pageSize-1-3));
+            resultList.addAll(
+                    artDao.getTinyNewArtFromGlobalForOld(cusId, start, 1));
         } else {
-            resultList = artDao.getTinyArtOnePageByTypeOld(TypeHandler.typeTransSingleChToEn(artType), cusId, cusIdListStr, start, pageSize-1);
-            resultList.addAll(artDao.getTinyNewArtByTypeForOld(TypeHandler.typeTransSingleChToEn(artType), cusId, start, 1));
+            resultList = artDao.getTinyArtOnePageByTypeOld(
+                    TypeHandler.typeTransSingleChToEn(artType), cusId, cusIdListStr, start, pageSize-1);
+            resultList.addAll(artDao.getTinyNewArtByTypeForOld(
+                    TypeHandler.typeTransSingleChToEn(artType), cusId, start, 1));
         }
-        // 如果相似用户的推荐内容数量不足 10, 则切换到新用户推荐逻辑.
+        // 如果相似用户的推荐内容数量不足 10, 则返回长度为 0 的列表.
         if (resultList.size() < 10) {
-            resultList = getTinyArtOnePageByTypeForNew(cusId, artType, page, pageSize);
+            return new ArrayList<>();
         } else {
             for (ArtFullMod result: resultList) {
                 result.setArtType(TypeHandler.typeTransSingleEnToCh(result.getArtType()));
             }
+            return resultList;
         }
-        return resultList;
     }
 
     @Override

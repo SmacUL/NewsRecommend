@@ -85,11 +85,14 @@
         <result property="cbrType" column="cbr_type"></result>
         <result property="cbrArtId" column="cbr_art_id"></result>
         <collection property="cusFrom" select="com.smacul.demo.dao.CusDao.getCusById"
-                    column="cusId=cbr_cus_id_from" javaType="com.smacul.demo.bean.Customer"></collection>
+                    column="cusId=cbr_cus_id_from"
+                    javaType="com.smacul.demo.bean.Customer"></collection>
         <collection property="cusTo" select="com.smacul.demo.dao.CusDao.getCusById"
-                    column="cusId=cbr_cus_id_to" javaType="com.smacul.demo.bean.Customer"></collection>
+                    column="cusId=cbr_cus_id_to"
+                    javaType="com.smacul.demo.bean.Customer"></collection>
         <collection property="article" select="com.smacul.demo.dao.ArtDao.getSingleArt"
-                    column="{flag=cbr_type, artId=cbr_art_id}" javaType="com.smacul.demo.model.ArtFullMod"></collection>
+                    column="{flag=cbr_type, artId=cbr_art_id}"
+                    javaType="com.smacul.demo.model.ArtFullMod"></collection>
         <collection property="comment" select="com.smacul.demo.dao.ComDao.getSingleCom"
                     column="{flag=cbr_type, comId=cbr_target_id}" javaType="com.smacul.demo.model.ComFullMod"></collection>
         <collection property="reply" select="com.smacul.demo.dao.RepDao.getSingleRep"

@@ -196,7 +196,7 @@ class Major:
                     """
                     try:
                         result_list = None
-                        rand_category_num = random.randint(0, 18)
+                        rand_category_num = random.randint(1, 4)
                         rand_cates = random.sample(categories, rand_category_num)
                         for rand_cate in rand_cates:
                             result_list = self.__art_dao.get_same_category_art(art_mod.art_id, rand_cate)
@@ -288,7 +288,7 @@ class Major:
                         """
                         try:
                             result_list = None
-                            rand_category_num = random.randint(0, 18)
+                            rand_category_num = random.randint(1, 4)
                             rand_cates = random.sample(categories, rand_category_num)
                             for rand_cate in rand_cates:
                                 result_list = self.__art_dao.get_same_category_art(art_mod.art_id, rand_cate)

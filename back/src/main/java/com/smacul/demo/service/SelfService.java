@@ -99,6 +99,7 @@ public interface SelfService {
      * 如果用户是老用户, 优先考虑他关注的用户, 再计算相似用户.
      * 返回 10 个吧先
      * 20-05-02 创建方法
+     * 20-05-19 删除关注用户的添加逻辑
      * @param cusId
      * @param num
      * @return

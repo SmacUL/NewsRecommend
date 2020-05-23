@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -48,7 +49,8 @@ public class LoadController {
      * 按照类别获取一页文章
      * 20-04-19 创建方法
      * 20-05-02 添加老用户推荐逻辑
-     * 20-05-19 修改逻辑, 在新用户切换成老用户时添加计算相似用户的逻辑
+     * 20-05-18 修改逻辑, 在新用户切换成老用户时添加计算相似用户的逻辑
+     * 20-05-19 推荐逻辑修改, 在相似用户用完之后, 重新计算相似用户
      * @param artType
      * @param page
      * @param pageSize
@@ -61,18 +63,35 @@ public class LoadController {
         if (customer == null) {
             return null;
         }
+
+        // 新用户推荐
         if (selfService.checkIsNewUser(customer.getCusId())) {
             return loadService.getTinyArtOnePageByTypeForNew(customer.getCusId(), artType, page, pageSize);
-        } else {
-            // TODO 删除
-            System.out.println("============ 老用户推按 =============");
-            List<Integer> relativeCusList = (List<Integer>) session.getAttribute("relative");
-            if (relativeCusList == null || relativeCusList.size() == 0) {
-                relativeCusList = selfService.getRelativeCusList(customer.getCusId(), 10);
-                session.setAttribute("relative", relativeCusList);
-            }
-            return loadService.getTinyArtOnePageByTypeForOld(customer.getCusId(), relativeCusList, artType, page, pageSize);
         }
+
+        // 老用户推荐
+        List<Integer> relativeCusList = (List<Integer>) session.getAttribute("relative");
+        List<ArtFullMod> recommendList = null;
+        // 当前用户变为老用户, session 中相似用户的记录为空
+        if (relativeCusList == null || relativeCusList.size() == 0) {
+            relativeCusList = selfService.getRelativeCusList(customer.getCusId(), 10);
+            session.setAttribute("relative", relativeCusList);
+        }
+        //获取推荐内容
+        recommendList = loadService.getTinyArtOnePageByTypeForOld(customer.getCusId(), relativeCusList, artType, page, pageSize);
+        // 如果 getTinyArtOnePageByTypeForOld 方法返回内容长度为 0, 说明本批次相似用户推荐结束. 重新计算相似用户
+        // getTinyArtOnePageByTypeForOld 方法返回内容长度为 0, 系统利用新一批相似用户再次尝试推荐
+        if (recommendList.size() == 0) {
+            relativeCusList = selfService.getRelativeCusList(customer.getCusId(), 10);
+            session.setAttribute("relative", relativeCusList);
+            recommendList = loadService.getTinyArtOnePageByTypeForOld(customer.getCusId(), relativeCusList, artType, page, pageSize);
+            // 如果再次推荐的结果内容长度为 0, 切换至新用户推荐
+            if (recommendList.size() == 0) {
+                session.setAttribute("relative", new ArrayList<>());
+                recommendList = loadService.getTinyArtOnePageByTypeForNew(customer.getCusId(), artType, page, pageSize);
+            }
+        }
+        return recommendList;
     }
 
     /**

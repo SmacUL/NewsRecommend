@@ -49,12 +49,6 @@ public class SelfController {
                 customer.setCusPass(null);
                 session.setAttribute("customer", customer);
                 List<Integer> cusList = selfService.getRelativeCusList(customer.getCusId(), 10);
-                // TODO 删除
-                System.out.println("=========== 相似用户 =========");
-                for (Integer cus: cusList) {
-                    System.out.println(cus);
-                }
-                System.out.println("=========== 相似用户 end =========");
                 session.setAttribute("relative", cusList);
                 return "登录成功";
             }
