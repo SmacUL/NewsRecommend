@@ -46,15 +46,15 @@ public class LoadServiceImpl implements LoadService {
             Integer cusId, String artType, Integer page, Integer pageSize) {
         Integer start = PageHandler.calcuStartNO(page, pageSize);
         List<ArtFullMod> resultList = null;
-        if (artType.equals("综合")) {
+        if (artType.equals("news_global")) {
             resultList = artDao.getTinyInfoArtFromGlobalForNew(cusId, start, 2);
             resultList.addAll(artDao.getTinyHotArtFromGlobalForNew(cusId, start, pageSize-1-2));
             resultList.addAll(artDao.getTinyNewArtFromGlobalForNew(cusId, start, 1));
         } else {
             resultList = artDao.getTinyNewArtByTypeForNew(
-                    TypeHandler.typeTransSingleChToEn(artType), cusId, start, 1);
+                    artType, cusId, start, 1);
             resultList.addAll(artDao.getTinyArtOnePageByTypeNew(
-                    TypeHandler.typeTransSingleChToEn(artType), cusId, start, pageSize-1));
+                    artType, cusId, start, pageSize-1));
         }
         for (ArtFullMod result: resultList) {
             result.setArtType(TypeHandler.typeTransSingleEnToCh(result.getArtType()));
@@ -75,7 +75,7 @@ public class LoadServiceImpl implements LoadService {
             }
         }
         List<ArtFullMod> resultList = null;
-        if (artType.equals("综合")) {
+        if (artType.equals("news_global")) {
             resultList = artDao.getTinyHotArtFromGlobalForNew(cusId, start, 3);
             resultList.addAll(
                     artDao.getTinyArtOnePageFromGlobalOld(cusId, cusIdListStr, start, pageSize-1-3));
@@ -83,9 +83,9 @@ public class LoadServiceImpl implements LoadService {
                     artDao.getTinyNewArtFromGlobalForOld(cusId, start, 1));
         } else {
             resultList = artDao.getTinyArtOnePageByTypeOld(
-                    TypeHandler.typeTransSingleChToEn(artType), cusId, cusIdListStr, start, pageSize-1);
+                    artType, cusId, cusIdListStr, start, pageSize-1);
             resultList.addAll(artDao.getTinyNewArtByTypeForOld(
-                    TypeHandler.typeTransSingleChToEn(artType), cusId, start, 1));
+                    artType, cusId, start, 1));
         }
         // 如果相似用户的推荐内容数量不足 10, 则返回长度为 0 的列表.
         if (resultList.size() < 10) {

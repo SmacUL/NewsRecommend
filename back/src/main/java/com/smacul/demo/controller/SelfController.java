@@ -6,6 +6,7 @@ import com.smacul.demo.model.CusDynamicMod;
 import com.smacul.demo.model.CusFeatureFullMod;
 import com.smacul.demo.service.SearchService;
 import com.smacul.demo.service.SelfService;
+import com.smacul.demo.service.SessionService;
 import com.smacul.demo.service.ShapeService;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.apache.ibatis.annotations.Param;
@@ -28,7 +29,7 @@ public class SelfController {
     @Autowired
     ShapeService shapeService;
     @Autowired
-    HttpSession session;
+    SessionService session;
 
     /**
      * 用户登录
@@ -40,16 +41,17 @@ public class SelfController {
      */
     @RequestMapping("/login")
     public String cusLogin(@RequestParam String cusName, @RequestParam String cusPass) {
-        if (session.getAttribute("customer") != null) {
+        if (session.getCusSession() != null) {
             return "您已登录";
         }
         try {
             Customer customer = selfService.checkCusForLogin(cusName, cusPass);
             if (customer != null) {
                 customer.setCusPass(null);
-                session.setAttribute("customer", customer);
+                session.setCusSession(customer);
                 List<Integer> cusList = selfService.getRelativeCusList(customer.getCusId(), 10);
-                session.setAttribute("relative", cusList);
+                session.setRelSession(cusList);
+                session.initPagSession();
                 return "登录成功";
             }
         } catch (NoSuchAlgorithmException e) {
@@ -65,7 +67,7 @@ public class SelfController {
      */
     @RequestMapping("/quit")
     public String quitLogin() {
-        session.setAttribute("customer", null);
+        session.setCusSession(null);
         return "退出成功";
     }
 
@@ -80,7 +82,7 @@ public class SelfController {
     @RequestMapping("/register")
     public String cusRegister(@RequestParam String cusName, @RequestParam String cusPass) {
         try {
-            session.setAttribute("customer", null);
+            session.setCusSession(null);
             return selfService.setNewCus(cusName, cusPass);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
@@ -96,11 +98,11 @@ public class SelfController {
      */
     @RequestMapping("/basic")
     public Customer getCusBasicInfo(@RequestParam Integer cusId) {
-        if (session.getAttribute("customer") == null) {
+        if (session.getCusSession() == null) {
             return null;
         }
         if (cusId == null || cusId <= 0) {
-            return (Customer) session.getAttribute("customer");
+            return session.getCusSession();
         } else {
             return selfService.getCusBasicInfo(cusId);
         }
@@ -114,12 +116,12 @@ public class SelfController {
      */
     @RequestMapping("/modify")
     public String setCusBasicInfo(@RequestBody Customer customer) {
-        if (session.getAttribute("customer") == null) {
+        if (session.getCusSession() == null) {
             return "修改失败";
         }
         try {
             if (selfService.setCusBasicInfo(customer)) {
-                session.setAttribute("customer", customer);
+                session.setCusSession(customer);
                 return "修改成功";
             }
         } catch (NoSuchAlgorithmException e) {
@@ -138,10 +140,10 @@ public class SelfController {
      */
     @RequestMapping("/follow")
     public String setCusFollow(@RequestParam Integer cusId) {
-        if (session.getAttribute("customer") == null) {
+        if (session.getCusSession() == null) {
             return "关注失败";
         }
-        Customer cusFrom = (Customer) session.getAttribute("customer");
+        Customer cusFrom = session.getCusSession();
         Integer cusIdFrom = cusFrom.getCusId();
         if (cusId.equals(cusIdFrom)) {
             return "不能关注自己";
@@ -176,7 +178,7 @@ public class SelfController {
     @RequestMapping("/dynamic")
     public List<CusDynamicMod> getCusDynamic(
             @RequestParam Integer cusId, @RequestParam Integer page, @RequestParam Integer pageSize) {
-        if (session.getAttribute("customer") == null) {
+        if (session.getCusSession() == null) {
             return null;
         }
         return selfService.getCusDynamic(cusId, page, pageSize);
@@ -190,7 +192,7 @@ public class SelfController {
      */
     @RequestMapping("/chefollow")
     public Boolean checkCusFollow(@RequestParam Integer cusId) {
-        Customer cusFrom = (Customer) session.getAttribute("customer");
+        Customer cusFrom = session.getCusSession();
         if (cusFrom == null) {
             return false;
         }
