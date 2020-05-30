@@ -7,7 +7,7 @@
 
     <update id="updateArtFeature">
         update ArtFeatureCount
-        set ${column} = ${column} + 1
+        set ${column} = ${column} + 1, afc_art_time=afc_art_time
         where afc_art_id = #{artId}
     </update>
 

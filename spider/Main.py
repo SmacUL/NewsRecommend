@@ -196,7 +196,7 @@ class Major:
                     """
                     try:
                         result_list = None
-                        rand_category_num = random.randint(1, 4)
+                        rand_category_num = random.randint(1, 2)
                         rand_cates = random.sample(categories, rand_category_num)
                         for rand_cate in rand_cates:
                             result_list = self.__art_dao.get_same_category_art(art_mod.art_id, rand_cate)
@@ -207,7 +207,7 @@ class Major:
                                             com_cus_mod.cus_id, back_art[1], 2, back_art[0], 1, back_art[0]
                                         )
                                         self.__cus_dao.update_cus_feature(rand_cate, com_cus_mod.cus_id, update_num=1)
-                                        self.__art_dao.update_art_feature(6, back_art[0])
+                                        self.__art_dao.update_art_feature(6, back_art[0], art_mod.art_time)
                                     except:
                                         continue
                                 print("\t%d 用户模拟浏览操作 数量 %d 完成" % (com_cus_mod.cus_id, len(result_list)))
@@ -288,7 +288,7 @@ class Major:
                         """
                         try:
                             result_list = None
-                            rand_category_num = random.randint(1, 4)
+                            rand_category_num = random.randint(1, 2)
                             rand_cates = random.sample(categories, rand_category_num)
                             for rand_cate in rand_cates:
                                 result_list = self.__art_dao.get_same_category_art(art_mod.art_id, rand_cate)
@@ -299,7 +299,7 @@ class Major:
                                                 rep_cus_mod.cus_id, back_art[1], 2, back_art[0], 1, back_art[0]
                                             )
                                             self.__cus_dao.update_cus_feature(rand_cate, rep_cus_mod.cus_id, update_num=1)
-                                            self.__art_dao.update_art_feature(6, back_art[0])
+                                            self.__art_dao.update_art_feature(6, back_art[0], art_mod.art_time)
                                         except:
                                             continue
                                     print("\t\t%d 用户模拟浏览操作 数量 %d 完成" % (rep_cus_mod.cus_id, len(result_list)))

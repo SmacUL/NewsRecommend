@@ -144,7 +144,7 @@ class ArticleDao:
             raise
 
 
-    def update_art_feature(self, behavior, art_id, art_time=''):
+    def update_art_feature(self, behavior, art_id, art_time):
         """ 更新新闻的统计信息
 
         behavior 为 1 是一个比较特殊的情况, 它将设置 update_art_feature 表中的时间.
@@ -171,13 +171,13 @@ class ArticleDao:
             if behavior == 1:
                 update_sql = "insert into ArtFeatureCount(afc_art_id, afc_art_time) values(%d, '%s')" % (art_id, art_time)
             elif behavior != 1 or behavior != 6:
-                update_sql = "update ArtFeatureCount set {0}={1}+1, afc_read_num=afc_read_num+1" \
+                update_sql = "update ArtFeatureCount set {0}={1}+1, afc_read_num=afc_read_num+1, afc_art_time=afc_art_time" \
                              " where afc_art_id=%d"\
-                                .format(behavior_dict[behavior], behavior_dict[behavior]) % art_id
+                                .format(behavior_dict[behavior], behavior_dict[behavior]) % (art_id)
             else:
-                update_sql = "update ArtFeatureCount set afc_read_num=afc_read_num+1" \
+                update_sql = "update ArtFeatureCount set afc_read_num=afc_read_num+1, afc_art_time=afc_art_time" \
                              " where afc_art_id=%d"\
-                                % art_id
+                                % (art_id)
 
             self.__base.execute_sql(update_sql)
             # logging.info("新闻 art_id=%s 特征 %s 数据库插入 成功" % (art_id, behavior))
@@ -202,7 +202,9 @@ class ArticleDao:
         """
         try:
             rand_num = random.randint(1, 40)
-            select_sql = "select art_id, art_cus_id from Article where art_type = '%s' and art_id != %d order by rand() limit %d" % \
+            select_sql = "select art_id, art_cus_id from Article " \
+                         "where art_type = '%s' and art_id != %d and timestampdiff(HOUR, art_time, now()) < 240 " \
+                         "order by rand() limit %d" % \
                          (category, cur_art_id, rand_num)
             self.__base.execute_sql(select_sql)
             return self.__base.get_result_all()

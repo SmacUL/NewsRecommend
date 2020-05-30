@@ -17,6 +17,7 @@ public interface ArtFeatureCountDao {
     /**
      * 更新文章指定字段的特征数据
      * 20-04-19 创建方法
+     * 20-05-28 补丁, 数据库表缺陷
      * @param artId
      * @param column    特征字段, 保证 afc 前缀, 下划线
      * @param num

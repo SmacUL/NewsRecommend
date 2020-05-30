@@ -51,10 +51,8 @@ public class LoadServiceImpl implements LoadService {
             resultList.addAll(artDao.getTinyHotArtFromGlobalForNew(cusId, start, pageSize-1-2));
             resultList.addAll(artDao.getTinyNewArtFromGlobalForNew(cusId, start, 1));
         } else {
-            resultList = artDao.getTinyNewArtByTypeForNew(
-                    artType, cusId, start, 1);
-            resultList.addAll(artDao.getTinyArtOnePageByTypeNew(
-                    artType, cusId, start, pageSize-1));
+            resultList = artDao.getTinyNewArtByTypeForNew(artType, cusId, start, 1);
+            resultList.addAll(artDao.getTinyArtOnePageByTypeNew(artType, cusId, start, pageSize-1));
         }
         for (ArtFullMod result: resultList) {
             result.setArtType(TypeHandler.typeTransSingleEnToCh(result.getArtType()));
@@ -77,15 +75,11 @@ public class LoadServiceImpl implements LoadService {
         List<ArtFullMod> resultList = null;
         if (artType.equals("news_global")) {
             resultList = artDao.getTinyHotArtFromGlobalForNew(cusId, start, 3);
-            resultList.addAll(
-                    artDao.getTinyArtOnePageFromGlobalOld(cusId, cusIdListStr, start, pageSize-1-3));
-            resultList.addAll(
-                    artDao.getTinyNewArtFromGlobalForOld(cusId, start, 1));
+            resultList.addAll(artDao.getTinyArtOnePageFromGlobalOld(cusId, cusIdListStr, start, pageSize-1-3));
+            resultList.addAll(artDao.getTinyNewArtFromGlobalForOld(cusId, start, 1));
         } else {
-            resultList = artDao.getTinyArtOnePageByTypeOld(
-                    artType, cusId, cusIdListStr, start, pageSize-1);
-            resultList.addAll(artDao.getTinyNewArtByTypeForOld(
-                    artType, cusId, start, 1));
+            resultList = artDao.getTinyArtOnePageByTypeOld(artType, cusId, cusIdListStr, start, pageSize-1);
+            resultList.addAll(artDao.getTinyNewArtByTypeForOld(artType, cusId, start, 1));
         }
         // 如果相似用户的推荐内容数量不足 10, 则返回长度为 0 的列表.
         if (resultList.size() < 10) {
@@ -100,10 +94,10 @@ public class LoadServiceImpl implements LoadService {
 
     @Override
     public List<ArtFullMod> getHotArtOnePage(Integer page, Integer pageSize) {
-        Integer start = 0;
-        if (page <= 4) {
-            start = PageHandler.calcuStartNO(page, pageSize);
-        }
+        Integer start = PageHandler.calcuStartNO(page, pageSize);
+        //if (page <= 4) {
+        //    start = PageHandler.calcuStartNO(page, pageSize);
+        //}
         return artDao.getHotArtOnePage(start, pageSize);
     }
 
