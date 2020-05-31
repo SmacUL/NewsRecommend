@@ -67,15 +67,18 @@ public class LoadController {
         if (customer == null) {
             return null;
         }
+        List<ArtFullMod> recommendList = null;
         // 新用户推荐
         if (selfService.checkIsNewUser(customer.getCusId())) {
-            return loadService.getTinyArtOnePageByTypeForNew(
+            recommendList = loadService.getTinyArtOnePageByTypeForNew(
                     customer.getCusId(), artType, session.getPagThenAddOne(artType), pageSize);
+            shapeService.recordRecommendList(customer.getCusId(), recommendList);
+            return recommendList;
         }
 
         // 老用户推荐
         List<Integer> relativeCusList = session.getRelSession();
-        List<ArtFullMod> recommendList = null;
+
         // 当前用户变为老用户, session 中相似用户的记录为空
         if (relativeCusList == null || relativeCusList.size() == 0) {
             relativeCusList = selfService.getRelativeCusList(customer.getCusId(), 10);
@@ -103,6 +106,7 @@ public class LoadController {
                 recommendList = loadService.getTinyArtOnePageByTypeForNew(customer.getCusId(), artType, session.getPagThenAddOne(artType), pageSize);
             }
         }
+        shapeService.recordRecommendList(customer.getCusId(), recommendList);
         return recommendList;
     }
 

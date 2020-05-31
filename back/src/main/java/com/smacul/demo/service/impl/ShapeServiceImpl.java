@@ -1,14 +1,14 @@
 package com.smacul.demo.service.impl;
 
 import com.smacul.demo.bean.Customer;
-import com.smacul.demo.dao.ArtDao;
-import com.smacul.demo.dao.ArtFeatureCountDao;
-import com.smacul.demo.dao.CusBehaviorRecordDao;
-import com.smacul.demo.dao.CusFeatureCountDao;
+import com.smacul.demo.dao.*;
 import com.smacul.demo.model.ArtFullMod;
 import com.smacul.demo.service.ShapeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class ShapeServiceImpl implements ShapeService {
@@ -21,6 +21,8 @@ public class ShapeServiceImpl implements ShapeService {
     CusFeatureCountDao cusFeatureCountDao;
     @Autowired
     ArtFeatureCountDao artFeatureCountDao;
+    @Autowired
+    CusRecommendRecordDao cusRecommendRecordDao;
 
     @Override
     public Boolean setCusBehaviorArtEdit(Integer cusId, Integer artId) {
@@ -152,4 +154,17 @@ public class ShapeServiceImpl implements ShapeService {
             return false;
         }
     }
+
+    @Override
+    public Boolean recordRecommendList(Integer cusId, List<ArtFullMod> list) {
+        List<Integer> idList = new ArrayList<>();
+        for (ArtFullMod tar: list) {
+            idList.add(tar.getArtId());
+        }
+        cusRecommendRecordDao.addRecommendList(cusId, idList);
+        System.out.println("=======================");
+        return null;
+    }
+
+
 }

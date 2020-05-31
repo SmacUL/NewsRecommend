@@ -1,6 +1,9 @@
 package com.smacul.demo.service;
 
+import com.smacul.demo.model.ArtFullMod;
 import com.sun.org.apache.xpath.internal.operations.Bool;
+
+import java.util.List;
 
 public interface ShapeService {
 
@@ -124,5 +127,12 @@ public interface ShapeService {
      * @return
      */
     Boolean setCusBehaviorCusFollow(Integer cusIdFrom, Integer cusIdTo);
+
+    /**
+     *
+     * @param list
+     * @return
+     */
+    Boolean recordRecommendList(Integer cusId, List<ArtFullMod> list);
 
 }
