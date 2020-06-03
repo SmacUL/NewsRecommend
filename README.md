@@ -73,14 +73,13 @@ localhost:8071/search   # 搜索页面
 
 现在工程目录下的 `src/main/resources` 中创建 application.properties 文件, 内容大致如下: 
 
-​``` sh
+``` shell   
 spring.datasource.driverClassName = com.mysql.jdbc.Driver
 spring.datasource.url = jdbc:mysql://[主机名]:3306/[数据库名称]?useUnicode=true&characterEncoding=utf8&useSSL=true
 spring.datasource.username = [用户名]
 spring.datasource.password = [密码]
 mybatis.configuration.map-underscore-to-camel-case=true
 mybatis.mapper-locations=classpath:mapper/*.xml
-# MyBatis 打印 SQL
 mybatis.configuration.log-impl=org.apache.ibatis.logging.stdout.StdOutImpl
 ```
 
