@@ -70,8 +70,7 @@ public class LoadController {
         List<ArtFullMod> recommendList = null;
         // 新用户推荐
         if (selfService.checkIsNewUser(customer.getCusId())) {
-            recommendList = loadService.getTinyArtOnePageByTypeForNew(
-                    customer.getCusId(), artType, session.getPagThenAddOne(artType), pageSize);
+            recommendList = loadService.getTinyArtOnePageByTypeForNew(customer.getCusId(), artType, session.getPagThenAddOne(artType), pageSize);
             shapeService.recordRecommendList(customer.getCusId(), recommendList);
             return recommendList;
         }

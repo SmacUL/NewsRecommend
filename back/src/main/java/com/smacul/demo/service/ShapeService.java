@@ -129,7 +129,8 @@ public interface ShapeService {
     Boolean setCusBehaviorCusFollow(Integer cusIdFrom, Integer cusIdTo);
 
     /**
-     *
+     * 记录系统推荐内容, 并删除指定用户历史 72 小时的推荐内容
+     * 20-06-03
      * @param list
      * @return
      */

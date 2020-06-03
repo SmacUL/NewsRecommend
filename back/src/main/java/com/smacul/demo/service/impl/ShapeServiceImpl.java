@@ -161,8 +161,8 @@ public class ShapeServiceImpl implements ShapeService {
         for (ArtFullMod tar: list) {
             idList.add(tar.getArtId());
         }
+        cusRecommendRecordDao.deleteOldCommentList(cusId);
         cusRecommendRecordDao.addRecommendList(cusId, idList);
-        System.out.println("=======================");
         return null;
     }
 

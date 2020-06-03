@@ -238,6 +238,20 @@ CREATE TABLE NR.CusFeatureCount (
     foreign key(cfc_cus_id) references Customer(cus_id)
 );
 
+-- crr 推荐内容记录表
+DROP TABLE IF EXISTS NR.CusRecommendRecord;
+CREATE TABLE NR.CusRecommendRecord (
+    crr_id INT UNSIGNED NOT NULL auto_increment,
+    crr_cus_id INT UNSIGNED NOT NULL,
+    crr_art_id INT UNSIGNED NOT NULL,
+    crr_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+	primary key(crr_id),
+    foreign key(crr_cus_id) references Customer(cus_id),
+    foreign key(crr_art_id) references Article(art_id)
+);
+
+
 -- 新闻 分数 for tiny 列表 asl
 DROP VIEW IF EXISTS NR.ArtScoreList;
 create view NR.ArtScoreList(asl_art_id, asl_art_score) as

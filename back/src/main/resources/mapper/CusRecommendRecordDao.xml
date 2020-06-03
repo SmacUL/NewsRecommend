@@ -14,4 +14,8 @@
         </foreach>
     </insert>
 
+    <delete id="deleteOldCommentList">
+        delete from CusRecommendRecord WHERE crr_cus_id = #{cusId} and timestampdiff(HOUR, crr_time, now()) >= 72
+    </delete>
+
 </mapper>
