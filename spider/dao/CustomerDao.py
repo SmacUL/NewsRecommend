@@ -149,16 +149,20 @@ class CustomerDao:
             raise
 
 
-    def update_cus_feature(self, category, cus_id, flag=False):
+    def update_cus_feature(self, category, cus_id, update_num=2, flag=False):
         """ 更新用户统计数据
+
+        这将是一个非常操蛋的方法.
 
         # 20-04-17 修改完成
         # 20-04-18 BUG 修改: 每调用一次此方法, 用户特征的增加应该与文章特征的增加保持一致, 即增加 2, 而非 1.
         # 20-04-23 接口修改, 添加 flag 字段
         # 20-04-23 Rollback BUG Fix
+        # 20-05-15 修改方法, 允许设置特征更新数量
 
         :param category:
         :param cus_id:
+        :param update_num:  每调用一次此方法, 需要用户特征的增加应该与文章特征的增加保持一致, 有些时候是 1, 有些时候是 2, 默认为 2
         :param flag:
                             当 flag 为 True 且 cus_id 指向的用户已存在时, category 参数将失效,
                             用于插入一个仅有 cfc_cus_id 的记录, 即初始化.
@@ -171,14 +175,16 @@ class CustomerDao:
             if result[0] == 0:
                 # logging.info("特征 用户 cus_id=%s 数据库查询 不存在" % (cus_id))
                 if flag:
+                    # 发现用户不存在, 只是想单纯地创建用户
                     update_sql = "insert into CusFeatureCount(cfc_cus_id) value (%d)" % cus_id
                 else:
+                    # 发现用户不存在, 在创建用户的基础上, 还想更新一些数据.
                     update_sql = "insert into CusFeatureCount(cfc_cus_id, {0}) values(%d, %d)" \
-                                     .format('cfc_' + category) % (cus_id, 2)
+                                     .format('cfc_' + category) % (cus_id, update_num)
             else:
                 # logging.info("特征 用户 cus_id=%s 数据库查询 存在" % (cus_id))
-                update_sql = "update CusFeatureCount set {0}={1}+2 where cfc_cus_id=%d" \
-                                 .format('cfc_' + category, 'cfc_' + category) % cus_id
+                update_sql = "update CusFeatureCount set {0}={1}+{2} where cfc_cus_id=%d" \
+                                 .format('cfc_' + category, 'cfc_' + category, update_num) % cus_id
 
             self.__base.execute_sql(update_sql)
             # logging.info("用户 cus_id=%s 类别 %s 特征 数据库插入 成功" % (cus_id, category))

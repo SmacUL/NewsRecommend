@@ -1,6 +1,9 @@
 package com.smacul.demo.service;
 
+import com.smacul.demo.model.ArtFullMod;
 import com.sun.org.apache.xpath.internal.operations.Bool;
+
+import java.util.List;
 
 public interface ShapeService {
 
@@ -115,7 +118,7 @@ public interface ShapeService {
     Boolean setCusBehaviorRepDislike(Integer cusId, Integer repCusId, Integer artId, Integer repId);
 
     /**
-     * 用户 follow 10
+     * 用户 follow 11
      * cbrCusIdFrom | cbrCusIdTo | cbrBehavior |   cbrTime   | cbrArtId | cbrType | cbrTargetId
      *   cusIdFrom  |   cusIdTo  |      11     | followTime  |    null  |    0    |     null
      * 20-04-19 创建方法
@@ -124,5 +127,13 @@ public interface ShapeService {
      * @return
      */
     Boolean setCusBehaviorCusFollow(Integer cusIdFrom, Integer cusIdTo);
+
+    /**
+     * 记录系统推荐内容, 并删除指定用户历史 72 小时的推荐内容
+     * 20-06-03
+     * @param list
+     * @return
+     */
+    Boolean recordRecommendList(Integer cusId, List<ArtFullMod> list);
 
 }

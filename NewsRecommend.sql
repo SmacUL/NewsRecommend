@@ -17,7 +17,7 @@ CREATE TABLE NR.Customer (
     -- cus_gender 为 0 时性别未知, 为 1 时为男, 为 -1 时为女
     cus_gender TINYINT DEFAULT 0,
     -- 用户的创建时间
-    cus_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    cus_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     -- cus_legal 为 0 时待审核, 为 1 时合法, 为 -1 不合法
     cus_legal TINYINT default 0,
 
@@ -52,7 +52,7 @@ CREATE TABLE NR.Article (
     art_tags VARCHAR(128) default '',
     -- 文章缩略图的信息
     art_image_url VARCHAR(255) default '',
-    art_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    art_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     art_legal tinyint default 0,
     art_cus_id INT UNSIGNED,
 
@@ -75,7 +75,7 @@ DROP TABLE IF EXISTS NR.Comment;
 CREATE TABLE NR.Comment (
     com_id INT UNSIGNED NOT NULL auto_increment,
     com_content TEXT,
-    com_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    com_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     com_legal tinyint default 0,
     -- 爬虫过程中的评论标识
     com_spider varchar(64) default '',
@@ -104,7 +104,7 @@ CREATE TABLE NR.Reply (
     rep_content TEXT,
     -- 回复的类型, 0 是对评论的回复, 1 是对回复的回复
     rep_type tinyint default 0, 
-    rep_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    rep_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	rep_legal tinyint default 0,
     -- 爬虫过程中的评论标识
     rep_spider varchar(64) default '',
@@ -141,7 +141,7 @@ CREATE TABLE NR.Administrator (
     adm_address VARCHAR(255),
     adm_avatar_url VARCHAR(255),
     adm_gender TINYINT DEFAULT 0,
-    adm_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    adm_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     
     primary key(adm_id)
 );
@@ -176,7 +176,7 @@ CREATE TABLE NR.CusBehaviorRecord (
     -- 行为类别
     cbr_behavior INT default 0,
     -- 行为时间
-    cbr_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    cbr_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     -- 行为发生的文章 ID
     cbr_art_id INT UNSIGNED,
     -- 行为发生的位置代号, 0: 无发生, 1: 文章, 2: 评论, 3:回复
@@ -238,20 +238,38 @@ CREATE TABLE NR.CusFeatureCount (
     foreign key(cfc_cus_id) references Customer(cus_id)
 );
 
+-- crr 推荐内容记录表
+DROP TABLE IF EXISTS NR.CusRecommendRecord;
+CREATE TABLE NR.CusRecommendRecord (
+    crr_id INT UNSIGNED NOT NULL auto_increment,
+    crr_cus_id INT UNSIGNED NOT NULL,
+    crr_art_id INT UNSIGNED NOT NULL,
+    crr_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+	primary key(crr_id),
+    foreign key(crr_cus_id) references Customer(cus_id),
+    foreign key(crr_art_id) references Article(art_id)
+);
+
+
 -- 新闻 分数 for tiny 列表 asl
 DROP VIEW IF EXISTS NR.ArtScoreList;
 create view NR.ArtScoreList(asl_art_id, asl_art_score) as
     select
         afc_art_id,
-        timestampdiff(HOUR,now(),afc_art_time)*4+cast(afc_like_num as signed)*4+cast(afc_dislike_num as signed)*(-6)+cast(afc_com_num as signed)*3+cast(afc_read_num as signed )*1+cast(afc_rep_num as signed )*2 as afc_art_socre
+        timestampdiff(HOUR,now(),afc_art_time)*20+cast(afc_like_num as signed)*4+cast(afc_dislike_num as signed)*(-6)+cast(afc_com_num as signed)*3+cast(afc_read_num as signed )*1+cast(afc_rep_num as signed )*2 as afc_art_socre
     from NR.ArtFeatureCount
     order by afc_art_socre desc;
 
 -- 新闻 分数 for hot 列表 atl
 DROP VIEW IF EXISTS NR.ArtTimeList;
 create view NR.ArtTimeList(atl_art_id, atl_art_score) as 
-    SELECT 
-        afc_art_id, 
-        timestampdiff(HOUR,now(),afc_art_time)*8+cast(afc_like_num as signed)*4+cast(afc_dislike_num as signed)*(-6)+cast(afc_com_num as signed)*3+cast(afc_read_num as signed )*1+cast(afc_rep_num as signed )*2 as atl_art_score
-    from NR.ArtFeatureCount
+    SELECT
+        afc_art_id,
+        timestampdiff(HOUR,now(),afc_art_time)*32+cast(afc_like_num as signed)*4+cast(afc_dislike_num as signed)*(-6)+cast(afc_com_num as signed)*3+cast(afc_read_num as signed )*1+cast(afc_rep_num as signed )*2 as atl_art_score
+    from NR.ArtFeatureCount left join NR.Article on NR.ArtFeatureCount.afc_art_id = NR.Article.art_id
+    where
+        NR.Article.art_type in ("news_society", "news_military", "news_finance", "news_entertainment",
+                                "news_game", "news_sports", "news_world", "news_tech", "news_car", "news_fashion") and
+        abs(timestampdiff(HOUR,now(),afc_art_time)) < 72
     order by atl_art_score desc;

@@ -146,13 +146,14 @@ public class SelfServiceImpl implements SelfService {
             return new ArrayList<>();
         }
         // 是老用户获取关注用户
-        List<Integer> followCusList = cusBehaviorRecordDao.getFollowCus(cusId);
-        if (followCusList.size() >= 10) {
-            return followCusList.subList(0, 10);
-        }
+        //List<Integer> followCusList = cusBehaviorRecordDao.getFollowCus(cusId);
+        //if (followCusList.size() >= 10) {
+        //    return followCusList.subList(0, 10);
+        //}
         // 是老用户获取相似用户
-        Integer leftNum = num - followCusList.size();
-        followCusList.addAll(cusFeatureCountDao.getRelativeCusList(cusId, leftNum));
+        //Integer leftNum = num - followCusList.size();
+        Integer leftNum = 10;
+        List<Integer> followCusList = cusFeatureCountDao.getRelativeCusList(cusId, leftNum);
         return followCusList;
     }
 }

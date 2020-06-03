@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.smacul.demo.dao.CusRecommendRecordDao">
+
+
+    <insert id="addRecommendList">
+        INSERT INTO CusRecommendRecord(crr_cus_id, crr_art_id)
+        VALUES
+        <foreach collection="list" item="tar" separator=",">
+            (#{cusId}, #{tar})
+        </foreach>
+    </insert>
+
+    <delete id="deleteOldCommentList">
+        delete from CusRecommendRecord WHERE crr_cus_id = #{cusId} and timestampdiff(HOUR, crr_time, now()) >= 72
+    </delete>
+
+</mapper>

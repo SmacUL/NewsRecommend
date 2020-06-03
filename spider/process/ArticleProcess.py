@@ -130,15 +130,22 @@ class ArticleProcess:
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36'
             }
             cookies = {
-                "CNZZDATA1259612802\t": "1495391056-1572663800-https%253A%252F%252Fwww.toutiao.com%252F%7C1573891961\t",
-                "UM_distinctid\t": "16e2a5bff8b3ef-01fd3a213050ad-1d3a6a5b-1aeaa0-16e2a5bff8cf52\t",
-                "WEATHER_CITY": "%E5%8C%97%E4%BA%AC\t",
-                "__tasessionId\t": "c1wuholqh1575530017796\t",
-                "_ga": "GA1.2.268549673.1572668703",
+                "tt_webid": "6754560229981750791",
+                "WEATHER_CITY": "%E5%8C%97%E4%BA%AC",
                 "csrftoken": "4e76bad8185f77ea8b647e50e3bb0e26",
-                "s_v_web_id": "7fabbf42df76a1ccd37bfea2d2c5db76",
-                "tt_webid": "6754560229981750791"
+                "_ga": "GA1.2.268549673.1572668703",
+                "__utmz": "24953151.1578051975.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)",
+                "__utma": "24953151.268549673.1572668703.1578051975.1578221568.2",
+                "SLARDAR_WEB_ID": "60060dd2-e5b2-470c-b7f4-09b8d877a031",
+                "ttcid": "3f7ad0f028c54aa584367115a3fa7cb028",
+                "__ac_nonce": "05ecba43c0082bbdfb3e",
+                "__ac_signature": "O2auwAAgEBACmHx7dlnWxztnr9AAGWz3dGBVQL.r0H1se1MOmPcu.0Mxo.Y9Zem1qLCx5rV13rttFjnqiBP7d4KfTBbgN8Az4ip.Po5Ht9XBlX2CZW8ZIUZV9blZ9smX461",
+                "s_v_web_id": "verify_kamdklmd_rcCyRT2X_ZLBe_4OQI_Brjy_Q7HFKjeCzPbt",
+                "__tasessionId": "gx98j8z1x1590404157654",
+                "tt_scid": "nLlc9z1mWQgXRhJFHC7i29KXmnHM9sZynN1Ue86iBmH5DPSaDONSaQYQz7mqHMcMf924"
             }
+
+
             result = Request.Request(url, headers, cookies).more()['data']
             # print(result)
             logging.info("获取新闻缩率信息 %s 成功" % url)
@@ -187,7 +194,7 @@ class ArticleProcess:
             art_mod.art_type = category
             art_mod.art_title = art_brief_json['title']
 
-            art_mod.art_content = driver.find_element_by_class_name("article-content").get_attribute('innerHTML')
+            art_mod.art_content = driver.find_element_by_class_name("syl-page-article").get_attribute('innerHTML')
 
             logging.info("设置新闻数据 url=%s 成功" % url)
         except:
