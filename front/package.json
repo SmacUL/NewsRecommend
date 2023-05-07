@@ -20,7 +20,7 @@
     "@vue/cli-plugin-eslint": "^4.1.0",
     "@vue/cli-plugin-router": "^4.1.2",
     "@vue/cli-service": "^4.1.0",
-    "axios": "^0.18.0",
+    "axios": "^0.21.2",
     "babel-eslint": "^10.0.3",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
